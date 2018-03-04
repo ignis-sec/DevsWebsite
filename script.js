@@ -9,17 +9,12 @@ ctx.fillText("PLACEHOLDER FOR CANVAS",80,300);
 
 
 function displayTab(tabName, elmnt) {
+    
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
+    for (i = 0; i < tabcontent.length; i++) //hide everytab
         tabcontent[i].style.display = "none";
-    }
-
-    tablinks = document.getElementsByClassName("tablink");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].style.backgroundColor = "";
-    }
-
+    
     document.getElementById(tabName).style.display = "block";
 
 }
