@@ -7,6 +7,7 @@ ctx.font = "60px Arial, Helvetica, sans-serif";
 canvas.fillStyle = "#ff00ff";
 ctx.fillText("PLACEHOLDER FOR CANVAS",80,300);
 
+document.getElementById("defaultOpen").click();//start by clicking default tab
 
 function displayTab(tabName, elmnt) {
     
@@ -14,8 +15,7 @@ function displayTab(tabName, elmnt) {
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) //hide everytab
         tabcontent[i].style.display = "none";
-    
-    document.getElementById(tabName).style.display = "block";
+
+    document.getElementById(tabName).style.display = "block";//show clicked tab
 
 }
-document.getElementById("defaultOpen").click();

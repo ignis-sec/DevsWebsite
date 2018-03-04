@@ -1,5 +1,18 @@
 
-#mainCanvas{
+/*
+Cappucin color palette that i am using
+#4b3832 ~chocolate
+#854442 ~Burnt amber
+#fff4e6 ~Desert sand
+#3c2f2f ~Bistre
+#be9b7b ~Cappucin
+
+https://en.wikipedia.org/wiki/Shades_of_brown
+*/
+
+
+
+#mainCanvas{/*TODO*/
 	background: #3c2f2f;
 	display:block;
 	margin: 0 auto;
@@ -13,11 +26,11 @@ body{
 	margin:0;
 }
 
-.header{
+.header{/*This is the container that holds header buttons*/
 
 }
 
-.headerTab {
+.headerTab {/*These are the buttons*/
     background-color:#4b3832;
     color: white;
     float: left;
@@ -30,11 +43,11 @@ body{
 }
 
 
-.headerTab:hover {
+.headerTab:hover {/*Set color when hovered*/
     background-color: #3c2f2f;
 }
 
-.tabcontent {
+.tabcontent {/*The part that is created when buttons are clicked*/
     color: white;
     display: none;
     padding: 50px;
@@ -42,19 +55,19 @@ body{
 }
 
 
-#Anasayfa {
+#Anasayfa {/*Buttons*/
 	background-color:#be9b7b;
 	color:#fff4e6;
 }
-#Hakkımızda {
+#Hakkımızda {/*Buttons*/
 	background-color:#be9b7b;
 	color:#fff4e6;
 }
-#Kayıt {
+#Kayıt {/*Buttons*/
 	background-color:#be9b7b;
 	color:#fff4e6;
 }
-#İletişim {
+#İletişim {/*Buttons*/
 	background-color:#be9b7b;
 	color:#fff4e6;
 }
