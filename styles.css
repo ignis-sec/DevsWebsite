@@ -45,9 +45,6 @@ width:100vw;
   cursor: pointer;
 }
 
-
-
-
 .headerTab:hover {/*Set color when hovered*/
     background-color: #3c2f2f;
 }
@@ -84,24 +81,6 @@ width:100vw;
     padding: 10px;
     text-align: center;
 
-}
-
-
-#Anasayfa {/*Buttons*/
-    background-color:#4b3832;
-	color:#fff4e6;
-}
-#Hakkımızda {/*Buttons*/
-    background-color:#4b3832;
-	color:#fff4e6;
-}
-#Kayıt {/*Buttons*/
-    background-color:#4b3832;
-	color:#fff4e6;
-}
-#İletişim {/*Buttons*/
-    background-color:#4b3832;
-	color:#fff4e6;
 }
 
 .Content{
