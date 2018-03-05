@@ -13,9 +13,19 @@ function displayTab(tabName, elmnt) {
     
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
+    if(document.getElementById(tabName).style.display == "block")
+    {
+    	document.getElementById(tabName).style.display = "none";
+    	return;
+    }
+
     for (i = 0; i < tabcontent.length; i++) //hide everytab
         tabcontent[i].style.display = "none";
 
-    document.getElementById(tabName).style.display = "block";//show clicked tab
+    	document.getElementById(tabName).style.display = "block";//show clicked tab
+
+
+   	
+   	
 
 }

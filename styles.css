@@ -1,19 +1,23 @@
 
 /*
 Cappucin color palette that i am using
-#4b3832 ~chocolate
+#47484f ~chocolate
 #854442 ~Burnt amber
 #fff4e6 ~Desert sand
 #3c2f2f ~Bistre
 #be9b7b ~Cappucin
 
 https://en.wikipedia.org/wiki/Shades_of_brown
+
+
+for css tutorials:	
+https://www.w3schools.com;
 */
 
 
 
 #mainCanvas{/*TODO*/
-	background:#4b3832;
+	background:#47484f;
 	display:block;
 	margin: 0 auto;
 	font-family: sans-serif;
@@ -21,7 +25,7 @@ https://en.wikipedia.org/wiki/Shades_of_brown
 }
 
 body{
-	background: #4b3832;
+	background: #47484f;
 	padding:0;
 	margin:0;
 }
@@ -32,7 +36,7 @@ width:100vw;
 }
 
 .headerTab {/*These are the buttons*/
-    background-color:#4b3832;
+    background-color:	#970203;
     color: white;
     float: left;
     border: none;
@@ -43,10 +47,12 @@ width:100vw;
     width: 25%;
       transition: all 0.5s;
   cursor: pointer;
+  opacity: 1;		
 }
 
 .headerTab:hover {/*Set color when hovered*/
-    background-color: #3c2f2f;
+    background-color:#690102;
+
 }
 
 
@@ -77,31 +83,45 @@ width:100vw;
 
 .tabcontent {/*The part that is created when buttons are clicked*/
     color: white;
+    width: 100vw;
     display: none;
     padding: 10px;
     text-align: center;
+    position:fixed;
+    background: linear-gradient(#970203,#790102); 
+    
 
 }
 
 .Content{
 	width: 100%;
 	display: table;
-	height:600px
+	height:2000px
+
 }
 
 .MainPage{
 	width: 100%;
 	height:100%;
 	background-color: #fff4e6;
+	border-radius: 25px;
 }
 .ContentContainer{
-	padding-left:5vw;
-	padding-right:5vw;
+	padding-left:3vw;
+	padding-right:3vw;
 	padding-top:2vw;
 	padding-bottom: :2vw;
-	width: 100vw; 
+	width: 90vw; 
 	height:600px;
-	display: table-cell;
-	background-color: #4b3832;
+	display: block;
+	background-color: #47484f;
 }
 
+#Baslık{
+	font-size: 25px;
+	font-family: sans-serif;
+	height:600px; 
+	text-align:center;
+	color:#fff4e6;
+	display:block;
+}
