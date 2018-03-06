@@ -99,6 +99,7 @@ margin:0;
     transition: all 0.5s;
     max-height: 0;
     overflow: hidden;
+    opacity:0.9;
 }
 .header .dropContainer .headerDropDown:hover {/*The part that is created when buttons are clicked*/
     padding: 10px;
