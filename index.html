@@ -8,46 +8,125 @@
 </HEAD>
 	<body>
 		<div class=header>
-			<button class="headerTab color1" onclick="displayTab('Anasayfa', this)" id="defaultOpen"><span>Anasayfa</span></button>
-			<button class="headerTab color1" onclick="displayTab('Hakkımızda', this)"><span>Hakkımızda</span></button>
-			<button class="headerTab color1" onclick="displayTab('Kayıt', this)"><span>Kayıt</span></button>
-			<button class="headerTab color1" onclick="displayTab('İletişim', this)"><span>İletişim</span></button>
-			<button class="headerTab color1" onclick="displayTab('ProjeÇizelgesi', this)"><span>Proje Çizelgesi</span></button>
+			<button id="HBtnAnasayfa"; class="headerTab color1"><span>Anasayfa</span></button>
+			<button id="HBtnHakkımızda"; class="headerTab color1"><span>Hakkımızda</span></button>
+			<button id="HBtnKayıt"; class="headerTab color1"><span>Kayıt</span></button>
+			<button id="HBtnİletişim"; class="headerTab color1"><span>İletişim</span></button>
+			<button id="HBtnProje"; class="headerTab color1"><span>Proje Çizelgesi</span></button>
+			<div class="dropContainer">
+				<div id="Anasayfa"; class="headerDropDown color1">	
+				  <h3>Anasayfa</h3>
+				  <p>TODO</p> 
+				</div>
+
+				<div id="Hakkımızda"; class="headerDropDown color1">	
+				  <h3>Hakkımızda</h3>
+				  <p>TODO</p> 
+				</div>
+
+				<div id="Kayıt"; class="headerDropDown color1">
+				  <h3>Kayıt</h3>
+				  <p>TODO: JS canvas ile kayıt formu</p>
+				</div>
+
+				<div id="İletişim"; class="headerDropDown color1" onload="IletişimMap()";>
+				  	<div style="float:left;display:block;width:50%;">
+					  <h3>İletişim</h3>
+					  <p>İletişim Bilgileri</p>
+					  <p> Hoca1: </p>
+					</div>
+
+					<div id="IletisimMap"; style="height:400px;width:400px;display:block">
+					<script>
+						function myMap() {
+							var mapProp= 
+							{
+								center:new google.maps.LatLng(35.245127, 33.025321),
+								zoom:15,
+							};
+
+							var map 	= new google.maps.Map(document.getElementById("IletisimMap"),mapProp);
+							var okul	= {lat: 35.245127, lng:  33.025321};
+							var marker 	= new google.maps.Marker(
+							{
+								position: okul,
+								map: map
+							}
+							);
+						}
+					</script>
+					<script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+					</div>
+				</div>
+					
+			</div>
 		</div>
-		<div class="color1"; style="height:45px"> </div><!-- fills behind header-->
-		<span id="ContentBlock">
-			<div id="Anasayfa"; class="tabcontent"; onclick="TabClose(this)">
-			  <h3>TODO</h3>
-			  <p>Anasayfa</p>
-			</div>
 
-			<div id="Hakkımızda"; class="tabcontent">	
-			  <h3>Hakkımızda</h3>
-			  <p>TODO</p> 
-			</div>
-
-			<div id="Kayıt"; class="tabcontent">
-			  <h3>Kayıt</h3>
-			  <p>TODO: JS canvas ile kayıt formu</p>
-			</div>
-
-			<div id="İletişim"; class="tabcontent">
-			  <h3>İletişim</h3>
-			  <p>İletişim Bilgileri</p>
-			  <p> Hoca1: </p>
-			</div>
-
-		</span>
+		<div class="color1"; style="height:48px"> </div><!-- fills behind header-->
 		<div style="display:flex;height:41.52vw;">
-			<div id="Baslık" class="color1"; style="display:block;width:40%;height:100%;">	
+			<div id="Baslık" class="color2"; style="display:block;width:40%;height:100%;">	
 				<p> Metu Developers</p>
 			</div>
-			<img src="Images/Event.png" style="width:60%;display:block;margin:0;">
-			
+
+			<img src="Images/Event.png" style="width:60%;display:block;margin:0;">	
 		</div>
 		
-		<div class="MainPage color3"> </div>
- 	
+		<div class="MainPage color3"> 
+			<p>
+		blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub? 
+		<br>
+		blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub!
+		<br>
+		blub? blub! blub? blub. blub! blub. blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
+		<br>
+		blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub! blub? blub! blub? blub. blub. blub.
+		<br>
+		blub! blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub. blub! blub. blub. blub.
+		<br>
+		blub. blub. blub. blub. blub! blub. blub. blub? blub. blub? blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
+		<br>
+		blub. blub. blub. blub. blub. blub. blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub!
+		<br>
+		blub? blub! blub? blub. blub! blub. blub. blub? blub. blub? blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
+		<br>
+		blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub.
+		<br>
+		blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub! blub? blub! blub? blub. blub! blub! blub! blub!
+		<br>
+		blub! blub! blub! blub. blub? blub. blub? blub. blub? blub. blub? blub. blub! blub. blub. blub. blub. blub. blub. blub. blub! blub.
+		<br>
+		blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub. blub! blub! blub! blub! blub! blub! blub! blub!
+		<br>
+		blub! blub! blub! blub! blub! blub! blub! blub! blub! blub. blub. blub? blub. blub? blub. blub. blub! blub.
+		<br>
+		blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub? 
+		<br>
+		blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub!
+		<br>
+		blub? blub! blub? blub. blub! blub. blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
+		<br>
+		blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub! blub? blub! blub? blub. blub. blub.
+		<br>
+		blub! blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub. blub! blub. blub. blub.
+		<br>
+		blub. blub. blub. blub. blub! blub. blub. blub? blub. blub? blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
+		<br>
+		blub. blub. blub. blub. blub. blub. blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub!
+		<br>
+		blub? blub! blub? blub. blub! blub. blub. blub? blub. blub? blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
+		<br>
+		blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub.
+		<br>
+		blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub! blub? blub! blub? blub. blub! blub! blub! blub!
+		<br>
+		blub! blub! blub! blub. blub? blub. blub? blub. blub? blub. blub? blub. blub! blub. blub. blub. blub. blub. blub. blub. blub! blub.
+		<br>
+		blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub. blub! blub! blub! blub! blub! blub! blub! blub!
+		<br>
+		blub! blub! blub! blub! blub! blub! blub! blub! blub! blub. blub. blub? blub. blub? blub. blub. blub! blub.
+			</p>
+		</div>
+ 		
 
 		<script src="script.js"></script>	
 	</body>
