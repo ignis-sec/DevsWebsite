@@ -11,6 +11,7 @@
 //npm install --save mysql express
 //npm install -g nodemon
 //nodemon
+//DOWNLOAD XAMPP AND RUN APACHE + MYSQL SERVER
 
 
 //check modules
@@ -44,6 +45,38 @@ app.get('/createdb', () => {
 		res.send('database created');
 	});
 });
+
+app.get('/createpoststable', (req,res) => {
+	let sql = 'CREATE TABLE posts(id int AUTO_INCREMENT, title VARCHAR(255),body VARCHAR(255), PRIMARY KEY (id))';
+	db.query(sql, (err,result) =>{
+		if(err) throw err;
+		console.log(result);
+		res.send('Posts table created')
+	});
+});
+
+app.get('/addpost',(req,res) =>{
+	let post = {title:'Test', body:'IEEE ur mom gay'};
+	let sql = 'INSERT INTO posts SET ?';
+	let query = db.query(sql,post, (err,result) => {
+		if(err) throw err;
+		console.log(result);
+		res.send('post added');
+	});
+
+});
+
+app.get('/getpost/:id', (req,res) =>{
+	console.log(req.params.id);
+	let sql = 'SELECT * FROM posts WHERE id = ' + req.params.id;
+	let query = db.query(sql, (err,result) => {
+		if(err) throw err; 
+		console.log(result);
+		res.send(result);
+	});
+})
+
+
 
 //test port
 
