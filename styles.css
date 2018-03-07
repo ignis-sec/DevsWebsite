@@ -1,4 +1,4 @@
-﻿
+
 /*
 Cappucin color palette that i am using
 #47484f ~chocolate
@@ -7,16 +7,6 @@ Cappucin color palette that i am using
 #3c2f2f ~Bistre
 #be9b7b ~Cappucin
 
-Şimdilik ayrı bir paletle denedim :D -Sedat
-
-#eeeeee ~Koyu beyaz
-#ffffff ~Acık beyaz
-#b8c3bb ~Acık gri
-#474f48 ~Koyu gri
-#970203 ~Kırmızı
-#7e0202 ~Kırmızı(for hover)
-
-http://www.color-hex.com/        Tavsiyemdir:D
 https://en.wikipedia.org/wiki/Shades_of_brown
 
 
@@ -31,23 +21,15 @@ https://www.w3schools.com;
 .color3 {background-color:#fff4e6; }
 
 #mainCanvas{/*TODO*/
-<<<<<<< HEAD
-	background:#474f48;
-=======
 	background:#eee;
->>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
 	display:block;
 	margin: 0 auto;
 	font-family: sans-serif;
-	color:#eeeeee;
+	color:white;
 }
 
 body{
-<<<<<<< HEAD
-	background: #474f48;
-=======
 	background: #333;
->>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
 	padding:0;
 	margin:0;
 }
@@ -60,12 +42,7 @@ margin:0;
 }
 
 .headerTab {/*These are the buttons*/
-<<<<<<< HEAD
-    background-color:#970203;
-    color: #eeeeee;
-=======
     color: white;
->>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
     float: left;
     border: none;
     outline: none;
@@ -79,39 +56,11 @@ margin:0;
 }
 
 .headerTab:hover {/*Set color when hovered*/
-<<<<<<< HEAD
-    background-color: #7e0202;
-}
-
-.tabcontent {/*The part that is created when buttons are clicked*/
-    color: #474f48;
-    display: none;
-    padding: 10px;
-    text-align: center;
-=======
     background-color:#690102;
->>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
 
 }
 
 
-<<<<<<< HEAD
-#Anasayfa {/*Buttons*/
-    background-color:#7e0202;
-	color:#eeeeee;
-}
-#Hakkımızda {/*Buttons*/
-    background-color:#7e0202;
-	color:#eeeeee;
-}
-#Kayıt {/*Buttons*/
-    background-color:#7e0202;
-	color:#eeeeee;
-}
-#İletişim {/*Buttons*/
-    background-color:#7e0202;
-	color:#eeeeee;
-=======
 .headerTab span {
   cursor: pointer;
   display: inline-block;
@@ -135,7 +84,6 @@ margin:0;
 .headerTab:hover span:after {
   opacity: 1;
   right: 0;
->>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
 }
 
 
@@ -185,38 +133,16 @@ margin:0;
 
 
 .MainPage{
-<<<<<<< HEAD
-<<<<<<< HEAD
-	width: 100%;
-	height:100%;
-	background: #eeeeee;
-}
-.ContentContainer{
-	padding-left:5vw;
-	padding-right:5vw;
-	padding-top:2vw;
-	padding-bottom: :2vw;
-	width: 100vw; 
-	height:600px;
-	display: table-cell;
-	background: #474f48;
-=======
-	width: 96%;
-	height:600px;
-	padding:0;
-=======
 	width: 90%;
 	text-align: center;
 	color:#47484f;
 	font-family:sans-serif;
 	font-size: 20px;
 	padding:3%;
->>>>>>> e1327b27dd243aa6ce61714412be7170b92a4da8
 	margin:2%;
 	border-top-left-radius: 50px;
 	border-bottom-right-radius: 50px;
 	
->>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
 }
 
 #Baslık{
@@ -227,4 +153,3 @@ margin:0;
 	color:#fff4e6;
 	display:table-cell;
 }
-
