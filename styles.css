@@ -1,7 +1,7 @@
 ﻿
 /*
 Cappucin color palette that i am using
-#4b3832 ~chocolate
+#47484f ~chocolate
 #854442 ~Burnt amber
 #fff4e6 ~Desert sand
 #3c2f2f ~Bistre
@@ -18,12 +18,24 @@ Cappucin color palette that i am using
 
 http://www.color-hex.com/        Tavsiyemdir:D
 https://en.wikipedia.org/wiki/Shades_of_brown
+
+
+for css tutorials:	
+https://www.w3schools.com;
 */
 
 
 
+.color1 {background-color:#225424; }
+.color2 {background-color:#ddd; }
+.color3 {background-color:#fff4e6; }
+
 #mainCanvas{/*TODO*/
+<<<<<<< HEAD
 	background:#474f48;
+=======
+	background:#eee;
+>>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
 	display:block;
 	margin: 0 auto;
 	font-family: sans-serif;
@@ -31,30 +43,43 @@ https://en.wikipedia.org/wiki/Shades_of_brown
 }
 
 body{
+<<<<<<< HEAD
 	background: #474f48;
+=======
+	background: #333;
+>>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
 	padding:0;
 	margin:0;
 }
 
+
 .header{/*This is the container that holds header buttons*/
 position:fixed;
 width:100vw;
+margin:0;
 }
 
 .headerTab {/*These are the buttons*/
+<<<<<<< HEAD
     background-color:#970203;
     color: #eeeeee;
+=======
+    color: white;
+>>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
     float: left;
     border: none;
     outline: none;
     cursor: pointer;
     padding: 14px 16px;
     font-size: 17px;
-    width: 25%;
+    width: 20%;
+      transition: all 0.5s;
+  cursor: pointer;
+  opacity: 0.8;		
 }
 
-
 .headerTab:hover {/*Set color when hovered*/
+<<<<<<< HEAD
     background-color: #7e0202;
 }
 
@@ -63,10 +88,14 @@ width:100vw;
     display: none;
     padding: 10px;
     text-align: center;
+=======
+    background-color:#690102;
+>>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
 
 }
 
 
+<<<<<<< HEAD
 #Anasayfa {/*Buttons*/
     background-color:#7e0202;
 	color:#eeeeee;
@@ -82,15 +111,49 @@ width:100vw;
 #İletişim {/*Buttons*/
     background-color:#7e0202;
 	color:#eeeeee;
+=======
+.headerTab span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
 }
 
-.Content{
-	width: 100%;
-	display: table;
-	height:600px
+.headerTab span:after {
+  content: '    ';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
 }
+
+.headerTab:hover span {
+  padding-right: 25px;
+}
+
+.headerTab:hover span:after {
+  opacity: 1;
+  right: 0;
+>>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
+}
+
+
+.tabcontent {/*The part that is created when buttons are clicked*/
+    color: white;
+    width: 100vw;
+    display: none;
+    padding: 10px;
+    text-align: center;
+    position:fixed;
+    background: linear-gradient(#970203,#790102); 
+    
+
+}
+
 
 .MainPage{
+<<<<<<< HEAD
 	width: 100%;
 	height:100%;
 	background: #eeeeee;
@@ -104,4 +167,22 @@ width:100vw;
 	height:600px;
 	display: table-cell;
 	background: #474f48;
+=======
+	width: 96%;
+	height:600px;
+	padding:0;
+	margin:2%;
+	border-top-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	
+>>>>>>> a2bbed1ad36987d63df922806ef017629ebac1ac
+}
+
+#Baslık{
+	font-size: 25px;
+	font-family: sans-serif;
+	height:600px; 
+	text-align:center;
+	color:#fff4e6;
+	display:table-cell;
 }
