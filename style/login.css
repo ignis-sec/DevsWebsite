@@ -31,3 +31,14 @@ color:white;
   width:150px;  
 
 }
+.form-control{
+ display:inline-block;
+}
+
+.form-group{
+display:inline-block;
+}
+.form-groupblock{
+  padding:10px;
+display:inline-block;
+}
