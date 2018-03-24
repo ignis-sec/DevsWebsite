@@ -1,0 +1,15 @@
+﻿
+body{
+  background:#333;
+  font-family: sans-serif;
+  color:white;
+}
+
+
+.btn{
+  background-color:#528454;
+  color:white;
+  height:50px;
+  width:150px;  
+
+}

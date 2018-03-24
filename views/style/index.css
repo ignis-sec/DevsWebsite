@@ -1,0 +1,155 @@
+
+/*
+Cappucin color palette that i am using
+#47484f ~chocolate
+#854442 ~Burnt amber
+#fff4e6 ~Desert sand
+#3c2f2f ~Bistre
+#be9b7b ~Cappucin
+
+https://en.wikipedia.org/wiki/Shades_of_brown
+
+
+for css tutorials:	
+https://www.w3schools.com;
+*/
+
+
+
+.color1 {background-color:#225424; }
+.color2 {background-color:#333; }
+.color3 {background-color:#fff4e6; }
+
+#mainCanvas{/*TODO*/
+	background:#eee;
+	display:block;
+	margin: 0 auto;
+	font-family: sans-serif;
+	color:white;
+}
+
+body{
+	background: #333;
+	padding:0;
+	margin:0;
+}
+
+
+.header{/*This is the container that holds header buttons*/
+position:fixed;
+width:100vw;
+margin:0;
+}
+
+.headerTab {/*These are the buttons*/
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 20%;
+      transition: all 0.5s;
+  cursor: pointer;
+  opacity: 0.8;		
+}
+
+.headerTab:hover {/*Set color when hovered*/
+    background-color:#690102;
+
+}
+
+
+.headerTab span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.headerTab span:after {
+  content: '    ';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.headerTab:hover span {
+  padding-right: 25px;
+}
+
+.headerTab:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+
+.header .dropContainer .headerDropDown {/*The part that is created when buttons are clicked*/
+    color: white;
+    width: 100vw;
+    display: block;  
+    text-align: center; 
+    padding:0;
+    margin:0;
+    position:fixed;
+	z-index: -10;
+    transition: all 0.5s;
+    max-height: 0;
+    overflow: hidden;
+    opacity:0.9;
+}
+.header .dropContainer .headerDropDown:hover {/*The part that is created when buttons are clicked*/
+    padding: 10px;
+    max-height:100vh;
+ 	margin-top:48px;
+}
+
+.header #HBtnAnasayfa:hover ~ .dropContainer #Anasayfa {
+    padding: 10px;
+    max-height:100vh;
+ 	margin-top:48px;
+
+}
+.header #HBtnHakkımızda:hover ~ .dropContainer #Hakkımızda {
+    padding: 10px;
+    max-height:100vh;
+ 	margin-top:48px;
+
+}
+.header #HBtnKayıt:hover ~ .dropContainer #Kayıt {
+    padding: 10px;
+    max-height:100vh;
+ 	margin-top:48px;
+}
+.header #HBtnİletişim:hover ~ .dropContainer #İletişim {
+    padding: 10px;
+    max-height:100vh;
+ 	margin-top:48px;
+}
+
+
+
+.MainPage{
+	width: 90%;
+	text-align: center;
+	color:#47484f;
+	font-family:sans-serif;
+	font-size: 20px;
+	padding:3%;
+	margin:2%;
+	border-top-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	
+}
+
+#Baslık{
+	font-size: 25px;
+	font-family: sans-serif;
+	height:600px; 
+	text-align:center;
+	color:#fff4e6;
+	display:table-cell;
+}

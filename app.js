@@ -26,6 +26,16 @@ app.set('view engine', 'handlebars');
 
 
 
+
+//listener
+app.listen(port, () =>{
+	console.log(`Server started on port ${port}`);
+});
+
+
+///ROUTES
+
+
 //index route 
 app.get('/', (req,res) => {
 	res.render('index');  
@@ -40,7 +50,21 @@ app.get('/kayit', (req,res) => {
 	res.render('kayit');
 });
 
-//listener
-app.listen(port, () =>{
-	console.log(`Server started on port ${port}`);
+app.get('/style/index', (req,res) => {
+	res.sendFile('views/style/index.css', {root: __dirname })
 });
+
+app.get('/style/kayit', (req,res) => {
+	res.sendFile('views/style/kayit.css', {root: __dirname })
+});
+
+app.get('/Images/Event1', (req,res) => {
+	res.sendFile('views/Images/Event.png', {root: __dirname })
+});
+
+
+
+
+
+
+
