@@ -1,15 +1,30 @@
+//Check if modules are loaded and save them in variables
 const express = require('express');
-
 const exphbs = require('express-handlebars')
-
 const app = express();
 
+
+//Port number for server
 const port = 5000;
 
  
 //Handlebars Middleware
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+//Middlewares have access to specified object params and can alter them between request and response
+app.engine('handlebars', exphbs({defaultLayout: 'main'})); //main.handlebars will be loaded on every page
 app.set('view engine', 'handlebars');
+
+
+//js arrow function////// You wont understand whats below if you dont know what this is.
+// (params) =>{
+//	functionLogic
+//}
+//
+// creates and arbitrary function, meaning a function that is declered on the run 
+//bkz lambda function :https://stackoverflow.com/questions/16501/what-is-a-lambda-function
+//
+//so app.get( 'link', arrow function ) translates to when you see a get request to website.com'/', do this function.
+
+
 
 //index route 
 app.get('/', (req,res) => {
@@ -20,6 +35,7 @@ app.get('/', (req,res) => {
 app.get('/about', (req,res) => {
 	res.send('About');
 });
+//kayıt route
 app.get('/kayit', (req,res) => {
 	res.render('kayit');
 });
