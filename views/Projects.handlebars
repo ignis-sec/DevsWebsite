@@ -1,0 +1,11 @@
+{{#each Projects}}
+	<div class="card card-body"> 
+		<h4> {{Title}}</h4>
+		<p>{{Description}} </p>
+		<p> More info: {{permalink}} </p>
+		<p>Github: {{gitRepoLink}} </p>
+		<p>Starting: {{date}} </p>
+	</div>
+{{else}}
+		<p> Something went wrong.</p>
+{{/each}}

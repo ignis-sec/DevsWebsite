@@ -1,18 +1,13 @@
 //Check if modules are loaded and save them in variables
 const express = require('express');
 const exphbs = require('express-handlebars')
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const app = express();
-
+const sha256 = require('js-sha256');
 
 //Port number for server
 const port = 5000;
-
- 
-//Handlebars Middleware
-//Middlewares have access to specified object params and can alter them between request and response
-app.engine('handlebars', exphbs({defaultLayout: 'main'})); //main.handlebars will be loaded on every page
-app.set('view engine', 'handlebars');
-
 
 //js arrow function////// You wont understand whats below if you dont know what this is.
 // (params) =>{
@@ -25,6 +20,27 @@ app.set('view engine', 'handlebars');
 //so app.get( 'link', arrow function ) translates to when you see a get request to website.com'/', do this function.
 
 
+//connect to mongoose
+mongoose.connect('mongodb://localhost/BdTest') 
+.then(() => console.log('Mongodb connected...'))//this is called promise
+.catch(err => console.log(err));				//throw<->catch	
+
+//Load User Model
+require('./models/User');
+const User = mongoose.model('User');
+
+require('./models/Project');
+const Project = mongoose.model('Project');
+
+
+//Handlebars Middleware
+//Middlewares have access to specified object params and can alter them between request and response
+app.engine('handlebars', exphbs({defaultLayout: 'main'})); //main.handlebars will be loaded on every page
+app.set('view engine', 'handlebars');
+app.use(bodyParser.urlencoded({ extended:false}));
+app.use(bodyParser.json());
+
+
 
 
 //listener
@@ -33,19 +49,90 @@ app.listen(port, () =>{
 });
 
 
+
 ///ROUTES
-
-
 //index route 
 app.get('/', (req,res) => {
-	res.render('index');  
+	res.render('index');
+
+});
+
+//temporary add project request
+app.get('/addProject', (req,res) => {
+	const newProject = {
+		Title: "Kerbal Space Program Mode",
+		Description:"Why not",
+		permalink:"testsite",
+		gitRepoLink:"nogit",
+		date: new Date("June 13, 2018 11:13:00"),
+		active:true
+	};
+	new Project(newProject)
+	.save()
+	.then(() => {
+	res.send(`Added ${newProject}`)
+	})
 });
  
-//about route
+
+app.post('/registerSubmit', (req,res) => {
+	let errors = [];
+	//this part is protection against attacker skipping clientside form check and posting custom json file
+	if(!req.body.ID){
+		errors.push({text:'Please enter user ID'});
+	}
+	if(!req.body.name){
+		errors.push({text:'Please enter your name'});
+	}
+	if(!req.body.surname){
+		errors.push({text:'Please enter surname'});
+	}
+	if(!req.body.password){
+		errors.push({text:'Please enter a password'});
+	}
+
+	if(errors.length>0){
+		res.render('kayit',{
+			errors:errors,
+			ID:req.body.ID,
+			name:req.body.name,
+			surname:req.body.surname,
+			password:req.body.password 
+		})
+	}else{//if there are no errors
+		const newUser = {
+			userID: req.body.ID,
+			name:req.body.name,
+			surname:req.body.surname,
+			password:sha256(req.body.password)
+		};
+		new User(newUser)
+		.save()
+		.then(User => {
+			res.redirect('/newRegister');
+		})
+	}
+
+});
+
+app.get('/Schedule', (req,res) => {
+	Project.find({})
+	.sort({date:'desc'})
+	.then(Projects =>{
+		res.render('Projects',{
+			Projects:Projects
+		})
+	})
+});
+
+app.get('/newRegister', (req,res) => {
+	res.send('register complete');
+});
+
 app.get('/about', (req,res) => {
 	res.send('About');
 });
-//kayıt route
+
 app.get('/kayit', (req,res) => {
 	res.render('kayit');
 });
