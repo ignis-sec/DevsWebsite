@@ -1,0 +1,3 @@
+# .handlebars files
+
+.handlebars files are html files with extra syntax, supporting partials and bootstrap and etc...
