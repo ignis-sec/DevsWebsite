@@ -78,6 +78,7 @@ app.get('/addProject', (req,res) => {
 app.post('/registerSubmit', (req,res) => {
 	let errors = [];
 	//this part is protection against attacker skipping clientside form check and posting custom json file
+
 	if(!req.body.ID){
 		errors.push({text:'Please enter user ID'});
 	}
@@ -106,11 +107,61 @@ app.post('/registerSubmit', (req,res) => {
 			surname:req.body.surname,
 			password:sha256(req.body.password)
 		};
-		new User(newUser)
+		new User(newUser,( error, result) =>{
+		})
 		.save()
 		.then(User => {
 			res.redirect('/newRegister');
 		})
+		.catch(err => {
+			errors.push({text:'That username is already registered'});
+			res.render('kayit',{
+			errors:errors,
+			ID:req.body.ID,
+			name:req.body.name,
+			surname:req.body.surname,
+			password:req.body.password 
+			})
+		});
+	}
+
+});
+
+app.post('/loginAttempt', (req,res) => {
+	let errors = [];
+	//this part is protection against attacker skipping clientside form check and posting custom json file
+
+	if(!req.body.ID){
+		errors.push({text:'Please enter user ID'});
+	}
+	if(!req.body.password){
+		errors.push({text:'Please enter a password'});
+	}
+
+	if(errors.length>0){
+		res.render('login',{
+			errors:errors,
+			ID:req.body.ID,
+			password:req.body.password 
+		})
+	}else{//if there are no errors
+		User.find({userID: req.body.ID})
+		.then(User =>{
+			if(User.length!=0)
+			{
+				if(!(User[0].password.localeCompare(sha256(req.body.password))))
+				{
+					res.render('index',{userID:User[0].userID})
+				}
+				else {
+				errors.push({text:'Incorrect username or password.'})
+				res.render('login',{errors:errors})
+				}
+			}else{
+				errors.push({text:'Incorrect username or password.'})
+				res.render('login',{errors:errors})
+			}
+			})
 	}
 
 });
@@ -135,6 +186,10 @@ app.get('/about', (req,res) => {
 
 app.get('/kayit', (req,res) => {
 	res.render('kayit');
+});
+
+app.get('/login', (req,res) => {
+	res.render('login');
 });
 
 app.get('/style/index', (req,res) => {
