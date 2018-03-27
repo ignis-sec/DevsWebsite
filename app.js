@@ -6,6 +6,9 @@ const bodyParser = require('body-parser');
 const app = express();
 const sha256 = require('js-sha256');
 
+//custom module to hide scavenger hunt links from participants
+const hunt = require("./scavenger-private/hunt");
+
 //Port number for server
 const port = 5000;
 
@@ -204,9 +207,12 @@ app.get('/Images/Event1', (req,res) => {
 	res.sendFile('views/Images/Event.png', {root: __dirname })
 });
 
+app.get('/duckduckgoose', (req,res) => {
+	res.render('Scavenger')
+});
 
-
-
+//Get routes for Scavenger Hunt levels MUST NOT BE PUBLISHED!
+hunt.getlevels(app);
 
 
 

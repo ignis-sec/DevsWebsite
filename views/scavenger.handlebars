@@ -1,0 +1,46 @@
+
+<!doctype html>
+<html>
+  <head>
+    <title>Challenge</title>
+  </head>
+  <body style="background:#333"onload="InitializeUrlbar();">
+    <div style="background:#333;color:#bbb">
+      <div id="instructions">
+
+      <h2>Duck Duck Goose</h2>
+
+      
+      Duck duck goose is a type of scavenger hunt our student
+      society developed for our entertainment. In this hunt, you will
+      have trails named "Duck" or "Goose". When hunting, you as a participant, 
+      may not know if you are following a duck or a goose until the end. Duck trails
+      will take you down a path without any results while gooses take you to the golden egg.
+
+
+      <h2>Hunters requirements</h2>
+      
+      During your hunt, you are expected to use cryptology techniques, xss injections, 
+      and your general creativity and imagination. Not all the steps you take will the same difficulty.
+
+      <h2>Objectives</h2>
+      Find and follow a trail, hope it is not a duck leading you astray, and follow the goose to its golden egg.
+
+    </div>
+    <h2>Target</h2>
+  </div>
+
+
+  <div id="hunt-frame-container" style="background:#ddd">
+    <script src="/scavengerscript.js"></script>
+    <div class="example-controls">
+      <span class="url">URL</span>
+      <div>
+      <input id="urlbar" type="text" style="width:91%; margin:10px">
+      <input class="linkbutton" type="Submit" value="Go" style="background:#282; color:#fff; font-family:sans-serif;width:6%;height:100%; border-radius:10px; border-width: 0px" onclick="gotolink()">
+    </div>
+    <iframe id ="hunt-container" class="hunt-frame cardboard" src="/duckduckgoose/level1.html" style="width:100%; height:400px"></iframe>
+  </body>
+  </div>
+  <div style="height:100px;background:#333"></div>
+</html>
