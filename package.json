@@ -9,6 +9,7 @@
   "author": "Ata Hakçıl",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "connect-flash": "^0.1.1",
     "express": "^4.16.3",
@@ -16,6 +17,7 @@
     "express-session": "^1.15.6",
     "js-sha256": "^0.9.0",
     "method-override": "^2.3.10",
-    "mongoose": "^5.0.11"
+    "mongoose": "^5.0.11",
+    "passport": "^0.4.0"
   }
 }

@@ -1,13 +1,12 @@
 
 <link rel="stylesheet" href="/style/register.css">
 <h2 class="page-header">Register</h2>
-{{#each errors}}
-  <div class ="alert alert-danger"> {{text}} </div>
-{{else}}
 
-{{/each}}
-<div class="card card-body">
-  <form method="post" action="/registerSubmit">
+<div class="card card-body" style="color:#000">
+  <div id="logo-container" style="display:flex;justify-content: center;">
+    <img src="/Images/logo.png" style="height:128px; width:128px; vertical-align:middle" >
+  </div>
+  <form method="post" action="/user/register">
     <div class="form-group">
       <label>Metu ID</label>
       <input type="text" class="form-control" name="ID" placeholder="ID" required>
@@ -23,6 +22,10 @@
     <div class="form-group">
       <label>Password</label>
       <input type="password" class="form-control" name="password" placeholder="Password" required>
+    </div>
+    <div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" class="form-control" name="confirm" placeholder="Password" required>
     </div>
     <div style="display:block">
       <div class="form-groupblock">

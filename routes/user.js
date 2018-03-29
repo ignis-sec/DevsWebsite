@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 module.exports = router;
 
@@ -23,10 +24,19 @@ router.get('/register', (req,res) => {
 
 
 
-router.post('/Submit', (req,res) => {
+router.post('/register', (req,res) => {
 	let errors = [];
 	//this part is protection against attacker skipping clientside form check and posting custom json file
 
+	if(req.body.ID.length!=7){
+		errors.push({text:'Please enter your 7 digit metu student number.'});
+	}
+	if(req.body.password!=req.body.confirm){
+		errors.push({text:'Your password confirmation doesnt match your password'});
+	}
+	if(req.body.password.length<8){
+		errors.push({text:'Password must be longer than 8 characters'});
+	}
 	if(!req.body.ID){
 		errors.push({text:'Please enter user ID'});
 	}
@@ -39,40 +49,44 @@ router.post('/Submit', (req,res) => {
 	if(!req.body.password){
 		errors.push({text:'Please enter a password'});
 	}
+	User.findOne({userID: req.body.ID})
+	.then(User => {
+		if(User) errors.push({text:'That username is already registered'});
+	})
+
 
 	if(errors.length>0){ //if there are any errors re-ask
 		res.render('user/register',{
-			errors:errors,
-			ID:req.body.ID,
-			name:req.body.name,
-			surname:req.body.surname,
-			password:req.body.password 
+			errors: errors,
+			ID: req.body.ID,
+			name: req.body.name,
+			surname: req.body.surname,
+			password: req.body.password,
+			confirm: req.body.confirm
 		})
 	}else{//if there are no errors
-		const newUser = {
+		const newUser = new User({
 			userID: req.body.ID,
 			name:req.body.name,
 			surname:req.body.surname,
-			password:sha256(req.body.password)
-		};
-		new User(newUser,( error, result) =>{
-		})
-		.save()
-		.then(User => {
-			res.redirect('/newUser');
-		})
-		.catch(err => {  //if db responds with unique key repeat
-			errors.push({text:'That username is already registered'});
-			res.render('user/kayit',{
-			errors:errors,
-			ID:req.body.ID,
-			name:req.body.name,
-			surname:req.body.surname,
-			password:req.body.password 
-			})
+			password:req.body.password
 		});
-	}
+		bcrypt.genSalt(10, (err,salt) =>{
+			bcrypt.hash(newUser.password, salt, (err,hash)=>{
+				if(err) throw err;
+				newUser.password=hash;
+				newUser.save()
+				.then(user =>{
+					req.flash('success_msg,', 'Registeration successfull');
+					res.redirect('/user/login');
+				})
+				.catch(err =>{
+					console.log(err);
+				})
+			});
+		});
 
+	}
 });
 
 router.post('/loginAttempt', (req,res) => {

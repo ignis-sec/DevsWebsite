@@ -4,11 +4,12 @@ const exphbs = require('express-handlebars')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
-const sha256 = require('js-sha256');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
 const path = require('path');
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 
 //custom module to hide scavenger hunt links from participants
