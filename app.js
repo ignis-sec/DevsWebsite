@@ -214,7 +214,9 @@ app.put('/Projects/:id', (req,res) =>{
 	})	
 })
 
-app.get('/removeProject/:id', (req,res) => {
+
+
+app.delete('/Projects/:id', (req,res) => {
 	Project.remove({
 		_id:req.params.id
 	})

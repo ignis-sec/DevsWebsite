@@ -19,8 +19,11 @@
 			<input type="text" class="form-control" name="date" value="{{Project.date}}" required>
 		</div>
 		<button type="submit" class="btn btn-primary"> Edit </button>
-		<a class="btn btn-primary" style="background:#d44" href="/removeProject/{{Project.id}}"> DELET DIS </a>
+		
 	</form>
-
+		<form action="/Projects/{{Project.id}}?_method=DELETE" method="post">
+			<input type="hidden" name="_method" value="DELETE">
+			<input type="submit" class="btn btn-danger"value="DELETE DIS">
+		</form>
 
 </div>
