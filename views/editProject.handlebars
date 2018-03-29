@@ -1,0 +1,26 @@
+
+
+<div class="card card-body">
+	<h3> Project Title </h3>
+	<form action="/Projects/{{Project.id}}?_method=PUT" method="post">
+		<div class="form-group">
+			<input type="hidden" name="_method" value="PUT">
+			<label for="title"> Title </label>
+			<input type="text" class="form-control" name="title" value="{{Project.Title}}" required>
+
+			<label for="title"> Description </label>
+			<textarea class="form-control" name="Description">{{Project.Description}}</textarea>
+
+
+			<label for="Github link"> Github link </label>
+			<input type="text" class="form-control" name="github" value="{{Project.gitRepoLink}}" required>
+
+			<label for="Date"> Date </label>
+			<input type="text" class="form-control" name="date" value="{{Project.date}}" required>
+		</div>
+		<button type="submit" class="btn btn-primary"> Edit </button>
+		<a class="btn btn-primary" style="background:#d44" href="/removeProject/{{Project.id}}"> DELET DIS </a>
+	</form>
+
+
+</div>

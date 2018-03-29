@@ -1,11 +1,14 @@
 {{#each Projects}}
-	<div class="card card-body"> 
+	<div class="card card-body" style="z-index:-1"> 
 		<h4> {{Title}}</h4>
 		<p>{{Description}} </p>
 		<p> More info: {{permalink}} </p>
 		<p>Github: {{gitRepoLink}} </p>
 		<p>Starting: {{date}} </p>
+		<a class="btn btn-dark btn-block" href="editProject/{{_id}}"> Edit </a>
 	</div>
 {{else}}
 		<p> Something went wrong.</p>
 {{/each}}
+
+<a href="/addProject" class="btn btn-primary"> Add New Project</a>

@@ -5,12 +5,16 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
 const sha256 = require('js-sha256');
+const methodOverride = require('method-override')
+
 
 //custom module to hide scavenger hunt links from participants
 const hunt = require("./scavenger-private/hunt");
 
+const routes = require("./routes");
+
 //Port number for server
-const port = 5000;
+const port = 8080;
 
 //js arrow function////// You wont understand whats below if you dont know what this is.
 // (params) =>{
@@ -40,8 +44,9 @@ const Project = mongoose.model('Project');
 //Middlewares have access to specified object params and can alter them between request and response
 app.engine('handlebars', exphbs({defaultLayout: 'main'})); //main.handlebars will be loaded on every page
 app.set('view engine', 'handlebars');
-app.use(bodyParser.urlencoded({ extended:false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(methodOverride('_method'));
 
 
 
@@ -52,28 +57,29 @@ app.listen(port, () =>{
 });
 
 
+//Get routes for Scavenger Hunt levels MUST NOT BE PUBLISHED!
+hunt.getlevels(app);
 
-///ROUTES
-//index route 
-app.get('/', (req,res) => {
-	res.render('index');
+routes.addRoutes(app);
 
-});
+
+
+
 
 //temporary add project request
-app.get('/addProject', (req,res) => {
+app.post('/projectSubmit', (req,res) => {
 	const newProject = {
-		Title: "Kerbal Space Program Mode",
-		Description:"Why not",
-		permalink:"testsite",
-		gitRepoLink:"nogit",
-		date: new Date("June 13, 2018 11:13:00"),
+		Title: req.body.title,
+		Description:req.body.desc,
+		permalink:"FILL THIS UP",
+		gitRepoLink:"THIS TOO",
+		date: req.body.date,
 		active:true
 	};
 	new Project(newProject)
 	.save()
 	.then(() => {
-	res.send(`Added ${newProject}`)
+	res.redirect('/Schedule')
 	})
 });
  
@@ -179,40 +185,40 @@ app.get('/Schedule', (req,res) => {
 	})
 });
 
-app.get('/newRegister', (req,res) => {
-	res.send('register complete');
+app.get('/editProject/:id', (req,res) => {
+	Project.findOne({
+		_id: req.params.id
+	})
+	.then(Project =>{
+			res.render('editProject',{
+			Project:Project
+		});	
+	})
 });
 
-app.get('/about', (req,res) => {
-	res.send('About');
+app.put('/Projects/:id', (req,res) =>{
+	Project.findOne({
+		_id: req.params.id
+	})
+	.then(Project =>{
+		console.log(req.body.title)
+		Project.Title=req.body.title;
+		Project.Description = req.body.Description;
+		Project.gitRepoLink = req.body.github;
+		Project.date = req.body.date;
+
+		Project.save()
+		.then(() => {
+			res.redirect('/Schedule');
+		})
+	})	
+})
+
+app.get('/removeProject/:id', (req,res) => {
+	Project.remove({
+		_id:req.params.id
+	})
+	.then(Project =>{
+		res.redirect('/Schedule')
+			})
 });
-
-app.get('/kayit', (req,res) => {
-	res.render('kayit');
-});
-
-app.get('/login', (req,res) => {
-	res.render('login');
-});
-
-app.get('/style/index', (req,res) => {
-	res.sendFile('views/style/index.css', {root: __dirname })
-});
-
-app.get('/style/kayit', (req,res) => {
-	res.sendFile('views/style/kayit.css', {root: __dirname })
-});
-
-app.get('/Images/Event1', (req,res) => {
-	res.sendFile('views/Images/Event.png', {root: __dirname })
-});
-
-app.get('/duckduckgoose', (req,res) => {
-	res.render('Scavenger')
-});
-
-//Get routes for Scavenger Hunt levels MUST NOT BE PUBLISHED!
-hunt.getlevels(app);
-
-
-
