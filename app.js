@@ -5,7 +5,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
 const sha256 = require('js-sha256');
-const methodOverride = require('method-override')
+const methodOverride = require('method-override');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 
 //custom module to hide scavenger hunt links from participants
@@ -35,18 +37,29 @@ mongoose.connect('mongodb://localhost/BdTest')
 //Load User Model
 require('./models/User');
 const User = mongoose.model('User');
-
+//Load Project Model
 require('./models/Project');
 const Project = mongoose.model('Project');
 
 
-//Handlebars Middleware
+//Middlewares
 //Middlewares have access to specified object params and can alter them between request and response
+//Handlebars
 app.engine('handlebars', exphbs({defaultLayout: 'main'})); //main.handlebars will be loaded on every page
 app.set('view engine', 'handlebars');
+//Body parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+//method override
 app.use(methodOverride('_method'));
+//session
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true,
+}))
+//flash
+app.use(flash());
 
 
 
@@ -59,30 +72,23 @@ app.listen(port, () =>{
 
 //Get routes for Scavenger Hunt levels MUST NOT BE PUBLISHED!
 hunt.getlevels(app);
-
+//Get other routes from routes.js module
 routes.addRoutes(app);
 
-
-
-
-
-//temporary add project request
-app.post('/projectSubmit', (req,res) => {
-	const newProject = {
-		Title: req.body.title,
-		Description:req.body.desc,
-		permalink:"FILL THIS UP",
-		gitRepoLink:"THIS TOO",
-		date: req.body.date,
-		active:true
-	};
-	new Project(newProject)
-	.save()
-	.then(() => {
-	res.redirect('/Schedule')
-	})
+//custom flash middleware for pop up messages
+app.use(function(req,res,next){
+	res.locals.success_msg = req.flash('success_msg');
+	res.locals.error_msg = req.flash('error_msg');
+	res.locals.error = req.flash('error');
+	next();
 });
- 
+
+
+
+
+ /////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+//User auth pages
 
 app.post('/registerSubmit', (req,res) => {
 	let errors = [];
@@ -101,7 +107,7 @@ app.post('/registerSubmit', (req,res) => {
 		errors.push({text:'Please enter a password'});
 	}
 
-	if(errors.length>0){
+	if(errors.length>0){ //if there are any errors re-ask
 		res.render('kayit',{
 			errors:errors,
 			ID:req.body.ID,
@@ -122,7 +128,7 @@ app.post('/registerSubmit', (req,res) => {
 		.then(User => {
 			res.redirect('/newRegister');
 		})
-		.catch(err => {
+		.catch(err => {  //if db responds with unique key repeat
 			errors.push({text:'That username is already registered'});
 			res.render('kayit',{
 			errors:errors,
@@ -175,23 +181,32 @@ app.post('/loginAttempt', (req,res) => {
 
 });
 
+
+
+
+
+
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+//Project pages
+
 app.get('/Schedule', (req,res) => {
 	Project.find({})
 	.sort({date:'desc'})
 	.then(Projects =>{
-		res.render('Projects',{
+		res.render('Projects',{ 	//pass Projects to the page into tag with the name "Projects"
 			Projects:Projects
 		})
 	})
 });
 
-app.get('/editProject/:id', (req,res) => {
-	Project.findOne({
+app.get('/editProject/:id', (req,res) => { 
+	Project.findOne({//returns only 1 result
 		_id: req.params.id
 	})
 	.then(Project =>{
 			res.render('editProject',{
-			Project:Project
+			Project:Project 	//pass Project to the page into tag with the name "Project"
 		});	
 	})
 });
@@ -200,27 +215,46 @@ app.put('/Projects/:id', (req,res) =>{
 	Project.findOne({
 		_id: req.params.id
 	})
-	.then(Project =>{
-		console.log(req.body.title)
+	.then(Project =>{ //set new values to the db index
 		Project.Title=req.body.title;
 		Project.Description = req.body.Description;
 		Project.gitRepoLink = req.body.github;
 		Project.date = req.body.date;
 
-		Project.save()
+		Project.save()	//save index state and redirect
 		.then(() => {
+			req.flash('success_msg', 'Project properties updated.')
 			res.redirect('/Schedule');
+
 		})
 	})	
 })
 
 
 
-app.delete('/Projects/:id', (req,res) => {
+app.delete('/Projects/:id', (req,res) => {	//DELETE request 
 	Project.remove({
 		_id:req.params.id
 	})
-	.then(Project =>{
+	.then(() =>{
+		req.flash('success_msg', 'Project deleted.')
 		res.redirect('/Schedule')
 			})
+});
+
+app.post('/projectSubmit', (req,res) => {
+	const newProject = {
+		Title: req.body.title,
+		Description:req.body.desc,
+		permalink:"FILL THIS UP",
+		gitRepoLink:"THIS TOO",
+		date: req.body.date,
+		active:true
+	};
+	new Project(newProject)
+	.save()
+	.then(() => {
+	req.flash('success_msg', 'New project added.')
+	res.redirect('/Schedule')
+	})
 });
