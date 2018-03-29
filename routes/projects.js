@@ -13,7 +13,7 @@ router.get('/', (req,res) => {
 	Project.find({})
 	.sort({date:'desc'})
 	.then(Projects =>{
-		res.render('Projects',{ 	//pass Projects to the page into tag with the name "Projects"
+		res.render('projects/Projects',{ 	//pass Projects to the page into tag with the name "Projects"
 			Projects:Projects
 		})
 	})
@@ -24,7 +24,7 @@ router.get('/edit/:id', (req,res) => {
 		_id: req.params.id
 	})
 	.then(Project =>{
-			res.render('editProject',{
+			res.render('projects/editProject',{
 			Project:Project 	//pass Project to the page into tag with the name "Project"
 		});	
 	})
@@ -79,5 +79,5 @@ router.post('/Submit', (req,res) => {
 });
 
 router.get('/new', (req,res) => {
-	res.render('addProject')
+	res.render('projects/addProject')
 });

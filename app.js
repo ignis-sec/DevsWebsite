@@ -8,6 +8,7 @@ const sha256 = require('js-sha256');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
+const path = require('path');
 
 
 //custom module to hide scavenger hunt links from participants
@@ -56,7 +57,8 @@ app.use(session({
 }))
 //flash
 app.use(flash());
-
+//path
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 

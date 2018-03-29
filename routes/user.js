@@ -10,11 +10,11 @@ const User = mongoose.model('User');
  
 
 router.get('/register', (req,res) => {
-	res.render('register');
+	res.render('user/register');
 });
 
 router.get('/login', (req,res) => {
-	res.render('login');
+	res.render('user/login');
 });
 
 router.get('/register', (req,res) => {
@@ -41,7 +41,7 @@ router.post('/Submit', (req,res) => {
 	}
 
 	if(errors.length>0){ //if there are any errors re-ask
-		res.render('register',{
+		res.render('user/register',{
 			errors:errors,
 			ID:req.body.ID,
 			name:req.body.name,
@@ -63,7 +63,7 @@ router.post('/Submit', (req,res) => {
 		})
 		.catch(err => {  //if db responds with unique key repeat
 			errors.push({text:'That username is already registered'});
-			res.render('kayit',{
+			res.render('user/kayit',{
 			errors:errors,
 			ID:req.body.ID,
 			name:req.body.name,
@@ -87,7 +87,7 @@ router.post('/loginAttempt', (req,res) => {
 	}
 
 	if(errors.length>0){
-		res.render('login',{
+		res.render('user/login',{
 			errors:errors,
 			ID:req.body.ID,
 			password:req.body.password 
@@ -103,11 +103,11 @@ router.post('/loginAttempt', (req,res) => {
 				}
 				else {
 				errors.push({text:'Incorrect username or password.'})
-				res.render('login',{errors:errors})
+				res.render('user/login',{errors:errors})
 				}
 			}else{
 				errors.push({text:'Incorrect username or password.'})
-				res.render('login',{errors:errors})
+				res.render('user/login',{errors:errors})
 			}
 			})
 	}

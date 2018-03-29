@@ -1,4 +1,8 @@
 
+
+.color1 {background-color:#225424; }
+.color2 {background-color:#333; }
+.color3 {background-color:#fff4e6; }
 /*
 Cappucin color palette that i am using
 #47484f ~chocolate
@@ -13,12 +17,6 @@ https://en.wikipedia.org/wiki/Shades_of_brown
 for css tutorials:	
 https://www.w3schools.com;
 */
-
-
-
-.color1 {background-color:#225424; }
-.color2 {background-color:#333; }
-.color3 {background-color:#fff4e6; }
 
 #mainCanvas{/*TODO*/
 	background:#eee;
