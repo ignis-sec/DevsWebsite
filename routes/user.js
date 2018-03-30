@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 module.exports = router;
 
@@ -89,7 +90,7 @@ router.post('/register', (req,res) => {
 	}
 });
 
-router.post('/loginAttempt', (req,res) => {
+router.post('/login', (req,res,next) => {
 	let errors = [];
 	//this part is protection against attacker skipping clientside form check and posting custom json file
 
@@ -107,23 +108,11 @@ router.post('/loginAttempt', (req,res) => {
 			password:req.body.password 
 		})
 	}else{//if there are no errors
-		User.find({userID: req.body.ID})
-		.then(User =>{
-			if(User.length!=0)
-			{
-				if(!(User[0].password.localeCompare(sha256(req.body.password))))
-				{
-					res.render('index',{userID:User[0].userID})
-				}
-				else {
-				errors.push({text:'Incorrect username or password.'})
-				res.render('user/login',{errors:errors})
-				}
-			}else{
-				errors.push({text:'Incorrect username or password.'})
-				res.render('user/login',{errors:errors})
-			}
-			})
+		passport.authenticate('local', {
+			successRedirect: '/',
+			failureRedirect: '/user/login',
+			failureFlash: true
+		})(req, res, next);
 	}
 
 });

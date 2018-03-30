@@ -14,8 +14,9 @@ const passport = require('passport');
 
 //custom module to hide scavenger hunt links from participants
 const hunt = require("./scavenger-private/hunt");
-
 const routes = require("./routes");
+
+require('./config/passport')(passport); // i dont entirely understand what is happening here but: https://jsfiddle.net/64j360yp/
 
 //Port number for server
 const port = 8080;
@@ -55,11 +56,17 @@ app.use(session({
   secret: 'secret',
   resave: false,
   saveUninitialized: true,
-}))
+}));
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 //flash
 app.use(flash());
 //path
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 
@@ -69,12 +76,13 @@ app.listen(port, () =>{
 });
 
 
-
-//custom flash middleware for pop up messages
+//THESE ARE ALSO GLOBAL VARIABLES
+//custom flash middleware for pop up messages 
 app.use(function(req,res,next){
 	res.locals.success_msg = req.flash('success_msg');
 	res.locals.error_msg = req.flash('error_msg');
 	res.locals.error = req.flash('error');
+	res.locals.user = req.user || null; //if there is user passed, set null
 	next();
 });
 
