@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
+const {ensureAuthenticated, ensureAdmin} = require('../helpers/auth') //this is called destructuring
 
 module.exports = router;
 
@@ -19,7 +20,7 @@ router.get('/', (req,res) => {
 	})
 });
 
-router.get('/edit/:id', (req,res) => { 
+router.get('/edit/:id',ensureAuthenticated, ensureAdmin,  (req,res) => { 
 	Project.findOne({//returns only 1 result
 		_id: req.params.id
 	})
@@ -30,7 +31,7 @@ router.get('/edit/:id', (req,res) => {
 	})
 });
 
-router.put('/:id', (req,res) =>{
+router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
 	Project.findOne({
 		_id: req.params.id
 	})
@@ -51,7 +52,7 @@ router.put('/:id', (req,res) =>{
 
 
 
-router.delete('/:id', (req,res) => {	//DELETE request 
+router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE request 
 	Project.remove({
 		_id:req.params.id
 	})
@@ -61,7 +62,7 @@ router.delete('/:id', (req,res) => {	//DELETE request
 			})
 });
 
-router.post('/Submit', (req,res) => {
+router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 	const newProject = {
 		Title: req.body.title,
 		Description:req.body.desc,
@@ -78,6 +79,6 @@ router.post('/Submit', (req,res) => {
 	})
 });
 
-router.get('/new', (req,res) => {
+router.get('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 	res.render('projects/addProject')
 });

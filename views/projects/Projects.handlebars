@@ -1,16 +1,35 @@
-{{#each Projects}}
-	<div class="card card-body" style="z-index:0"> 
-		<h4> {{Title}}</h4>
-		<p>{{Description}} </p>
-		<p> More info: {{permalink}} </p>
-		<p>Github: {{gitRepoLink}} </p>
-		<p>Starting: {{date}} </p>
-		<a class="btn btn-dark btn-block" href="/projects/edit/{{_id}}"> Edit </a>
-	</div>
-{{else}}
-		<p> Something went wrong.</p>
-{{/each}}
+{{#if user.admin}}
+<table>
+	{{#each Projects}}
+		<tc class="card card-body" style="z-index:0 display:table-column"> 
+			<h4> {{Title}}</h4>
+			<p>{{Description}} </p>
+			<p> More info: {{permalink}} </p>
+			<p>Github: {{gitRepoLink}} </p>
+			<p>Starting: {{date}} </p>
+			<a class="btn btn-dark btn-block" href="/projects/edit/{{_id}}"> Edit </a>
+		</tc>
+	{{else}}
+			<p> Something went wrong.</p>
+	{{/each}}
+	<a href="/projects/new" class="btn btn-primary btn-block"> Add New Project</a>
+	{{else}}
 
-<a href="/projects/new" class="btn btn-primary btn-block"> Add New Project</a>
+	{{#each Projects}}
+		<div class="card card-body" style="z-index:0"> 
+			<h4> {{Title}}</h4>
+			<p>{{Description}} </p>
+			<p> More info: {{permalink}} </p>
+			<p>Github: {{gitRepoLink}} </p>
+			<p>Starting: {{date}} </p>
+		</div>
+	{{else}}
+			<p> Something went wrong.</p>
+	{{/each}}
+
+
+	{{/if}}
+</table>
+
 <div style="height:100px">
 	</div>

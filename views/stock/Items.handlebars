@@ -1,0 +1,23 @@
+{{#if user.admin}}
+<table>
+	{{#each Items}}
+		<tc class="card card-body" style="z-index:0 display:table-column"> 
+			<h4> {{name}} {{#if itemID}} ({{itemID}}) {{/if}} </h4>
+			<h5> x{{quantity}} </h5>
+			<p> Category: {{category}} </p>
+			<p>Added: {{dateAdded}} </p>
+			<p>Holder: {{holdDetails}} </p>
+			<a class="btn btn-dark btn-block" href="/stock/edit/{{_id}}"> Edit </a>
+		</tc>
+	{{else}}
+			<p> Something went wrong or no items are in the stock.</p>
+	{{/each}}
+	<a href="/stock/new" class="btn btn-primary btn-block"> Add New Item</a>
+	{{else}}
+
+
+	{{/if}}
+</table>
+
+<div style="height:100px">
+	</div>

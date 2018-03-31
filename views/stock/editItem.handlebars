@@ -1,0 +1,31 @@
+
+
+<div class="card card-body">
+	<h3> Edit Item </h3>
+	<form action="/stock/{{Item.id}}?_method=PUT" method="post">
+		<div class="form-group">
+			<input type="hidden" name="_method" value="PUT">
+			<label for="name"> Name </label>
+			<input type="text" class="form-control" name="name" value="{{Item.name}}" required>
+
+			<label for="id"> Item id </label>
+			<input type="text" class="form-control" name="id" value="{{Item.itemID}}">
+
+
+			<label for="Quantity"> Quantity* </label>
+			<input type="text" class="form-control" name="quantity" value="{{Item.quantity}}" required>
+
+			<label for="Category"> Category </label>
+			<input type="text" class="form-control" name="category" value="{{Item.category}}">
+			<a> Added: {{Item.dateAdded}}</a>
+		</div>
+
+		<button type="submit" class="btn btn-primary"> Edit </button>
+		
+	</form>
+		<form action="/stock/{{Item.id}}?_method=DELETE" method="post">
+			<input type="hidden" name="_method" value="DELETE">
+			<input type="submit" class="btn btn-danger"value="DELETE DIS" style="margin-top:15px">
+		</form>
+
+</div>

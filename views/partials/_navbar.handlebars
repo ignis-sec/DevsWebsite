@@ -27,13 +27,20 @@
 			          <a class="dropdown-item" href="#">Topluluk odamız</a>
 			        </div>
 			      	</li>
-			      	
+			      	{{#if user.admin}}
+			      		<li class="nav-item">
+			        		<a class="nav-link" href="/stock/">Stok</a>
+			      		</li>
+			      	{{/if}}
 
 			    </ul>
 			    <div style="color:white;font-family: sans-serif;padding-right:5px">
 			    </div>
 			      	<ul class="navbar-nav mr-auto">
 			      		{{#if user}}
+			      		<li class="nav-item">
+			        		<a class="nav-link" href="/user/logout">Çıkış</a>
+			      		</li>
 						<li class="nav-item">
 			        		<a class="nav-link" href="/user/{{user.userID}}">{{user.userID}}</a>
 			      		</li>
@@ -45,12 +52,12 @@
 				        	<a class="nav-link" href="/user/register">Kayıt <span class="sr-only">(current)</span></a>
 				      	</li>
 			   		{{/if}}
-			   		<li class="nav-item active">
+			   			<li class="nav-item active">
 				      		<form class="form-inline my-2 my-lg-0">
 					      		<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 					      		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 					      	</form>
-					    </li>
+						</li>
 				    </ul>
 			  	</div>
 			</div>

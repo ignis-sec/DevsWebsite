@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const {ensureAuthenticated, ensureAdmin} = require('../helpers/auth') //this is called destructuring
+
 
 module.exports = router;
 
@@ -17,6 +19,12 @@ router.get('/register', (req,res) => {
 
 router.get('/login', (req,res) => {
 	res.render('user/login');
+});
+
+router.get('/logout', (req,res) => {
+	req.logout();
+	req.flash('success_msg', 'You are now logged out');
+	res.redirect('/');
 });
 
 router.get('/register', (req,res) => {

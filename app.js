@@ -12,6 +12,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 
 
+
 //custom module to hide scavenger hunt links from participants
 const hunt = require("./scavenger-private/hunt");
 const routes = require("./routes");
@@ -36,9 +37,6 @@ const port = 8080;
 mongoose.connect('mongodb://localhost/BdTest') 
 .then(() => console.log('Mongodb connected...'))//this is called promise
 .catch(err => console.log(err));				//throw<->catch	
-
-//Load User Model
-
 
 
 //Middlewares
@@ -94,6 +92,8 @@ routes.addRoutes(app);
 
 const projects = require('./routes/projects');
 const user = require('./routes/user');
+const stock = require('./routes/stock');
 
 app.use('/projects', projects);
 app.use('/user', user);
+app.use('/stock', stock);
