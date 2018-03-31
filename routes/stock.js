@@ -2,6 +2,11 @@ const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
 const {ensureAuthenticated, ensureAdmin} = require('../helpers/auth') //this is called destructuring
+const fs = require('fs');
+const moment = require('moment');
+const path = require('path')
+
+var log = path.dirname(require.main.filename) + '/logs/stock.log';
 
 module.exports = router;
 
@@ -35,6 +40,13 @@ router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 	new Item(newItem)
 	.save()
 	.then(() => {
+		//LOG
+		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+			"ITEM ADDED:   by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
+			", Item: "+ req.body.name + " ("+ req.body.id +")" +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
+		if(err) console.log(err);
+		});
+		//LOG
 		req.flash('success_msg', 'New Item added.');
 		res.redirect('/stock');
 	})
@@ -65,6 +77,13 @@ router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
 
 		Item.save()	//save index state and redirect
 		.then(() => {
+			//LOG
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"ITEM UPDATED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
+				", Item: "+ req.body.name + " ("+ req.body.id +")" +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
+			if(err) console.log(err);
+			});
+			//LOG
 			req.flash('success_msg', 'Item properties updated.')
 			res.redirect('/stock/');
 
@@ -73,6 +92,18 @@ router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
 })
 
 router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE request 
+	//LOG
+	Item.findOne({
+		_id:req.params.id
+	}).then(Item =>{
+		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+		"ITEM REMOVED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Item: "+ Item.name + " ("+ Item.itemID +")"+ " >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
+	if(err) console.log(err);
+	});
+	})
+	//LOG
+
+
 	Item.remove({
 		_id:req.params.id
 	})

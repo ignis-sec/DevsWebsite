@@ -10,13 +10,18 @@ const session = require('express-session');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const fs = require('fs');
+const moment = require('moment');
 
 
+
+//Log file directories
+var log = __dirname + '/logs/app.log';
+ 
 
 //custom module to hide scavenger hunt links from participants
 const hunt = require("./scavenger-private/hunt");
 const routes = require("./routes");
-
 require('./config/passport')(passport); // i dont entirely understand what is happening here but: https://jsfiddle.net/64j360yp/
 
 //Port number for server
@@ -41,27 +46,33 @@ mongoose.connect('mongodb://localhost/BdTest')
 
 //Middlewares
 //Middlewares have access to specified object params and can alter them between request and response
+
 //Handlebars
 app.engine('handlebars', exphbs({defaultLayout: 'main'})); //main.handlebars will be loaded on every page
 app.set('view engine', 'handlebars');
+
+
 //Body parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 //method override
 app.use(methodOverride('_method'));
+
 //session
 app.use(session({
   secret: 'secret',
   resave: false,
   saveUninitialized: true,
 }));
+
 //passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 //flash
 app.use(flash());
+
 //path
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -70,6 +81,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //listener
 app.listen(port, () =>{
+	//LOG
+	fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+		"Server started. Port:"+ port +"\r\n",(err)=>{
+	if(err) console.log(err);
+	});
+	//LOG
 	console.log(`Server started on port ${port}`);
 });
 

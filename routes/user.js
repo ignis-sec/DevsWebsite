@@ -4,7 +4,14 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const {ensureAuthenticated, ensureAdmin} = require('../helpers/auth') //this is called destructuring
+const fs = require('fs');
+const moment = require('moment');
+const path = require('path')
+const ExpressBrute = require('express-brute');
+var store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production 
+var bruteforce = new ExpressBrute(store);
 
+var log = path.dirname(require.main.filename) + '/logs/users.log';
 
 module.exports = router;
 
@@ -87,10 +94,21 @@ router.post('/register', (req,res) => {
 				newUser.save()
 				.then(user =>{
 					req.flash('success_msg,', 'Registeration successfull');
+						//LOG
+						fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+							"USER REGISTERED. Username:"+ newUser.userID +", "+ newUser.name +" "+ newUser.surname +"\r\n",(err)=>{
+						if(err) console.log(err);
+						});
+						//LOG
 					res.redirect('/user/login');
 				})
 				.catch(err =>{
-					console.log(err);
+					//LOG
+					fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+						"ERROR accured at bcrypt.hash"+ err +"\r\n",(err)=>{
+					if(err) console.log(err);
+					});
+					//LOG
 				})
 			});
 		});
@@ -98,7 +116,7 @@ router.post('/register', (req,res) => {
 	}
 });
 
-router.post('/login', (req,res,next) => {
+router.post('/login',bruteforce.prevent, (req,res,next) => {
 	let errors = [];
 	//this part is protection against attacker skipping clientside form check and posting custom json file
 
@@ -143,10 +161,24 @@ router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE
 	}).then(User =>{
 		if(User.Removed)
 		{
+			//LOG
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"USER RESTORED: "+ User.userID +", "+ User.name +" "+ User.surname +" by: "+ req.user.userID+ " " +req.user.name+" "+ req.user.surname +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
+			if(err) console.log(err);
+			});
+			//LOG
+
 			User.Removed=false;
 			User.save();
 			req.flash('success_msg', 'User Restored');
 		}else{
+			//LOG
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"USER REMOVED:  "+ User.userID +", "+ User.name +" "+ User.surname +" by: "+ req.user.userID+ " " +req.user.name+" "+ req.user.surname +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
+			if(err) console.log(err);
+			});
+			//LOG
+
 			User.Removed=true;
 			User.save();
 			req.flash('success_msg', 'User removed');
@@ -156,3 +188,7 @@ router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE
 
 	})
 });
+
+
+
+					

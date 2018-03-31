@@ -2,6 +2,11 @@ const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
 const {ensureAuthenticated, ensureAdmin} = require('../helpers/auth') //this is called destructuring
+const fs = require('fs');
+const moment = require('moment');
+const path = require('path')
+
+var log = path.dirname(require.main.filename) + '/logs/projects.log';
 
 module.exports = router;
 
@@ -10,7 +15,7 @@ require('../models/Project');
 const Project = mongoose.model('Project');
 
 
-router.get('/', (req,res) => {
+router.get('/',ensureAuthenticated, (req,res) => {
 	Project.find({})
 	.sort({date:'desc'})
 	.then(Projects =>{
@@ -41,6 +46,13 @@ router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
 		Project.gitRepoLink = req.body.github;
 		Project.date = req.body.date;
 
+		//LOG
+		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+			"PROJECT EDITED:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ Project.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
+		if(err) console.log(err);
+		});
+		//LOG
+
 		Project.save()	//save index state and redirect
 		.then(() => {
 			req.flash('success_msg', 'Project properties updated.')
@@ -53,6 +65,17 @@ router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
 
 
 router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE request 
+	//LOG
+	Project.findOne({
+		_id:req.params.id
+	}).then(Project =>{
+		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+		"PROJECT DELETED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ Project.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
+	if(err) console.log(err);
+	});
+	})
+	//LOG
+
 	Project.remove({
 		_id:req.params.id
 	})
@@ -74,6 +97,12 @@ router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 	new Project(newProject)
 	.save()
 	.then(() => {
+		//LOG
+		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+			"PROJECT ADDED:   by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ req.body.title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
+		if(err) console.log(err);
+		});
+		//LOG
 	req.flash('success_msg', 'New project added.')
 	res.redirect('/projects')
 	})

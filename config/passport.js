@@ -1,7 +1,11 @@
 const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const moment = require('moment');
+const path = require('path')
 
+var log = path.dirname(require.main.filename) + '/logs/users.log';
 
 //Load user model from mongoose
 
@@ -11,7 +15,8 @@ const User = mongoose.model('User');
 module.exports = function(passport){
 	passport.use(new LocalStrategy({usernameField: 'ID'}, (ID, password, done)=>{
 		User.findOne({userID: ID}).then(user=>{
-			if(!user){		
+			if(!user){	
+			console.log(req.connection.remoteAddress);	
 				return done(null, false, {message: 'No user Found'})	//(error, user object, message)
 			}
 			//match user password with bcrypted hash
