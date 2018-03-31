@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="../style/index.css">
+
+{{#if user.admin}}
+<div style="display:table-row" style="width:50 px">
+	{{#each Users}}
+
+		<a class="card card-body" style="z-index:0; width:70vw; height:50px; padding:3px;" href="/stock/edit/{{_id}}"> 
+			<table>
+				<tr>
+					<td style="width:10%; padding-top:7px"><p> {{userID}} </p></td>
+					<td style="width:45%;padding-top:7px"><p> {{name}} {{surname}}</p></td>
+					<td style="width:5%;padding-top:7px"><p>{{#if admin}} admin {{/if}} {{#if Removed}} removed {{/if}} </p></td>
+					
+					{{#if Removed}}
+						<form action="/user/{{id}}?_method=DELETE" method="post">
+						<input type="hidden" name="_method" value="DELETE">
+						<td><input type="submit" class="btn btn-primary"value="Restore" style="margin-top:0px; float:right;width:10vw"></td>
+					{{else}}
+						<form action="/user/{{id}}?_method=DELETE" method="post">
+						<input type="hidden" name="_method" value="DELETE">
+						<td><input type="submit" class="btn btn-danger"value="DELETE DIS" style="margin-top:0px; float:right;width:10vw"></td>
+					{{/if}}
+					</form>
+				</tr>
+			</table>
+		</a>
+
+	{{else}}
+			<p> Something went wrong or no users registered.</p>
+	{{/each}}
+
+	{{else}}
+
+
+	{{/if}}
+</div>
+
+<div style="height:100px">
+	</div>

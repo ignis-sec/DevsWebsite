@@ -11,7 +11,6 @@ module.exports = router;
 
 require('../models/User');
 const User = mongoose.model('User');
- 
 
 router.get('/register', (req,res) => {
 	res.render('user/register');
@@ -78,7 +77,8 @@ router.post('/register', (req,res) => {
 			userID: req.body.ID,
 			name:req.body.name,
 			surname:req.body.surname,
-			password:req.body.password
+			password:req.body.password,
+			dateJoined:Date.now()
 		});
 		bcrypt.genSalt(10, (err,salt) =>{
 			bcrypt.hash(newUser.password, salt, (err,hash)=>{
@@ -123,4 +123,36 @@ router.post('/login', (req,res,next) => {
 		})(req, res, next);
 	}
 
+});
+
+
+router.get('/userlist',ensureAuthenticated, ensureAdmin, (req,res) => {
+	User.find({})
+	.sort({userID: -1})
+	.then(Users =>{
+		res.render('user/userlist',{ 	//pass Projects to the page into tag with the name "Projects"
+			Users: Users
+		})
+	})
+});
+
+
+router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE request 
+	User.findOne({
+		_id:req.params.id
+	}).then(User =>{
+		if(User.Removed)
+		{
+			User.Removed=false;
+			User.save();
+			req.flash('success_msg', 'User Restored');
+		}else{
+			User.Removed=true;
+			User.save();
+			req.flash('success_msg', 'User removed');
+		}
+		
+		res.redirect('/user/userlist');
+
+	})
 });

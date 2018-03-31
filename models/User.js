@@ -25,6 +25,22 @@ const UserSchema = new Schema({
 	admin:{
 		type:Boolean,
 		required:false
+	},
+	dateJoined:{
+		type:Date,
+		required:false
+	},
+	Interests:{
+		type:String,
+		required:false
+	},
+	Skills:{
+		type:String,
+		required:false
+	},
+	Removed:{
+		type:Boolean,
+		required:false
 	}
 });
 

@@ -15,6 +15,9 @@ module.exports = function(passport){
 				return done(null, false, {message: 'No user Found'})	//(error, user object, message)
 			}
 			//match user password with bcrypted hash
+			if(user.Removed){
+				return done(null, false, {message: 'Your account was removed.'})
+			}
 			bcrypt.compare(password,user.password, (err, isMatch) =>{
 				if(err) throw err;
 				if(isMatch){
