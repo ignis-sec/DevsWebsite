@@ -1,14 +1,21 @@
+<link rel="stylesheet" href="../style/index.css">
+
 {{#if user.admin}}
-<table>
+<div style="display:table-row" style="width:50 px">
 	{{#each Items}}
-		<tc class="card card-body" style="z-index:0 display:table-column"> 
-			<h4> {{name}} {{#if itemID}} ({{itemID}}) {{/if}} </h4>
-			<h5> x{{quantity}} </h5>
-			<p> Category: {{category}} </p>
-			<p>Added: {{dateAdded}} </p>
-			<p>Holder: {{holdDetails}} </p>
-			<a class="btn btn-dark btn-block" href="/stock/edit/{{_id}}"> Edit </a>
-		</tc>
+
+		<a class="card card-body" style="z-index:0; width:70vw" href="/stock/edit/{{_id}}"> 
+			<table>
+				<tr>
+					<td style="width:50%"><h4> {{name}} {{#if itemID}} ({{itemID}}) {{/if}} </h4></td>
+					<td style="width:10%"><h5> x{{quantity}} </h5></td>
+					<td style="width:25%"><p> Category: {{category}} </p></td>
+					<td style="width:15%"><p>Holder: {{holdDetails}} </p></td>
+					<td><a class="btn btn-dark btn-block" href="/stock/edit/{{_id}}" style="float:right;"> Edit </a></td>
+				</tr>
+			</table>
+		</a>
+
 	{{else}}
 			<p> Something went wrong or no items are in the stock.</p>
 	{{/each}}
@@ -17,7 +24,7 @@
 
 
 	{{/if}}
-</table>
+</div>
 
 <div style="height:100px">
 	</div>
