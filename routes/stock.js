@@ -43,9 +43,7 @@ router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 		//LOG
 		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
 			"ITEM ADDED:   by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
-			", Item: "+ req.body.name + " ("+ req.body.id +")" +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
-		if(err) console.log(err);
-		});
+			", Item: "+ req.body.name + " ("+ req.body.id +")" +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
 		//LOG
 		req.flash('success_msg', 'New Item added.');
 		res.redirect('/stock');
@@ -80,9 +78,7 @@ router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
 			//LOG
 			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
 				"ITEM UPDATED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
-				", Item: "+ req.body.name + " ("+ req.body.id +")" +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
-			if(err) console.log(err);
-			});
+				", Item: "+ req.body.name + " ("+ req.body.id +")" +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
 			//LOG
 			req.flash('success_msg', 'Item properties updated.')
 			res.redirect('/stock/');
@@ -92,17 +88,15 @@ router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
 })
 
 router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE request 
-	//LOG
+	
 	Item.findOne({
 		_id:req.params.id
 	}).then(Item =>{
+		//LOG
 		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-		"ITEM REMOVED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Item: "+ Item.name + " ("+ Item.itemID +")"+ " >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
-	if(err) console.log(err);
-	});
+		"ITEM REMOVED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Item: "+ Item.name + " ("+ Item.itemID +")"+ " >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+		//LOG
 	})
-	//LOG
-
 
 	Item.remove({
 		_id:req.params.id

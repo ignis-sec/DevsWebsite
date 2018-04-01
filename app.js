@@ -83,9 +83,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.listen(port, () =>{
 	//LOG
 	fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-		"Server started. Port:"+ port +"\r\n",(err)=>{
-	if(err) console.log(err);
-	});
+		"Server started. Port:"+ port +"\r\n",(err)=>{if(err) console.log(err);});
 	//LOG
 	console.log(`Server started on port ${port}`);
 });
@@ -97,7 +95,7 @@ app.use(function(req,res,next){
 	res.locals.success_msg = req.flash('success_msg');
 	res.locals.error_msg = req.flash('error_msg');
 	res.locals.error = req.flash('error');
-	res.locals.user = req.user || null; //if there is user passed, set null
+	res.locals.user = req.user || null; //if there is no user passed, set null
 	next();
 });
 

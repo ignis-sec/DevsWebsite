@@ -96,9 +96,7 @@ router.post('/register', (req,res) => {
 					req.flash('success_msg,', 'Registeration successfull');
 						//LOG
 						fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-							"USER REGISTERED. Username:"+ newUser.userID +", "+ newUser.name +" "+ newUser.surname +"\r\n",(err)=>{
-						if(err) console.log(err);
-						});
+							"USER REGISTERED. Username:"+ newUser.userID +", "+ newUser.name +" "+ newUser.surname +"\r\n",(err)=>{if(err) console.log(err);});
 						//LOG
 					res.redirect('/user/login');
 				})
@@ -134,10 +132,39 @@ router.post('/login',bruteforce.prevent, (req,res,next) => {
 			password:req.body.password 
 		})
 	}else{//if there are no errors
-		passport.authenticate('local', {
-			successRedirect: '/',
-			failureRedirect: '/user/login',
-			failureFlash: true
+		passport.authenticate('local', (err, user, info) =>{
+			
+			if(err){
+				//LOG
+				fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"ERROR: to account "+ err +"\r\n",(err)=>{
+			if(err) console.log(err);
+			});
+				//LOG
+			}
+			if(!user) //if no user was returned, it means login failed
+			{
+			//LOG
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"FAILED LOGIN: to account "+ req.body.ID + " >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+			//LOG
+
+			req.flash('error_msg', info.message);
+			res.redirect('/user/login');	
+			}else{//if authenticate was successfull
+				fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"LOGIN: to account "+ req.body.ID +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+
+			req.flash('success_msg', 'Logged in succesfully');
+
+			//login function from passport
+			req.logIn(user, function(err) {
+     			if (err) { return next(err); }
+     			return res.redirect('/');
+    			});
+			
+			}
+
 		})(req, res, next);
 	}
 
@@ -163,9 +190,7 @@ router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE
 		{
 			//LOG
 			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-				"USER RESTORED: "+ User.userID +", "+ User.name +" "+ User.surname +" by: "+ req.user.userID+ " " +req.user.name+" "+ req.user.surname +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
-			if(err) console.log(err);
-			});
+				"USER RESTORED: "+ User.userID +", "+ User.name +" "+ User.surname +" by: "+ req.user.userID+ " " +req.user.name+" "+ req.user.surname +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
 			//LOG
 
 			User.Removed=false;
@@ -174,9 +199,7 @@ router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE
 		}else{
 			//LOG
 			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-				"USER REMOVED:  "+ User.userID +", "+ User.name +" "+ User.surname +" by: "+ req.user.userID+ " " +req.user.name+" "+ req.user.surname +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
-			if(err) console.log(err);
-			});
+				"USER REMOVED:  "+ User.userID +", "+ User.name +" "+ User.surname +" by: "+ req.user.userID+ " " +req.user.name+" "+ req.user.surname +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
 			//LOG
 
 			User.Removed=true;

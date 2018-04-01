@@ -16,7 +16,6 @@ module.exports = function(passport){
 	passport.use(new LocalStrategy({usernameField: 'ID'}, (ID, password, done)=>{
 		User.findOne({userID: ID}).then(user=>{
 			if(!user){	
-			console.log(req.connection.remoteAddress);	
 				return done(null, false, {message: 'No user Found'})	//(error, user object, message)
 			}
 			//match user password with bcrypted hash

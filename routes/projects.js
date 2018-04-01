@@ -48,9 +48,7 @@ router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
 
 		//LOG
 		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-			"PROJECT EDITED:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ Project.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
-		if(err) console.log(err);
-		});
+			"PROJECT EDITED:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ Project.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
 		//LOG
 
 		Project.save()	//save index state and redirect
@@ -70,9 +68,7 @@ router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE
 		_id:req.params.id
 	}).then(Project =>{
 		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-		"PROJECT DELETED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ Project.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
-	if(err) console.log(err);
-	});
+		"PROJECT DELETED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ Project.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
 	})
 	//LOG
 
@@ -99,9 +95,7 @@ router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 	.then(() => {
 		//LOG
 		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-			"PROJECT ADDED:   by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ req.body.title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{
-		if(err) console.log(err);
-		});
+			"PROJECT ADDED:   by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ req.body.title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
 		//LOG
 	req.flash('success_msg', 'New project added.')
 	res.redirect('/projects')
