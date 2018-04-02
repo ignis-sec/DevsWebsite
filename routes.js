@@ -12,7 +12,7 @@ app.get('/', (req,res) => {
 });
 
 app.get('/duckduckgoose', (req,res) => {
-	res.render('Scavenger')
+	res.render('scavenger')
 });
 
 
