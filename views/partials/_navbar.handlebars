@@ -10,6 +10,24 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		    <ul class="navbar-nav mr-auto">
+		    	{{#if user.admin}}
+			      	<li class="nav-item dropdown active">
+			        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			          	Admin
+			        	</a>
+			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			          <a class="dropdown-item" href="/stock/">Stok</a>
+			          <a class="dropdown-item" href="/stock/requests">Requests</a>
+			          <div class="dropdown-divider"></div>
+			          <a class="dropdown-item" href="/user/userlist">Üye listesi</a>
+			        </div>
+			      	</li>
+			    {{else}}
+		      		<li class="nav-item active">
+	        		<a class="nav-link" href="/projects/">Stok</a>
+	      			</li>
+
+		      	{{/if}}
 		    	<li class="nav-item active">
 		        	<a class="nav-link" href="/projects/">Proje Çizelgesi</a>
 		      	</li>
@@ -27,19 +45,7 @@
 		          <a class="dropdown-item" href="#">Topluluk odamız</a>
 		        </div>
 		      	</li>
-		      	{{#if user.admin}}
-			      	<li class="nav-item dropdown">
-			        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			          	Admin
-			        	</a>
-			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-			          <a class="dropdown-item" href="/stock/">Stok</a>
-			          <a class="dropdown-item" href="/stock/requests">Requests</a>
-			          <div class="dropdown-divider"></div>
-			          <a class="dropdown-item" href="/user/userlist">Üye listesi</a>
-			        </div>
-			      	</li>
-		      	{{/if}}
+		      	
 		    </ul>
 	    </div>
     	<div style="color:white;font-family: sans-serif; margin-right: 5vw;">

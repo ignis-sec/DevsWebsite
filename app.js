@@ -25,7 +25,7 @@ const routes = require("./routes");
 require('./config/passport')(passport); // i dont entirely understand what is happening here but: https://jsfiddle.net/64j360yp/
 
 //Port number for server
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 //js arrow function////// You wont understand whats below if you dont know what this is.
 // (params) =>{
@@ -39,9 +39,32 @@ const port = 8080;
 
 
 //connect to mongoose
-mongoose.connect('mongodb://localhost/BdTest') 
-.then(() => console.log('Mongodb connected...'))//this is called promise
-.catch(err => console.log(err));				//throw<->catch	
+
+
+
+
+
+try {
+   	const db = require('./config/database');
+
+   	mongoose.connect(db.mongoURI)
+   	.then(() => {
+   		if(db.mongoURI === 'mongodb://localhost/BdTest'){
+   			console.log('Mongodb connected to local database')
+   		}else{
+   			console.log('Mongodb connected to remote database')
+   		}
+   	})//this is called promise
+	.catch(err => console.log(err));				//throw<->catch	
+
+
+} catch (ex) {
+    mongoose.connect('mongodb://localhost/BdTest')
+    .then(() => console.log('Mongodb connected to local database'))//this is called promise
+	.catch(err => console.log(err));				//throw<->catch	
+
+}
+
 
 
 //Middlewares
