@@ -45,17 +45,17 @@ const port = process.env.PORT || 8080;
 try {
     const db = require('./config/database');
     
-    mongoose.connect(db.mongoURI, (err) =>{
-      if(!mongoose.connection.readyState) throw err;
+    mongoose.connect(db.mongoURI, (err) =>{//if config file which includes database username and password is present, connect
+      if(!mongoose.connection.readyState) throw err; //if there is no connection, (wrong credentials, no internet, server down) throw
     })
-    .then((err)=> { 
+    .then((err)=> { //if promise proceeds server connected to the remote succesfully
       console.log('mongodb connected at remote server');  
-    }).catch(err =>{
+    }).catch(err =>{ //catch of connection error
       mongoose.connect('mongodb://localhost/BdTest');
         console.log('Failed to connect to remote server. Connection returned ' + mongoose.connection.readyState + '. mongodb connected at local server');
     })
     
-} catch (ex) {
+} catch (ex) {//catch of missing sensitive config file
    mongoose.connect('mongodb://localhost/BdTest');
     console.log('config/database.js is not present. If you want to connect to the remote db, create and export db link to mongoURI. Connecting to local db instead');
 }
