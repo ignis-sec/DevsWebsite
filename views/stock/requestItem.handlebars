@@ -1,0 +1,24 @@
+
+
+<div class="card card-body">
+	<h3> Request Form for {{Item.name}} {{#if Item.itemID}} ({{Item.itemID}}) {{/if}} </h3>
+	<form action="/stock/request/{{Item.id}}" method="post">
+		<div class="form-group">
+			<label for="name"> Project the item is required for </label>
+			<input type="text" class="form-control" name="project">
+
+			<label for="id"> Quantity needed</label>
+			<input type="text" class="form-control" name="quantity" required>
+
+			<label for="Quantity"> Request time in days (Permanent if its not going to be returned)</label>
+			<input type="text" class="form-control" name="return" required>
+
+			<label for="Category"> Extra info </label>
+			<textarea class="form-control" name="info"></textarea>
+		</div>
+
+		<button type="submit" class="btn " style="background:#29a329;
+		color:white"> Request </button>
+		
+	</form>
+</div>

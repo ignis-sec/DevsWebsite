@@ -1,71 +1,71 @@
 
 
-<nav class="navbar navbar-expand-sm navbar-dark "style="position:fixed; width:100vw; background:#225424;z-index:5;" >
-			<div class="container">
-			  	<a class="navbar-brand" href="/">Hakkımızda</a>
+<nav class="navbar navbar-expand-sm navbar-dark "style="position:fixed; width:100vw; background:#225424; z-index:5;">
+	<div class="container-fluid" style="margin-right:0px; margin-left:10vw;">
+	  	<a class="navbar-brand" href="/">Hakkımızda</a>
 
-			  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			    	<span class="navbar-toggler-icon"></span>
-			  	</button>
+	  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    	<span class="navbar-toggler-icon"></span>
+	  	</button>
 
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			    <ul class="navbar-nav mr-auto">
-			    	<li class="nav-item">
-			        	<a class="nav-link" href="/duckduckgoose">Challenge <span class="sr-only">(current)</span></a>
-			      	</li>
-			      	<li class="nav-item">
-			        	<a class="nav-link" href="/projects/">Proje Çizelgesi</a>
-			      	</li>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    <ul class="navbar-nav mr-auto">
+		    	<li class="nav-item active">
+		        	<a class="nav-link" href="/projects/">Proje Çizelgesi</a>
+		      	</li>
+		    	<li class="nav-item">
+		        	<a class="nav-link" href="/duckduckgoose">Challenge <span class="sr-only">(current)</span></a>
+		      	</li>
+		      	<li class="nav-item dropdown">
+		        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		          	İletişim
+		        	</a>
+		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+		          <a class="dropdown-item" href="#">E-mail</a>
+		          <a class="dropdown-item" href="#">Telefon</a>
+		          <div class="dropdown-divider"></div>
+		          <a class="dropdown-item" href="#">Topluluk odamız</a>
+		        </div>
+		      	</li>
+		      	{{#if user.admin}}
 			      	<li class="nav-item dropdown">
 			        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			          	İletişim
+			          	Admin
 			        	</a>
 			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-			          <a class="dropdown-item" href="#">E-mail</a>
-			          <a class="dropdown-item" href="#">Telefon</a>
+			          <a class="dropdown-item" href="/stock/">Stok</a>
+			          <a class="dropdown-item" href="/stock/requests">Requests</a>
 			          <div class="dropdown-divider"></div>
-			          <a class="dropdown-item" href="#">Topluluk odamız</a>
+			          <a class="dropdown-item" href="/user/userlist">Üye listesi</a>
 			        </div>
 			      	</li>
-			      	{{#if user.admin}}
-				      	<li class="nav-item dropdown">
-				        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				          	Admin
-				        	</a>
-				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				          <a class="dropdown-item" href="/stock/">Stok</a>
-				          <div class="dropdown-divider"></div>
-				          <a class="dropdown-item" href="/user/userlist">Üye listesi</a>
-				        </div>
-				      	</li>
-			      	{{/if}}
-
-			    </ul>
-			    <div style="color:white;font-family: sans-serif;padding-right:5px">
-			    </div>
-			      	<ul class="navbar-nav mr-auto">
-			      		{{#if user}}
-			      		<li class="nav-item">
-			        		<a class="nav-link" href="/user/logout">Çıkış</a>
-			      		</li>
-						<li class="nav-item">
-			        		<a class="nav-link" href="/user/{{user.userID}}">{{user.userID}}</a>
-			      		</li>
-			   		{{else}}
-			   			<li class="nav-item">
-			        		<a class="nav-link" href="/user/login">Giriş</a>
-			      		</li>
-				      	<li class="nav-item active">
-				        	<a class="nav-link" href="/user/register">Kayıt <span class="sr-only">(current)</span></a>
-				      	</li>
-			   		{{/if}}
-			   			<li class="nav-item active">
-				      		<form class="form-inline my-2 my-lg-0">
-					      		<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-					      		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-					      	</form>
-						</li>
-				    </ul>
-			  	</div>
-			</div>
-			</nav>
+		      	{{/if}}
+		    </ul>
+	    </div>
+    	<div style="color:white;font-family: sans-serif; margin-right: 5vw;">
+	      	<ul class="navbar-nav mr-auto">
+	      		{{#if user}}
+		      		<li class="nav-item">
+		        		<a class="nav-link" href="/user/logout">Çıkış</a>
+		      		</li>
+					<li class="nav-item active">
+		        		<a class="nav-link" href="/user/{{user.userID}}">{{user.name}} &nbsp;&nbsp;</a>
+		      		</li>
+	   			{{else}}
+		   			<li class="nav-item">
+		        		<a class="nav-link" href="/user/login">Giriş</a>
+		      		</li>
+			      	<li class="nav-item active">
+			        	<a class="nav-link" href="/user/register">Kayıt <span class="sr-only">(current)</span></a>
+			      	</li>
+	   			{{/if}}
+	   			<li class="nav-item active">
+		      		<form class="form-inline my-2 my-lg-0"> 
+			      		<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+			      		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			      	</form>
+				</li>
+		    </ul>
+	  	</div>
+	</div>
+</nav>

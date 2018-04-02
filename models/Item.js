@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 
 //create schema
-const UserSchema = new Schema({
+const ItemSchema = new Schema({
 	category:{
 		type:String
 	},
@@ -28,4 +28,4 @@ const UserSchema = new Schema({
 	}
 });
 
-mongoose.model('Item',UserSchema);
+mongoose.model('Item',ItemSchema);

@@ -13,9 +13,11 @@ module.exports = router;
 
 require('../models/Item');
 const Item = mongoose.model('Item');
+require('../models/Request');
+const Request = mongoose.model('Request');
 
 
-router.get('/',ensureAuthenticated, ensureAdmin, (req,res) => {
+router.get('/',ensureAuthenticated, (req,res) => {
 	Item.find({})
 	.sort({dateAdded: -1})
 	.then(Items =>{
@@ -57,7 +59,7 @@ router.get('/edit/:id',ensureAuthenticated, ensureAdmin,  (req,res) => {
 	})
 	.then(Item =>{
 			res.render('stock/editItem',{
-			Item:Item 	//pass Project to the page into tag with the name "Project"
+			Item:Item 	
 		});	
 	})
 });
@@ -106,3 +108,141 @@ router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE
 		res.redirect('/stock/')
 			})
 });
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////STOCK REQUESTS AND REQUEST FORMS
+
+router.get('/request/:id',ensureAuthenticated,  (req,res) => { 
+	Item.findOne({//returns only 1 result
+		_id: req.params.id
+	})
+	.then(Item =>{
+			res.render('stock/requestItem',{Item:Item});	
+	})
+});
+
+
+
+router.post('/request/:id',ensureAuthenticated, (req,res) =>{
+	Item.findOne({
+		_id: req.params.id
+	})
+	.then(Item =>{
+		const newRequest = {
+			Item: req.params.id,
+			ItemName: (Item.itemID)? Item.name + " (" +Item.itemID+")" : Item.name,
+			Quantity: req.body.quantity,
+			Time: req.body.return,
+			Info: (req.body.project)? req.body.info + "\r\nProject Name: " + req.body.project : req.body.info,
+			User: req.user.userID,
+			Pending: true,
+			Date: Date.now()	
+		};
+		new Request(newRequest)
+		.save()
+		.then(() => {
+			//LOG
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"ITEM REQUEST:   by "+ req.user.userID +
+				", Item: "+ Item.name + " ("+ Item.itemID +")\r\n",(err)=>{if(err) console.log(err);});
+			//LOG
+			req.flash('success_msg', 'Request Form Sent.');
+			res.redirect('/stock');
+		})
+	});
+})
+
+router.get('/requests',ensureAuthenticated, ensureAdmin, (req,res) => {
+	Request.find({})
+	.sort({Pending: -1})
+	.then(Requests =>{
+		res.render('stock/requests',{ 	//pass Projects to the page into tag with the name "Projects"
+			Requests: Requests
+		})
+	})
+});
+
+router.get('/requests/approve/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
+	Request.findOne({
+		_id: req.params.id
+	})
+	.then(Request =>{ //set new values to the db index
+
+		Request.Pending = false;
+		Request.Approved = true;
+		Request.DADate = Date.now();
+
+		Request.save()	//save index state and redirect
+		.then(() => {
+			//LOG
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"REQUEST APPROVED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
+				", Item: "+ Request.ItemName +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+			//LOG
+			//req.flash('success_msg', 'Request Approved.');
+			res.redirect('/stock/requests');
+
+		})
+	})	
+})
+
+router.get('/requests/revoke/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
+	Request.findOne({
+		_id: req.params.id
+	})
+	.then(Request =>{ //set new values to the db index
+
+		Request.Pending = true;
+		Request.Approved = false;
+		Request.Declined = false;
+		Request.DADate = Date.now();
+
+		Request.save()	//save index state and redirect
+		.then(() => {
+			//LOG
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"REQUEST REVOKED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
+				", Item: "+ Request.ItemName +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+			//LOG
+			//req.flash('success_msg', 'Request Revoked.');
+			res.redirect('/stock/requests');
+
+		})
+	})	
+})
+
+
+
+router.post('/requests/decline/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
+	Request.findOne({
+		_id: req.params.id
+	})
+	.then(Request =>{ //set new values to the db index
+
+		Request.Pending = false;
+		Request.Declined = true;
+		Request.DADate = Date.now();
+
+		Request.save()	//save index state and redirect
+		.then(() => {
+			//LOG
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"REQUEST DECLINED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
+				", Item: "+ Request.ItemName +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+			//LOG
+			//req.flash('success_msg', 'Request Declined.');
+			res.redirect('/stock/requests');
+
+		})
+	})	
+})
