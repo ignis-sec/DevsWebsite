@@ -12,6 +12,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const fs = require('fs');
 const moment = require('moment');
+const favicon = require('serve-favicon');
 
 
 
@@ -41,34 +42,32 @@ const port = process.env.PORT || 8080;
 //connect to mongoose
 
 
-
-
-
 try {
-   	const db = require('./config/database');
-
-   	mongoose.connect(db.mongoURI)
-   	.then(() => {
-   		if(db.mongoURI === 'mongodb://localhost/BdTest'){
-   			console.log('Mongodb connected to local database')
-   		}else{
-   			console.log('Mongodb connected to remote database')
-   		}
-   	})//this is called promise
-	.catch(err => console.log(err));				//throw<->catch	
-
-
+    const db = require('./config/database');
+    
+    mongoose.connect(db.mongoURI, (err) =>{
+      if(!mongoose.connection.readyState) throw err;
+    })
+    .then((err)=> { 
+      console.log('mongodb connected at remote server');  
+    }).catch(err =>{
+      mongoose.connect('mongodb://localhost/BdTest');
+        console.log('Failed to connect to remote server. Connection returned ' + mongoose.connection.readyState + '. mongodb connected at local server');
+    })
+    
 } catch (ex) {
-    mongoose.connect('mongodb://localhost/BdTest')
-    .then(() => console.log('Mongodb connected to local database'))//this is called promise
-	.catch(err => console.log(err));				//throw<->catch	
-
+   mongoose.connect('mongodb://localhost/BdTest');
+    console.log('config/database.js is not present. If you want to connect to the remote db, create and export db link to mongoURI. Connecting to local db instead');
 }
+  
+    
 
-
+  
 
 //Middlewares
 //Middlewares have access to specified object params and can alter them between request and response
+
+
 
 //Handlebars
 app.engine('handlebars', exphbs({defaultLayout: 'main'})); //main.handlebars will be loaded on every page
@@ -96,10 +95,12 @@ app.use(passport.session());
 //flash
 app.use(flash());
 
+
 //path
 app.use(express.static(path.join(__dirname, 'public')));
+//icon
 
-
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 
 //listener
