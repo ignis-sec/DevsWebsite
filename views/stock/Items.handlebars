@@ -2,7 +2,7 @@
 
 {{#if user.admin}}
 	{{#each Items}}
-		<a class="card card-body" style="z-index:0; width:70vw" href="/stock/edit/{{_id}}"> 
+		<a class="card card-body" style="z-index:0; width:80vw" href="/stock/edit/{{_id}}"> 
 			<table>
 				<tr>
 					<td style="width:50%"><h4> {{name}} {{#if itemID}} ({{itemID}}) {{/if}} </h4></td>
@@ -20,7 +20,7 @@
 	<a href="/stock/new" class="btn btn-primary btn-block"> Add New Item</a>
 {{else}}
 	{{#each Items}}
-		<a class="card card-body" style="z-index:0; width:70vw" href="/stock/request/{{_id}}"> 
+		<a class="card card-body" style="z-index:0; width:80vw" href="/stock/request/{{_id}}"> 
 			<table>
 				<tr>
 					<td style="width:50%"><h4> {{name}} {{#if itemID}} ({{itemID}}) {{/if}} </h4></td>
