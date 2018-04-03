@@ -39,6 +39,7 @@ router.get('/edit/:id',ensureAuthenticated, ensureAdmin,  (req,res) => {
 		_id: req.params.id
 	})
 	.then(Project =>{
+		Project.dateformatted = moment(Project.date).format('YYYY-MM-DD');
 			res.render('projects/editProject',{
 			Project:Project, 	//pass Project to the page into tag with the name "Project"
 			title: 'Edit Project' + Project.Title + ' - Metu Developers'
