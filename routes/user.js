@@ -10,21 +10,27 @@ const path = require('path')
 const ExpressBrute = require('express-brute');
 var store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production 
 var bruteforce = new ExpressBrute(store);
+const favicon = require('serve-favicon');
 
 var log = path.dirname(require.main.filename) + '/logs/users.log';
 
 module.exports = router;
 
+//icon
+router.use(favicon('./public/Images/favicon.ico'));
 
 require('../models/User');
 const User = mongoose.model('User');
 
+require('../models/Request');
+const Request = mongoose.model('Request');
+
 router.get('/register', (req,res) => {
-	res.render('user/register');
+	res.render('user/register',{title:'Register - Metu Developers'});
 });
 
 router.get('/login', (req,res) => {
-	res.render('user/login');
+	res.render('user/login',{title:'Login - Metu Developers'});
 });
 
 router.get('/logout', (req,res) => {
@@ -33,9 +39,6 @@ router.get('/logout', (req,res) => {
 	res.redirect('/');
 });
 
-router.get('/register', (req,res) => {
-	res.sendFile('views/style/register.css', {root: __dirname })
-});
 
 
 
@@ -176,7 +179,8 @@ router.get('/userlist',ensureAuthenticated, ensureAdmin, (req,res) => {
 	.sort({userID: -1})
 	.then(Users =>{
 		res.render('user/userlist',{ 	//pass Projects to the page into tag with the name "Projects"
-			Users: Users
+			Users: Users,
+			title: 'User List - Metu Developers'
 		})
 	})
 });
@@ -208,6 +212,43 @@ router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE
 		}
 		
 		res.redirect('/user/userlist');
+
+	})
+});
+
+
+
+router.get('/:id',ensureAuthenticated, (req,res) => {
+	User.findOne({
+		userID:req.params.id
+	}).then(User =>{
+		Request.find({User: User.userID}).sort({Pending:-1}).then((Requests)=>{
+			for(i=0;i<Requests.length;i++)
+		{
+			if(Requests[i].Pending)
+			{
+				Requests[i].timeago = moment(Requests[i].Date).fromNow(true);
+			}else{
+				Requests[i].timeago = moment(Requests[i].DADate).fromNow();
+			}	
+		}
+			if(req.user.id == User.id)
+			{
+				res.render('user/profile', { //if it is your profile
+				ThisUser:User,
+				Requests:Requests,
+				My:1,
+				title:User.name + ' - Metu Developers'
+			})
+			}else{
+				res.render('user/profile', { //if it is not your profile
+				ThisUser:User,
+				Requests:Requests,
+				My:0,
+				title:User.name + ' - Metu Developers'
+			})	
+			}
+		})
 
 	})
 });

@@ -4,13 +4,8 @@
 			<h4> {{Title}}</h4>
 			<p>{{Description}} </p>
 			<p> More info: {{permalink}} </p>
-			<p>Github: <a href="{{gitRepoLink}}">{{gitRepoLink}} </a></p>
-			<table>
-			<tr>
-				<td><p> Starting: {{timeago}}</p><td>
-				<td><p style="text-align:right"> {{time}} </p><td>
-			</tr>
-			</table>
+			<p>Github: {{gitRepoLink}} </p>
+			<p>Starting: {{date}} </p>
 			<a class="btn btn-dark btn-block" href="/projects/edit/{{_id}}"> Edit </a>
 		</tc>
 	{{else}}
@@ -24,15 +19,15 @@
 			<h4> {{Title}}</h4>
 			<p>{{Description}} </p>
 			<p> More info: {{permalink}} </p>
-			<p>Github: <a href="{{gitRepoLink}}">{{gitRepoLink}} </a></p>
-			<table>
-			<tr>
-				<td><p> Starting: {{timeago}}</p><td>
-				<td><p style="text-align:right"> {{time}} </p><td>
-			</tr>
-			</table>
+			<p>Github: {{gitRepoLink}} </p>
+			<p>Starting: {{date}} </p>
 		</div>
 	{{else}}
 			<p> Something went wrong.</p>
 	{{/each}}
-{{/if}}
+
+
+	{{/if}}
+
+<div style="height:100px">
+	</div>

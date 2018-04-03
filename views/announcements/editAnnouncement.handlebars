@@ -1,0 +1,21 @@
+
+
+<div class="card card-body">
+	<h3> Edit Announcement </h3>
+	<form action="/announcement/{{Announcement.id}}?_method=PUT" method="post">
+		<div class="form-group">
+			<label for="title"> Title </label>
+			<input type="text" class="form-control" name="title" value="{{Announcement.Title}}" required>
+
+			<label for="title"> Body </label>
+			<textarea class="form-control" name="desc" style="height:50vh">{{Announcement.Body}}</textarea>
+		</div>
+		<button type="submit" class="btn btn-primary"> Edit </button>
+		
+	</form>
+	<form action="/Projects/{{Project.id}}?_method=DELETE" method="post">
+		<input type="hidden" name="_method" value="DELETE">
+		<input type="submit" class="btn btn-danger"value="DELETE DIS" style="margin-top:15px">
+	</form>
+
+</div>

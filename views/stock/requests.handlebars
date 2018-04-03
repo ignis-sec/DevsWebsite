@@ -15,6 +15,7 @@
 		</button>
 		<div id="info{{@index}}" class="collapse border" style="border-color:black; border-style:grove; border-radius:10px; width:80vw;">
 		<p style="margin:10px"> {{Info}}</p>
+		<p style="margin:10px"> Pending for {{timeago}}</p>
 		</div>
 		<div id="decline{{@index}}" class="collapse border" style="border-color:black; border-style:grove; border-radius:10px; width:80vw;">
 			
@@ -45,6 +46,12 @@
 		</button>
 		<div id="info{{@index}}" class="collapse border" style="border-color:black; border-style:grove; border-radius:10px; width:80vw;">
 		<p style="margin:10px"> {{Info}}</p>
+		{{#if Approved}} 
+			<p style="margin:10px"> Approved by {{DAUser}} {{timeago}}
+		{{/if}}
+		{{#if Declined}} 
+			<p style="margin:10px"> Declined by {{DAUser}} {{timeago}} because of "{{DeclineReason}}"
+		{{/if}}
 		</div>
 	{{/if}}
 
@@ -53,7 +60,8 @@
 {{else}}
 		<p> Something went wrong or no items are in the stock.</p>
 {{/each}}
-
-
+{{#each times}}
+{{this}}
+{{/each}}
 <div style="height:100px">
 	</div>

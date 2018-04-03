@@ -4,12 +4,15 @@ const mongoose = require('mongoose');
 const {ensureAuthenticated, ensureAdmin} = require('../helpers/auth') //this is called destructuring
 const fs = require('fs');
 const moment = require('moment');
-const path = require('path')
+const path = require('path');
+const favicon = require('serve-favicon');
 
 var log = path.dirname(require.main.filename) + '/logs/projects.log';
 
 module.exports = router;
 
+//icon
+router.use(favicon('./public/Images/favicon.ico'));
 
 require('../models/Project');
 const Project = mongoose.model('Project');
@@ -19,8 +22,14 @@ router.get('/',ensureAuthenticated, (req,res) => {
 	Project.find({})
 	.sort({date:'desc'})
 	.then(Projects =>{
+		for(i=0;i<Projects.length;i++)//add timeago and time tag to all of the Projects
+	    {
+	        Projects[i].timeago = moment(Projects[i].date).fromNow();
+	        Projects[i].time = moment(Projects[i].date).format('MMMM Do YYYY');
+	    }
 		res.render('projects/Projects',{ 	//pass Projects to the page into tag with the name "Projects"
-			Projects:Projects
+			Projects:Projects,
+			title: 'Ongoing Projects - Metu Developers'
 		})
 	})
 });
@@ -31,7 +40,8 @@ router.get('/edit/:id',ensureAuthenticated, ensureAdmin,  (req,res) => {
 	})
 	.then(Project =>{
 			res.render('projects/editProject',{
-			Project:Project 	//pass Project to the page into tag with the name "Project"
+			Project:Project, 	//pass Project to the page into tag with the name "Project"
+			title: 'Edit Project' + Project.Title + ' - Metu Developers'
 		});	
 	})
 });
@@ -86,7 +96,7 @@ router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 		Title: req.body.title,
 		Description:req.body.desc,
 		permalink:"FILL THIS UP",
-		gitRepoLink:"THIS TOO",
+		gitRepoLink:req.body.github,
 		date: req.body.date,
 		active:true
 	};
@@ -103,5 +113,5 @@ router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 });
 
 router.get('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
-	res.render('projects/addProject')
+	res.render('projects/addProject', {title: 'New Project - Metu Developers'})
 });

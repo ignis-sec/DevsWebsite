@@ -4,12 +4,15 @@ const mongoose = require('mongoose');
 const {ensureAuthenticated, ensureAdmin} = require('../helpers/auth') //this is called destructuring
 const fs = require('fs');
 const moment = require('moment');
-const path = require('path')
+const path = require('path');
+const favicon = require('serve-favicon');
 
 var log = path.dirname(require.main.filename) + '/logs/stock.log';
 
 module.exports = router;
 
+//icon
+router.use(favicon('./public/Images/favicon.ico'));
 
 require('../models/Item');
 const Item = mongoose.model('Item');
@@ -22,13 +25,14 @@ router.get('/',ensureAuthenticated, (req,res) => {
 	.sort({dateAdded: -1})
 	.then(Items =>{
 		res.render('stock/Items',{ 	//pass Projects to the page into tag with the name "Projects"
-			Items: Items
+			Items: Items,
+			title: 'Community Stash - Metu Developers'
 		})
 	})
 });
 
 router.get('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
-	res.render('stock/addItem')
+	res.render('stock/addItem',{title: 'New Item - Metu Developers'})
 });
 
 router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
@@ -59,7 +63,8 @@ router.get('/edit/:id',ensureAuthenticated, ensureAdmin,  (req,res) => {
 	})
 	.then(Item =>{
 			res.render('stock/editItem',{
-			Item:Item 	
+			Item:Item,
+			title: 'Edit '+ Item.name + ' (' + Item.itemID + ') - Metu Developers' 	
 		});	
 	})
 });
@@ -127,7 +132,7 @@ router.get('/request/:id',ensureAuthenticated,  (req,res) => {
 		_id: req.params.id
 	})
 	.then(Item =>{
-			res.render('stock/requestItem',{Item:Item});	
+			res.render('stock/requestItem',{Item:Item, title: 'Item Request Form - Metu Developers'});	
 	})
 });
 
@@ -166,8 +171,19 @@ router.get('/requests',ensureAuthenticated, ensureAdmin, (req,res) => {
 	Request.find({})
 	.sort({Pending: -1})
 	.then(Requests =>{
+		var i;
+		for(i=0;i<Requests.length;i++)
+		{
+			if(Requests[i].Pending)
+			{
+				Requests[i].timeago = moment(Requests[i].Date).fromNow(true);
+			}else{
+				Requests[i].timeago = moment(Requests[i].DADate).fromNow();
+			}	
+		}
 		res.render('stock/requests',{ 	//pass Projects to the page into tag with the name "Projects"
-			Requests: Requests
+			Requests: Requests,
+			title: 'Request List - Metu Developers',
 		})
 	})
 });
@@ -181,6 +197,7 @@ router.get('/requests/approve/:id',ensureAuthenticated, ensureAdmin,  (req,res) 
 		Request.Pending = false;
 		Request.Approved = true;
 		Request.DADate = Date.now();
+		Request.DAUser = req.user.userID;
 
 		Request.save()	//save index state and redirect
 		.then(() => {
@@ -232,6 +249,8 @@ router.post('/requests/decline/:id',ensureAuthenticated, ensureAdmin,  (req,res)
 		Request.Pending = false;
 		Request.Declined = true;
 		Request.DADate = Date.now();
+		Request.DAUser = req.user.userID;
+		Request.DeclineReason = req.body.reason;
 
 		Request.save()	//save index state and redirect
 		.then(() => {

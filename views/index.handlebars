@@ -1,79 +1,39 @@
 
-{{#each userID}}
+{{#if user.userID}}
 	<div class="card card-body"> 
-		<h2>Welcome, {{userID}}</h4>
+		<h2>Welcome, {{user.name}}.</h4>
 	</div>
-{{else}}
-
-{{/each}}
+{{/if}}
 
 
 <link rel="stylesheet" href="style/index.css">
 <body style="background:#333;margin:0;padding:0">
 
-	
-	<div style="display:flex;">
-		<div id="Baslık" class="color2"; style="width:40vw;display:inline-block;">	
-			<p> Metu Developers</p><br>
-			<img src="/Images/logo.png" style="height:256px; width:256px;margin-top:50px">
+	<div class="card card-body">
+		<div style="display:flex;">
+			<div id="Baslık" class="color" style="width:40vw;display:inline-block;">	
+				<p style="color:black"> Metu Developers</p><br>
+				<img src="/Images/logo.png" style="height:256px; width:256px;margin-top:50px">
+			</div>
+			
+			<img src="/Images/Event.png" style="height:35vw;display:inline-block;margin:0;">	
 		</div>
 		
-		<img src="/Images/Event.png" style="height:35vw;display:inline-block;margin:0;">	
-	</div>
-	
-	<div class="MainPage color3"> 
-		<p>
-	blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub? 
-	<br>
-	blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub!
-	<br>
-	blub? blub! blub? blub. blub! blub. blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
-	<br>
-	blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub! blub? blub! blub? blub. blub. blub.
-	<br>
-	blub! blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub. blub! blub. blub. blub.
-	<br>
-	blub. blub. blub. blub. blub! blub. blub. blub? blub. blub? blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
-	<br>
-	blub. blub. blub. blub. blub. blub. blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub!
-	<br>
-	blub? blub! blub? blub. blub! blub. blub. blub? blub. blub? blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
-	<br>
-	blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub.
-	<br>
-	blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub! blub? blub! blub? blub. blub! blub! blub! blub!
-	<br>
-	blub! blub! blub! blub. blub? blub. blub? blub. blub? blub. blub? blub. blub! blub. blub. blub. blub. blub. blub. blub. blub! blub.
-	<br>
-	blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub. blub! blub! blub! blub! blub! blub! blub! blub!
-	<br>
-	blub! blub! blub! blub! blub! blub! blub! blub! blub! blub. blub. blub? blub. blub? blub. blub. blub! blub.
-	<br>
-	blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub? 
-	<br>
-	blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub!
-	<br>
-	blub? blub! blub? blub. blub! blub. blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
-	<br>
-	blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub! blub? blub! blub? blub. blub. blub.
-	<br>
-	blub! blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub. blub! blub. blub. blub.
-	<br>
-	blub. blub. blub. blub. blub! blub. blub. blub? blub. blub? blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
-	<br>
-	blub. blub. blub. blub. blub. blub. blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub!
-	<br>
-	blub? blub! blub? blub. blub! blub. blub. blub? blub. blub? blub. blub? blub. blub. blub. blub. blub. blub. blub. blub. blub. blub.
-	<br>
-	blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub! blub? blub? blub. blub. blub. blub. blub. blub. blub. blub. blub.
-	<br>
-	blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub. blub? blub! blub! blub? blub! blub? blub. blub! blub! blub! blub!
-	<br>
-	blub! blub! blub! blub. blub? blub. blub? blub. blub? blub. blub? blub. blub! blub. blub. blub. blub. blub. blub. blub. blub! blub.
-	<br>
-	blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub! blub. blub! blub! blub! blub! blub! blub! blub! blub!
-	<br>
-	blub! blub! blub! blub! blub! blub! blub! blub! blub! blub. blub. blub? blub. blub? blub. blub. blub! blub.
+		{{#each announcements}}
+
+		<a class="card card-body" style="padding-bottom:0; margin-bottom:20px" {{#if ../user.admin}} href="announcement/{{id}}"{{/if}}>
+			<h4>{{Title}}</h4>
+			<h5 style='white-space: pre-line;'>{{{Body}}}</h5>
+			<br><br>
+			<table>
+			<tr>
+				<td><p> {{timeago}}</p><td>
+				<td><p style="text-align:right"> {{time}} </p><td>
+			</tr>
+			</table>
+		</a>
+
+		{{/each}}
 		</p>
 	</div>
 </body>

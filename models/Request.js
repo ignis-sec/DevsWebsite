@@ -44,6 +44,9 @@ const RequestSchema = new Schema({
 	DADate:{
 		type:Date
 	},
+	DAUser:{
+		type:String
+	},
 	Approved:{
 		type:Boolean
 	}

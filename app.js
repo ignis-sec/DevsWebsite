@@ -22,7 +22,6 @@ var log = __dirname + '/logs/app.log';
 
 //custom module to hide scavenger hunt links from participants
 const hunt = require("./scavenger-private/hunt");
-const routes = require("./routes");
 require('./config/passport')(passport); // i dont entirely understand what is happening here but: https://jsfiddle.net/64j360yp/
 
 //Port number for server
@@ -55,7 +54,7 @@ try {
         console.log('Failed to connect to remote server. Connection returned ' + mongoose.connection.readyState + '. mongodb connected at local server');
     })
     
-} catch (ex) {//catch of missing sensitive config file
+} catch (ex) {//catch of missing sensitive config appendFile
    mongoose.connect('mongodb://localhost/BdTest');
     console.log('config/database.js is not present. If you want to connect to the remote db, create and export db link to mongoURI. Connecting to local db instead');
 }
@@ -99,7 +98,6 @@ app.use(flash());
 //path
 app.use(express.static(path.join(__dirname, 'public')));
 //icon
-
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 
@@ -111,6 +109,8 @@ app.listen(port, () =>{
 	//LOG
 	console.log(`Server started on port ${port}`);
 });
+
+
 
 
 //THESE ARE ALSO GLOBAL VARIABLES
@@ -127,12 +127,41 @@ app.use(function(req,res,next){
 //Get routes for Scavenger Hunt levels MUST NOT BE PUBLISHED!
 hunt.getlevels(app);
 //Get other routes from routes.js module
-routes.addRoutes(app);
 
 const projects = require('./routes/projects');
 const user = require('./routes/user');
 const stock = require('./routes/stock');
+const announcement = require('./routes/announcement');
+const main = require('./routes/main');
 
 app.use('/projects', projects);
 app.use('/user', user);
 app.use('/stock', stock);
+app.use('/announcement', announcement);
+
+
+
+require('./models/Announcement');
+const Announcement = mongoose.model('Announcement');
+
+//index route 
+app.get('/', (req,res) => {
+  Announcement.find({})
+  .sort({date:'desc'})
+  .then(Announcements =>{
+    for(i=0;i<Announcements.length;i++)//add timeago and time tag to all of the announcements
+    {
+        Announcements[i].timeago = moment(Announcements[i].Date).fromNow();
+        Announcements[i].time = moment(Announcements[i].Date).format('MMMM Do YYYY, HH:mm');
+    }
+    res.render('index',{  //pass Projects to the page into tag with the name "Projects"
+      announcements:Announcements,
+      title: 'Metu Developers'
+    })
+  })
+});
+
+
+app.get('/duckduckgoose', (req,res) => {
+  res.render('scavenger')
+});
