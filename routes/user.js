@@ -79,8 +79,8 @@ router.post('/register', (req,res) => {
 			ID: req.body.ID,
 			name: req.body.name,
 			surname: req.body.surname,
-			password: req.body.password,
-			confirm: req.body.confirm
+			interests: req.body.interests,
+			skills: req.body.skills
 		})
 	}else{//if there are no errors
 		const newUser = new User({
@@ -88,7 +88,9 @@ router.post('/register', (req,res) => {
 			name:req.body.name,
 			surname:req.body.surname,
 			password:req.body.password,
-			dateJoined:Date.now()
+			dateJoined:Date.now(),
+			Skills:req.body.skills ,
+			Interests:req.body.interests
 		});
 		bcrypt.genSalt(10, (err,salt) =>{
 			bcrypt.hash(newUser.password, salt, (err,hash)=>{
