@@ -169,7 +169,7 @@ router.post('/request/:id',ensureAuthenticated, (req,res) =>{
 
 router.get('/requests',ensureAuthenticated, ensureAdmin, (req,res) => {
 	Request.find({})
-	.sort({Pending: -1})
+	.sort({Pending: -1, Returned: 1, Date: 1})
 	.then(Requests =>{
 		var i;
 		var now= Date.now();
@@ -232,11 +232,10 @@ router.get('/requests/revoke/:id',ensureAuthenticated, ensureAdmin,  (req,res) =
 	})
 	.then(Request =>{ //set new values to the db index
 		Item.findOne({_id:Request.Item}).then((Item)=>{
-			if(Request.Approved){
+			if(Request.Approved && !Request.Returned){
 				Item.inStock=Number(Item.inStock)+Number(Request.Quantity);
 				Item.save();
 			}
-			console.log(Request.Approved);
 			Request.Pending = true;
 			Request.Approved = false;
 			Request.Declined = false;
@@ -269,7 +268,7 @@ router.get('/requests/return/:id',ensureAuthenticated, ensureAdmin,  (req,res) =
 		})
 
 		Request.Pending = false;
-		Request.Approved = false;
+		Request.Approved = true;
 		Request.Declined = false;
 		Request.Returned = true;
 		Request.DADate = Date.now();
