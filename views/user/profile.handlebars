@@ -2,137 +2,17 @@
 <h1> Profile </h1>
 <h3> {{ThisUser.name}} {{ThisUser.surname}} </h3>
 <h4>{{ThisUser.userID}}</h4>
+
 {{#if ThisUser.Removed}}
 	<a class="btn btn-danger disabled" style="color:white"> Sorry. This user was removed from the community </a>
 {{else}}
 	<a class="card card-body" style="z-index:1; margin:0;width:82vw; padding:1vw;">
+		<h3> Your Requests </h3>
+		<a class="card card-body" style="z-index:2; margin:0;width:82vw; padding:1vw;">
 		{{#if My}}
-		<h3> Your Requests </h3>
-		<a class="card card-body" style="z-index:2; margin:0;width:82vw; padding:1vw;">
-			{{#each Requests}}
-				{{#if Pending}}
-					<button class="card card-body" id="{{@index}}" style="z-index:0; margin-left:0;width:80vw" data-toggle="collapse" data-target="#info{{@index}}"> 
-						<table>
-							<tr>
-								<td> <a class="btn btn-dark disabled" style="width:7vw">PENDING</a>
-								<td style="width:5%"><p> x{{Quantity}} </h5></td>
-								<td style="width:50%"><p> {{ItemName}} </h4></td>
-								<td style="width:45%"><p> requested by {{User}} for {{Time}} days </p></td>
-								
-							</tr>
-						</table>
-					</button>
-					<div id="info{{@index}}" class="collapse border" style="border-color:black; border-style:grove; border-radius:10px; width:80vw;">
-					<p style="margin:10px"> {{Info}}</p>
-					<p style="margin:10px"> Pending for {{timeago}}</p>
-					</div>
-					<div id="decline{{@index}}" class="collapse border" style="border-color:black; border-style:grove; border-radius:10px; width:80vw;">
-						
-						<label for="title"> Reason: </label> 
-						<form action="/stock/requests/decline/{{id}}" method="post">
-							<div class="form-group">
-								<input type="text" class="form-control" name="reason" required>
-							</div>
-							<button class="btn btn-danger" style="color:white" type="submit"> DECLINE </button>
-						</form>
-					</div>
-				{{else}}
-					<button class="card card-body" id="{{@index}}" style="z-index:0; margin-left:0;width:80vw" data-toggle="collapse" data-target="#info{{@index}}"> 
-						<table>
-							<tr>
-								{{#if Approved}} 
-									<td style="width:5%"> <a class="btn btn-primary" style="background:#5b5; color:white; width:7vw"> APPROVED </a> </td>
-								{{/if}}
-								{{#if Declined}} 
-									<td style="width:5%"> <a class="btn btn-danger" style="color:white; width:7vw"> DECLINED </a> </td>
-								{{/if}}
-								<td style="width:5%"><p> x{{Quantity}} </h5></td>
-								<td style="width:45%"><p> {{ItemName}} </h4></td>
-								<td style="width:45%"><p> requested by {{User}} for {{Time}} days </p></td>
-								 </a>
-							</tr>
-						</table>
-					</button>
-					<div id="info{{@index}}" class="collapse border" style="border-color:black; border-style:grove; border-radius:10px; width:80vw;">
-					<p style="margin:10px"> {{Info}}</p>
-					{{#if Approved}} 
-						<p style="margin:10px"> Approved by {{DAUser}} {{timeago}}
-					{{/if}}
-					{{#if Declined}} 
-						<p style="margin:10px"> Declined by {{DAUser}} {{timeago}} because of "{{DeclineReason}}"
-					{{/if}}
-					</div>
-				{{/if}}
-			{{else}}
-					<p> You have no requests.</p>
-			{{/each}}
-			<a class="btn btn-primary" href="/user/edit/{{user.id}}"> Edit profile </a>
-		</a>
-	</a>
-	{{else}} {{#if user.admin}}
-		<h3> Your Requests </h3>
-		<a class="card card-body" style="z-index:2; margin:0;width:82vw; padding:1vw;">
-		{{#each Requests}}
-			{{#if Pending}}
-				<button class="card card-body" id="{{@index}}" style="z-index:0; margin-left:0;width:80vw" data-toggle="collapse" data-target="#info{{@index}}"> 
-					<table>
-						<tr>
-							<td style="width:5%"><p> x{{Quantity}} </h5></td>
-							<td style="width:50%"><p> {{ItemName}} </h4></td>
-							<td style="width:45%"><p> requested by {{User}} for {{Time}} days </p></td>
-							<td><a class="btn btn-dark btn-block" href="/stock/requests/approve/{{_id}}" style="float:right;"> Approve </a></td>
-							<td><a class="btn btn-danger btn-block" style="float:right; color:white" data-toggle="collapse" data-target="#decline{{@index}}"> Decline </a></td>
-						</tr>
-					</table>
-				</button>
-				<div id="info{{@index}}" class="collapse border" style="border-color:black; border-style:grove; border-radius:10px; width:80vw;">
-				<p style="margin:10px"> {{Info}}</p>
-				<p style="margin:10px"> Pending for {{timeago}}</p>
-				</div>
-				<div id="decline{{@index}}" class="collapse border" style="border-color:black; border-style:grove; border-radius:10px; width:80vw;">
-					
-					<label for="title"> Reason: </label> 
-					<form action="/stock/requests/decline/{{id}}" method="post">
-						<div class="form-group">
-							<input type="text" class="form-control" name="reason" required>
-						</div>
-						<button class="btn btn-danger" style="color:white" type="submit"> DECLINE </button>
-					</form>
-				</div>
-			{{else}}
-				<button class="card card-body" id="{{@index}}" style="z-index:0; margin-left:0;width:80vw" data-toggle="collapse" data-target="#info{{@index}}"> 
-					<table>
-						<tr>
-							{{#if Approved}} 
-								<td style="width:5%"> <a class="btn btn-primary" style="background:#5b5; color:white"> APPROVED </a> </td>
-							{{/if}}
-							{{#if Declined}} 
-								<td style="width:5%"> <a class="btn btn-danger" style="color:white"> DECLINED </a> </td>
-							{{/if}}
-							<td style="width:5%"><p> x{{Quantity}} </h5></td>
-							<td style="width:45%"><p> {{ItemName}} </h4></td>
-							<td style="width:45%"><p> requested by {{User}} for {{Time}} days </p></td>
-							<td><a class="btn btn-danger btn-block" style="float:right; color:white" href="/stock/requests/revoke/{{id}}"> REVOKE </a></td>
-						</tr>
-					</table>
-				</button>
-				<div id="info{{@index}}" class="collapse border" style="border-color:black; border-style:grove; border-radius:10px; width:80vw;">
-				<p style="margin:10px"> {{Info}}</p>
-				{{#if Approved}} 
-					<p style="margin:10px"> Approved by {{DAUser}} {{timeago}}
-				{{/if}}
-				{{#if Declined}} 
-					<p style="margin:10px"> Declined by {{DAUser}} {{timeago}} because of "{{DeclineReason}}"
-				{{/if}}
-				</div>
-			{{/if}}
-			{{else}}
-					<p> You have no requests.</p>
-			{{/each}}
-		</a>
+			{{> _requests}}
 		{{else}}
-			<h3> You cannot view this users requests. </h3>
+		<p> You cannot view this users requests.</p>
 		{{/if}}
-	{{/if}}
+	</a>
 {{/if}}
-<div style='height:200px;'></div>

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js"
   },
-  "author": "Ata Hakçıl",
+  "author": "Ata Hakçıl, Sedat Ali Zevit",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

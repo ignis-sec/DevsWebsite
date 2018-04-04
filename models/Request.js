@@ -38,6 +38,9 @@ const RequestSchema = new Schema({
 	Declined:{
 		type:Boolean
 	},
+	Returned:{
+		type:Boolean
+	},
 	DeclineReason:{
 		type:String
 	},

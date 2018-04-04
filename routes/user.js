@@ -232,7 +232,7 @@ router.get('/:id',ensureAuthenticated, (req,res) => {
 				Requests[i].timeago = moment(Requests[i].DADate).fromNow();
 			}	
 		}
-			if(req.user.id == User.id)
+			if(req.user.id == User.id || req.user.admin)
 			{
 				res.render('user/profile', { //if it is your profile
 				ThisUser:User,

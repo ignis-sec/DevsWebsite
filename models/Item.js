@@ -25,6 +25,10 @@ const ItemSchema = new Schema({
 	},
 	holdDetails:{
 		type:Object
+	},
+	inStock:{
+		type:Number,
+
 	}
 });
 

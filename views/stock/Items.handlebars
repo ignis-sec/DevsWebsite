@@ -1,15 +1,16 @@
 <link rel="stylesheet" href="../style/index.css">
 
-{{#if user.admin}}
-	{{#each Items}}
+{{#each Items}}
 		<a class="card card-body" style="z-index:0; width:80vw" href="/stock/edit/{{_id}}"> 
 			<table>
 				<tr>
-					<td style="width:50%"><h4> {{name}} {{#if itemID}} ({{itemID}}) {{/if}} </h4></td>
-					<td style="width:10%"><h5> x{{quantity}} </h5></td>
+					<td style="width:45%"><h4> {{name}} {{#if itemID}} ({{itemID}}) {{/if}} </h4></td>
+					<td style="width:15%"><h5> &#160;x{{quantity}} (x{{inStock}}) </h5></td>
 					<td style="width:25%"><p> Category: {{category}} </p></td>
 					<td style="width:15%"><p>Holder: {{holdDetails}} </p></td>
+					{{#if ../user.admin}}
 					<td><a class="btn btn-dark btn-block" href="/stock/edit/{{_id}}" style="float:right;"> Edit </a></td>
+					{{/if}}
 					<td><a class="btn btn-dark btn-block" href="/stock/request/{{_id}}" style="float:right;"> Request </a></td>
 				</tr>
 			</table>
@@ -17,24 +18,6 @@
 	{{else}}
 			<p> Something went wrong or no items are in the stock.</p>
 	{{/each}}
-	<a href="/stock/new" class="btn btn-primary btn-block"> Add New Item</a>
-{{else}}
-	{{#each Items}}
-		<a class="card card-body" style="z-index:0; width:80vw" href="/stock/request/{{_id}}"> 
-			<table>
-				<tr>
-					<td style="width:50%"><h4> {{name}} {{#if itemID}} ({{itemID}}) {{/if}} </h4></td>
-					<td style="width:10%"><h5> x{{quantity}} </h5></td>
-					<td style="width:25%"><p> Category: {{category}} </p></td>
-					<td style="width:15%"><p>Holder: {{holdDetails}} </p></td>
-					<td><a class="btn btn-dark btn-block" href="/stock/request/{{_id}}" style="float:right;"> Request </a></td>
-				</tr>
-			</table>
-		</a>
-	{{else}}
-			<p> Something went wrong or no items are in the stock.</p>
-	{{/each}}
-{{/if}}
-
-<div style="height:100px">
-	</div>
+	{{#if user.admin}}
+	<a href="/stock/new" class="btn btn-primary btn-block" style="width:80vw"> Add New Item</a>
+	{{/if}}

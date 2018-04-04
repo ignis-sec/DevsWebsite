@@ -172,13 +172,22 @@ router.get('/requests',ensureAuthenticated, ensureAdmin, (req,res) => {
 	.sort({Pending: -1})
 	.then(Requests =>{
 		var i;
+		var now= Date.now();
 		for(i=0;i<Requests.length;i++)
 		{
+
 			if(Requests[i].Pending)
 			{
 				Requests[i].timeago = moment(Requests[i].Date).fromNow(true);
 			}else{
 				Requests[i].timeago = moment(Requests[i].DADate).fromNow();
+				Requests[i].returnDate = moment(Requests[i].DADate).add(Requests[i].Time, 'days');
+				if(Requests[i].returnDate > now)
+					Requests[i].overdue = 0;
+				else {
+					Requests[i].overdue = 1;
+					Requests[i].overdueAmount = moment(Requests[i].returnDate).fromNow(true);
+				}
 			}	
 		}
 		res.render('stock/requests',{ 	//pass Projects to the page into tag with the name "Projects"
@@ -193,6 +202,10 @@ router.get('/requests/approve/:id',ensureAuthenticated, ensureAdmin,  (req,res) 
 		_id: req.params.id
 	})
 	.then(Request =>{ //set new values to the db index
+		Item.findOne({_id:Request.Item}).then((Item)=>{
+			Item.inStock=Item.inStock-Request.Quantity;
+			Item.save();
+		})
 
 		Request.Pending = false;
 		Request.Approved = true;
@@ -218,17 +231,54 @@ router.get('/requests/revoke/:id',ensureAuthenticated, ensureAdmin,  (req,res) =
 		_id: req.params.id
 	})
 	.then(Request =>{ //set new values to the db index
+		Item.findOne({_id:Request.Item}).then((Item)=>{
+			if(Request.Approved){
+				Item.inStock=Number(Item.inStock)+Number(Request.Quantity);
+				Item.save();
+			}
+			console.log(Request.Approved);
+			Request.Pending = true;
+			Request.Approved = false;
+			Request.Declined = false;
+			Request.Returned = false;
+			Request.DADate = Date.now();
 
-		Request.Pending = true;
+			Request.save()//save index state and redirect
+			.then(() => {
+				//LOG
+				fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+					"REQUEST REVOKED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
+					", Item: "+ Request.ItemName +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+				//LOG
+				//req.flash('success_msg', 'Request Revoked.');
+				res.redirect('/stock/requests');
+
+			})
+		})
+	})	
+})
+
+router.get('/requests/return/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
+	Request.findOne({
+		_id: req.params.id
+	})
+	.then(Request =>{ 
+		Item.findOne({_id:Request.Item}).then((Item)=>{
+			Item.inStock=Number(Item.inStock)+Number(Request.Quantity);
+			Item.save();
+		})
+
+		Request.Pending = false;
 		Request.Approved = false;
 		Request.Declined = false;
+		Request.Returned = true;
 		Request.DADate = Date.now();
 
 		Request.save()	//save index state and redirect
 		.then(() => {
 			//LOG
 			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-				"REQUEST REVOKED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
+				"ITEM RETURN CONFIRMED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
 				", Item: "+ Request.ItemName +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
 			//LOG
 			//req.flash('success_msg', 'Request Revoked.');
@@ -238,6 +288,29 @@ router.get('/requests/revoke/:id',ensureAuthenticated, ensureAdmin,  (req,res) =
 	})	
 })
 
+router.get('/requests/delete/:id',ensureAuthenticated, (req,res) =>{
+	Request.findOne({
+		_id: req.params.id
+	})
+	.then(Request =>{ 
+			if(req.user.admin || Request.User == req.user.userID)
+			{
+				Request.remove({_id: req.params.id});
+			}
+
+			//LOG
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"REQUEST DELETED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
+				", Item: "+ Request.ItemName +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+			//LOG
+			//req.flash('success_msg', 'Request Revoked.');
+			if(req.user.admin)
+			{
+				res.redirect('/stock/requests');
+			}else res.redirect('/user/'+req.user.userID);
+
+		})
+	})	
 
 
 router.post('/requests/decline/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
