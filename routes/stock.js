@@ -169,7 +169,7 @@ router.post('/request/:id',ensureAuthenticated, (req,res) =>{
 
 router.get('/requests',ensureAuthenticated, ensureAdmin, (req,res) => {
 	Request.find({})
-	.sort({Pending: -1, Returned: 1, Date: 1})
+	.sort({Pending: -1, Returned: 1, Date: -1})
 	.then(Requests =>{
 		var i;
 		var now= Date.now();
