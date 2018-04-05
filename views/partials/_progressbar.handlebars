@@ -1,0 +1,10 @@
+{{#if Bar_Percent}}
+	<div style="position:fixed; margin-top:7.95vh;z-index:6">
+	<div class="progress" style="width:100vw; position:inline; height:1.5vw; opacity:0.98; border-radius:0">
+		<div class="progress-bar {{Bar_Style}}" role="progressbar" style="width:{{Bar_Percent}}%; opacity:1;{{#if Bar_Color}} background:{{Bar_Color}}{{/if}};" aria-valuenow="{{Bar_Percent}}" aria-valuemin="0" aria-valuemax="100" >
+				{{Bar_Text}}
+		</div>
+	</div> 
+
+	</div>
+	{{/if}}

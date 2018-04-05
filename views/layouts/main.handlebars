@@ -7,21 +7,28 @@
 	{{else}}
 	<title>Metu Developers</title>
 	{{/if}}
+	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="icon" href="favicon.ico">
+	{{> _bootstrap}}
 
 </HEAD>
 	<body>
 		{{> _navbar}}
-		<div style="height:8.5vh"></div>
+		{{> _progressbar}}
+		{{#if Bar_Percent}}
+		<div style="height:6.5vw"></div>
+		{{else}}
+		<div style="height:4.2vw"></div>
+		{{/if}}
 
 		<div class="container" style="margin-left:8vw; margin-right:10vw;">
 			{{> _msg}}
 			{{> _errors}}
-		{{{body}}}
+			{{{body}}}
 		</div>
 		
-		{{> _bootstrap}}
+
 		{{> _footer}}
 	</body>
 </html>

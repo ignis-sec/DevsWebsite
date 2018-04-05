@@ -15,7 +15,6 @@ const moment = require('moment');
 const favicon = require('serve-favicon');
 
 
-
 //Log file directories
 var log = __dirname + '/logs/app.log';
  

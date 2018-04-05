@@ -239,14 +239,15 @@ router.get('/:id',ensureAuthenticated, (req,res) => {
 				res.render('user/profile', { //if it is your profile
 				ThisUser:User,
 				Requests:Requests,
-				My:1,
+				RequestPermission:1,
+
 				title:User.name + ' - Metu Developers'
 			})
 			}else{
 				res.render('user/profile', { //if it is not your profile
 				ThisUser:User,
 				Requests:Requests,
-				My:0,
+				RequestPermission:0,
 				title:User.name + ' - Metu Developers'
 			})	
 			}

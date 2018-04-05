@@ -1,15 +1,26 @@
 
+
 <h1> Profile </h1>
-<h3> {{ThisUser.name}} {{ThisUser.surname}} </h3>
-<h4>{{ThisUser.userID}}</h4>
+<a class="card card-body" style="z-index:1; margin:0;width:82vw; padding:1vw;">
+	<h2> Personal Information</h2>
+	<a class="divider"></a>
+	<h3> {{ThisUser.name}} {{ThisUser.surname}} </h3>
+	<h4>{{ThisUser.userID}}</h4>
+</a>
 
 {{#if ThisUser.Removed}}
 	<a class="btn btn-danger disabled" style="color:white"> Sorry. This user was removed from the community </a>
 {{else}}
 	<a class="card card-body" style="z-index:1; margin:0;width:82vw; padding:1vw;">
+
+		<p>Skills: {{ThisUser.Skills}} </p>
+		<p>Interests: {{ThisUser.Interests}} </p>
+
+
+
 		<h3> Your Requests </h3>
 		<a class="card card-body" style="z-index:2; margin:0;width:82vw; padding:1vw;">
-		{{#if My}}
+		{{#if RequestPermission}}
 			{{> _requests}}
 		{{else}}
 		<p> You cannot view this users requests.</p>

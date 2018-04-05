@@ -171,7 +171,7 @@ router.get('/requests',ensureAuthenticated, ensureAdmin, (req,res) => {
 	Request.find({})
 	.sort({Pending: -1, Returned: 1, Date: -1})
 	.then(Requests =>{
-		var i;
+		var i, pending=0,other=0;
 		var now= Date.now();
 		for(i=0;i<Requests.length;i++)
 		{
@@ -179,7 +179,9 @@ router.get('/requests',ensureAuthenticated, ensureAdmin, (req,res) => {
 			if(Requests[i].Pending)
 			{
 				Requests[i].timeago = moment(Requests[i].Date).fromNow(true);
+				pending++;
 			}else{
+				other++;
 				Requests[i].timeago = moment(Requests[i].DADate).fromNow();
 				Requests[i].returnDate = moment(Requests[i].DADate).add(Requests[i].Time, 'days');
 				if(Requests[i].returnDate > now)
@@ -190,9 +192,14 @@ router.get('/requests',ensureAuthenticated, ensureAdmin, (req,res) => {
 				}
 			}	
 		}
+		var complete = ((other)/(other+pending))*100;
+		if (complete > 99) complete=0;
 		res.render('stock/requests',{ 	//pass Projects to the page into tag with the name "Projects"
 			Requests: Requests,
 			title: 'Request List - Metu Developers',
+			Bar_Percent: complete,
+			Bar_Text: 'Pending',
+			Bar_Style: ' progress-bar-striped progress-bar-animated bg-success'
 		})
 	})
 });

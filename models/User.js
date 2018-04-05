@@ -41,6 +41,10 @@ const UserSchema = new Schema({
 	Removed:{
 		type:Boolean,
 		required:false
+	},
+	GithubName:{
+		type:String,
+		required:false
 	}
 });
 
