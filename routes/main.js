@@ -18,7 +18,7 @@ const Announcement = mongoose.model('Announcement');
 //index route 
 router.get('/', (req,res) => {
 	Announcement.find({})
-	.sort({date:'desc'})
+	.sort({date:'asc'})
 	.then(Announcements =>{
 		res.render('index',{ 	//pass Projects to the page into tag with the name "Projects"
 			announcements:Announcements,
