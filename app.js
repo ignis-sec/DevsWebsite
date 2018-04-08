@@ -143,7 +143,7 @@ const Announcement = mongoose.model('Announcement');
 //index route 
 app.get('/', (req,res) => {
   Announcement.find({})
-  .sort({Date:'asc'})
+  .sort({Date:'desc'})
   .then(Announcements =>{
     for(i=0;i<Announcements.length;i++)//add timeago and time tag to all of the announcements
     {
