@@ -57,10 +57,7 @@ try {
    mongoose.connect('mongodb://localhost/BdTest');
     console.log('config/database.js is not present. If you want to connect to the remote db, create and export db link to mongoURI. Connecting to local db instead');
 }
-  
-    
 
-  
 
 //Middlewares
 //Middlewares have access to specified object params and can alter them between request and response
@@ -164,3 +161,5 @@ app.get('/', (req,res) => {
 app.get('/duckduckgoose', (req,res) => {
   res.render('scavenger')
 });
+
+

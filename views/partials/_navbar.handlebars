@@ -48,6 +48,7 @@
 		      	
 		    </ul>
 	    </div>
+	    {{#if user}}{{#if user.Verified}}{{else}} <a class="btn btn-primary" style="color:white; float:right" href='/user/verify/verifyme'> Verify your email </a> {{/if}}{{/if}}
     	<div style="color:white;font-family: sans-serif; margin-right: 5vw;">
 	      	<ul class="navbar-nav mr-auto">
 	      		{{#if user}}

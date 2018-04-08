@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
-const {ensureAuthenticated, ensureAdmin} = require('../helpers/auth') //this is called destructuring
+const {ensureAuthenticated, ensureAdmin, ensureVerified} = require('../helpers/auth') //this is called destructuring
 const fs = require('fs');
 const moment = require('moment');
 const path = require('path');
@@ -18,7 +18,7 @@ require('../models/Project');
 const Project = mongoose.model('Project');
 
 
-router.get('/',ensureAuthenticated, (req,res) => {
+router.get('/',ensureVerified, (req,res) => {
 	Project.find({})
 	.sort({date:'desc'})
 	.then(Projects =>{
@@ -34,7 +34,7 @@ router.get('/',ensureAuthenticated, (req,res) => {
 	})
 });
 
-router.get('/edit/:id',ensureAuthenticated, ensureAdmin,  (req,res) => { 
+router.get('/edit/:id', ensureAdmin,  (req,res) => { 
 	Project.findOne({//returns only 1 result
 		_id: req.params.id
 	})
@@ -47,7 +47,7 @@ router.get('/edit/:id',ensureAuthenticated, ensureAdmin,  (req,res) => {
 	})
 });
 
-router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
+router.put('/:id', ensureAdmin,  (req,res) =>{
 	Project.findOne({
 		_id: req.params.id
 	})
@@ -73,7 +73,7 @@ router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
 
 
 
-router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE request 
+router.delete('/:id',  ensureAdmin,  (req,res) => {	//DELETE request 
 	//LOG
 	Project.findOne({
 		_id:req.params.id
@@ -92,7 +92,7 @@ router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE
 			})
 });
 
-router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
+router.post('/new', ensureAdmin,  (req,res) => {
 	const newProject = {
 		Title: req.body.title,
 		Description:req.body.desc,
@@ -113,6 +113,6 @@ router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 	})
 });
 
-router.get('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
+router.get('/new', ensureAdmin,  (req,res) => {
 	res.render('projects/addProject', {title: 'New Project - Metu Developers'})
 });
