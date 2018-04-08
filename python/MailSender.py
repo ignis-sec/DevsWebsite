@@ -8,7 +8,7 @@ metuSmtpServer = "smtp.metu.edu.tr"
 gmailSmtpPort = 587
 gmailSmtpServer = "smtp.gmail.com"
 devsSmtpPort = 587
-devsSmtpServer = "smtp.mail.com"
+devsSmtpServer = "smtp.yandex.com"
 
 
 def message_parse(fileName):

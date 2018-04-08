@@ -12,6 +12,8 @@ var store = new ExpressBrute.MemoryStore(); // stores state locally, don't use t
 var bruteforce = new ExpressBrute(store);
 const favicon = require('serve-favicon');
 const PythonShell = require('python-shell');
+const sha256 = require('js-sha256');
+
 
 var log = path.dirname(require.main.filename) + '/logs/users.log';
 
@@ -269,10 +271,10 @@ router.get('/:id',ensureAuthenticated, (req,res) => {
 	})
 });
 
-router.get('/verify/check/:id', ensureAuthenticated, (req,res)=>{
-	if(req.params.id==req.user.id)
+router.get('/verify/check/:hash', ensureAuthenticated, (req,res)=>{
+	if(sha256(req.user.id) == req.params.hash)
 	{
-		User.findOne({_id: req.params.id})
+		User.findOne({_id: req.user.id})
 		.then((User)=>{
 			User.Verified = true;
 			User.save();
@@ -280,7 +282,7 @@ router.get('/verify/check/:id', ensureAuthenticated, (req,res)=>{
 			res.redirect('/');
 		})
 	}else{
-		req.flash('error_msg', 'Couldnt verify. Either this is not a valid request, or try again.');
+		req.flash('error_msg', 'That is not a valid verification link.');
 		res.redirect('/'); 
 	}
 
@@ -295,9 +297,9 @@ router.get('/verify/verifyme', ensureAuthenticated, bruteforce.prevent, (req,res
 		res.redirect('/'); 
 	}
 	var options = {
-	  args: [mailman.uid, mailman.pwd, mailman.fromAddr, req.headers.host + '/user/verify/check/' + req.user.id , '--title', 'Verification', '--recipient', 'e'+req.user.userID.substring(0, 6)+'@metu.edu.tr']
+		pythonOptions: ['-u'],
+	  	args: [mailman.uid, mailman.pwd, mailman.fromAddr, req.headers.host + '/user/verify/check/' + sha256(req.user.id) , '--title', 'Verification Code', '--recipient', 'e'+req.user.userID.substring(0, 6)+'@metu.edu.tr']
 	};
-
 	PythonShell.run(path.dirname(require.main.filename) + '/python/MailSender.py', options,(err, results) => {
 	  if (err) throw err;
 	  // results is an array consisting of messages collected during execution
