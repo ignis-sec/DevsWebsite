@@ -45,6 +45,9 @@ const UserSchema = new Schema({
 	GithubName:{
 		type:String,
 		required:false
+	},
+	Verified:{
+		type:Boolean
 	}
 });
 

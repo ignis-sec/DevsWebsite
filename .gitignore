@@ -2,3 +2,4 @@
 /scavenger-private
 /logs
 /config/database.js
+/config/mailman.js

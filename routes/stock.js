@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
-const {ensureAuthenticated, ensureAdmin} = require('../helpers/auth') //this is called destructuring
+const {ensureAuthenticated, ensureAdmin, ensureVerified} = require('../helpers/auth') //this is called destructuring
 const fs = require('fs');
 const moment = require('moment');
 const path = require('path');
@@ -20,7 +20,7 @@ require('../models/Request');
 const Request = mongoose.model('Request');
 
 
-router.get('/',ensureAuthenticated, (req,res) => {
+router.get('/', ensureAuthenticated, (req,res) => {
 	Item.find({})
 	.sort({dateAdded: -1})
 	.then(Items =>{
@@ -31,11 +31,11 @@ router.get('/',ensureAuthenticated, (req,res) => {
 	})
 });
 
-router.get('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
+router.get('/new', ensureAdmin,  (req,res) => {
 	res.render('stock/addItem',{title: 'New Item - Metu Developers'})
 });
 
-router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
+router.post('/new', ensureAdmin,  (req,res) => {
 	const newItem = {
 		name: req.body.name,
 		ItemID:req.body.id,
@@ -57,7 +57,7 @@ router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 });
 
 
-router.get('/edit/:id',ensureAuthenticated, ensureAdmin,  (req,res) => { 
+router.get('/edit/:id', ensureAdmin,  (req,res) => { 
 	Item.findOne({//returns only 1 result
 		_id: req.params.id
 	})
@@ -70,7 +70,7 @@ router.get('/edit/:id',ensureAuthenticated, ensureAdmin,  (req,res) => {
 });
 
 
-router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
+router.put('/:id', ensureAdmin,  (req,res) =>{
 	Item.findOne({
 		_id: req.params.id
 	})
@@ -94,7 +94,7 @@ router.put('/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
 	})	
 })
 
-router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE request 
+router.delete('/:id',  ensureAdmin,  (req,res) => {	//DELETE request 
 	
 	Item.findOne({
 		_id:req.params.id
@@ -127,7 +127,7 @@ router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////STOCK REQUESTS AND REQUEST FORMS
 
-router.get('/request/:id',ensureAuthenticated,  (req,res) => { 
+router.get('/request/:id',ensureVerified,  (req,res) => { 
 	Item.findOne({//returns only 1 result
 		_id: req.params.id
 	})
@@ -138,7 +138,7 @@ router.get('/request/:id',ensureAuthenticated,  (req,res) => {
 
 
 
-router.post('/request/:id',ensureAuthenticated, (req,res) =>{
+router.post('/request/:id',ensureVerified, (req,res) =>{
 	Item.findOne({
 		_id: req.params.id
 	})
@@ -167,7 +167,7 @@ router.post('/request/:id',ensureAuthenticated, (req,res) =>{
 	});
 })
 
-router.get('/requests',ensureAuthenticated, ensureAdmin, (req,res) => {
+router.get('/requests', ensureAdmin, (req,res) => {
 	Request.find({})
 	.sort({Pending: -1, Returned: 1, Date: -1})
 	.then(Requests =>{
@@ -204,7 +204,7 @@ router.get('/requests',ensureAuthenticated, ensureAdmin, (req,res) => {
 	})
 });
 
-router.get('/requests/approve/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
+router.get('/requests/approve/:id', ensureAdmin,  (req,res) =>{
 	Request.findOne({
 		_id: req.params.id
 	})
@@ -233,7 +233,7 @@ router.get('/requests/approve/:id',ensureAuthenticated, ensureAdmin,  (req,res) 
 	})	
 })
 
-router.get('/requests/revoke/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
+router.get('/requests/revoke/:id', ensureAdmin,  (req,res) =>{
 	Request.findOne({
 		_id: req.params.id
 	})
@@ -264,7 +264,7 @@ router.get('/requests/revoke/:id',ensureAuthenticated, ensureAdmin,  (req,res) =
 	})	
 })
 
-router.get('/requests/return/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
+router.get('/requests/return/:id', ensureAdmin,  (req,res) =>{
 	Request.findOne({
 		_id: req.params.id
 	})
@@ -302,14 +302,13 @@ router.get('/requests/delete/:id',ensureAuthenticated, (req,res) =>{
 			if(req.user.admin || Request.User == req.user.userID)
 			{
 				Request.remove({_id: req.params.id});
+				//LOG
+				fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+					"REQUEST DELETED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
+					", Item: "+ Request.ItemName +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+				//LOG
+				//req.flash('success_msg', 'Request Revoked.');
 			}
-
-			//LOG
-			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-				"REQUEST DELETED: by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
-				", Item: "+ Request.ItemName +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
-			//LOG
-			//req.flash('success_msg', 'Request Revoked.');
 			if(req.user.admin)
 			{
 				res.redirect('/stock/requests');
@@ -319,7 +318,7 @@ router.get('/requests/delete/:id',ensureAuthenticated, (req,res) =>{
 	})	
 
 
-router.post('/requests/decline/:id',ensureAuthenticated, ensureAdmin,  (req,res) =>{
+router.post('/requests/decline/:id', ensureAdmin,  (req,res) =>{
 	Request.findOne({
 		_id: req.params.id
 	})

@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
-const {ensureAuthenticated, ensureAdmin} = require('../helpers/auth') //this is called destructuring
+const {ensureAuthenticated, ensureAdmin, ensureVerified} = require('../helpers/auth') //this is called destructuring
 const fs = require('fs');
 const moment = require('moment');
 const path = require('path')
@@ -11,6 +11,7 @@ const ExpressBrute = require('express-brute');
 var store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production 
 var bruteforce = new ExpressBrute(store);
 const favicon = require('serve-favicon');
+const PythonShell = require('python-shell');
 
 var log = path.dirname(require.main.filename) + '/logs/users.log';
 
@@ -39,10 +40,10 @@ router.get('/logout', (req,res) => {
 	res.redirect('/');
 });
 
+const mailman = require('../config/mailman');
 
 
-
-router.post('/register', (req,res) => {
+router.post('/register',bruteforce.prevent, (req,res) => {
 	let errors = [];
 	//this part is protection against attacker skipping clientside form check and posting custom json file
 
@@ -176,7 +177,7 @@ router.post('/login',bruteforce.prevent, (req,res,next) => {
 });
 
 
-router.get('/userlist',ensureAuthenticated, ensureAdmin, (req,res) => {
+router.get('/userlist', ensureAdmin, (req,res) => {
 	User.find({})
 	.sort({userID: -1})
 	.then(Users =>{
@@ -188,7 +189,7 @@ router.get('/userlist',ensureAuthenticated, ensureAdmin, (req,res) => {
 });
 
 
-router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {	//DELETE request 
+router.delete('/:id', ensureAdmin,  (req,res) => {	//DELETE request 
 	User.findOne({
 		_id:req.params.id
 	}).then(User =>{
@@ -234,21 +235,33 @@ router.get('/:id',ensureAuthenticated, (req,res) => {
 				Requests[i].timeago = moment(Requests[i].DADate).fromNow();
 			}	
 		}
-			if(req.user.id == User.id || req.user.admin)
+			if(req.user.id == User.id)
 			{
 				res.render('user/profile', { //if it is your profile
 				ThisUser:User,
 				Requests:Requests,
 				RequestPermission:1,
-
+				My:1,
 				title:User.name + ' - Metu Developers'
 			})
-			}else{
+			}else if(req.user.admin){
+
+				res.render('user/profile', { //if it is your profile
+				ThisUser:User,
+				Requests:Requests,
+				RequestPermission:1,
+				My:0,
+				title:User.name + ' - Metu Developers'
+			})
+			}
+
+			else{
 				res.render('user/profile', { //if it is not your profile
 				ThisUser:User,
 				Requests:Requests,
 				RequestPermission:0,
-				title:User.name + ' - Metu Developers'
+				title:User.name + ' - Metu Developers',
+				My:1
 			})	
 			}
 		})
@@ -256,6 +269,41 @@ router.get('/:id',ensureAuthenticated, (req,res) => {
 	})
 });
 
+router.get('/verify/check/:id', ensureAuthenticated, (req,res)=>{
+	if(req.params.id==req.user.id)
+	{
+		User.findOne({_id: req.params.id})
+		.then((User)=>{
+			User.Verified = true;
+			User.save();
+			req.flash('success_msg', 'Account verified.');
+			res.redirect('/');
+		})
+	}else{
+		req.flash('error_msg', 'Couldnt verify. Either this is not a valid request, or try again.');
+		res.redirect('/'); 
+	}
 
 
-					
+})
+
+router.get('/verify/verifyme', ensureAuthenticated, bruteforce.prevent, (req,res)=>{
+
+	if(req.user.Verified)
+	{
+		req.flash('error_msg', 'Your account is already verified');
+		res.redirect('/'); 
+	}
+	var options = {
+	  args: [mailman.uid, mailman.pwd, mailman.fromAddr, req.headers.host + '/user/verify/check/' + req.user.id , '--title', 'Verification', '--recipient', 'e'+req.user.userID.substring(0, 6)+'@metu.edu.tr']
+	};
+
+	PythonShell.run(path.dirname(require.main.filename) + '/python/MailSender.py', options,(err, results) => {
+	  if (err) throw err;
+	  // results is an array consisting of messages collected during execution
+	  console.log('results: %j', results);
+	});
+	req.flash('success_msg', 'Verification mail sent to your metu mail.');
+		res.redirect('/');
+
+})					
