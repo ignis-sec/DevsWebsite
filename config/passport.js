@@ -5,8 +5,6 @@ const fs = require('fs');
 const moment = require('moment');
 const path = require('path')
 
-var log = path.dirname(require.main.filename) + '/logs/users.log';
-
 //Load user model from mongoose
 
 require('../models/User');

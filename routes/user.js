@@ -38,6 +38,7 @@ router.get('/register', (req,res) => {
 });
 
 router.get('/login', (req,res) => {
+	req.flash('fromAddr', res.locals.fromAddr[0])
 	res.render('user/login',{title:'Login - Metu Developers'});
 });
 
@@ -173,7 +174,8 @@ router.post('/login',bruteforce.prevent, (req,res,next) => {
 			//login function from passport
 			req.logIn(user, function(err) {
      			if (err) { return next(err); }
-     			return res.redirect('/');
+     			if(res.locals.fromAddr[0]) return res.redirect(res.locals.fromAddr[0]);
+     			else return res.redirect('/');
     			});
 			
 			}

@@ -116,6 +116,7 @@ app.use(function(req,res,next){
 	res.locals.error_msg = req.flash('error_msg');
 	res.locals.error = req.flash('error');
 	res.locals.user = req.user || null; //if there is no user passed, set null
+  res.locals.fromAddr = req.flash('fromAddr');
 	next();
 });
 
