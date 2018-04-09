@@ -60,7 +60,7 @@ router.delete('/:id',  ensureAdmin,  (req,res) => {
 		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
 			"ANNOUNCEMENT REMOVED:   by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Title: "+ req.body.title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
 		//LOG
-		res.render('announcements/editAnnouncement', {Announcement:Announcement,title: 'Edit Announcement - Metu Developers'})
+		res.redirect('/');
 	})
 	
 });
