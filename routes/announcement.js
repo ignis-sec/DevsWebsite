@@ -6,8 +6,12 @@ const fs = require('fs');
 const moment = require('moment');
 const path = require('path')
 const favicon = require('serve-favicon');
+const PythonShell = require('python-shell');
 
 var log = path.dirname(require.main.filename) + '/logs/users.log';
+
+const mailman = require('../config/mailman');
+
 
 module.exports = router;
 
@@ -17,14 +21,14 @@ router.use(favicon('./public/Images/favicon.ico'));
 var log = path.dirname(require.main.filename) + '/logs/announcements.log';
 
 
-router.get('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
+router.get('/new',  ensureAdmin,  (req,res) => {
 	res.render('announcements/addAnnouncement', {title: 'Announce something - Metu Developers'})
 });
 
 require('../models/Announcement');
 const Announcement = mongoose.model('Announcement');
 
-router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
+router.post('/new',  ensureAdmin,  (req,res) => {
 	const newAnnouncement = {
 		Title: req.body.title,
 		Body:req.body.desc,
@@ -42,14 +46,14 @@ router.post('/new',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 	})
 });
 
-router.get('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {
+router.get('/:id',  ensureAdmin,  (req,res) => {
 	Announcement.findOne({_id:req.params.id}).then((Announcement)=>{
 		res.render('announcements/editAnnouncement', {Announcement:Announcement,title: 'Edit Announcement - Metu Developers'})
 	})
 	
 });
 
-router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {
+router.delete('/:id',  ensureAdmin,  (req,res) => {
 	Announcement.findOne({_id:req.params.id}).then((Announcement)=>{
 		Announcement.remove();
 		//LOG
@@ -62,7 +66,7 @@ router.delete('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 });
 
 
-router.put('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {
+router.put('/:id',  ensureAdmin,  (req,res) => {
 	Announcement.findOne({
 		_id: req.params.id
 	})
@@ -84,3 +88,19 @@ router.put('/:id',ensureAuthenticated,  ensureAdmin,  (req,res) => {
 	
 });
 					
+router.get('/mail/new',  ensureAdmin,  (req,res) => {
+	res.render('announcements/newMassMail', {title: 'Mass Email - Metu Developers'})
+});
+
+router.post('/mail/new',  ensureAdmin,  (req,res) => {
+	var options = {
+		pythonOptions: ['-u'],
+	  	args: [mailman.uid, mailman.pwd, mailman.fromAddr, req.body.body  , '--title', req.body.title]
+	};
+	PythonShell.run(path.dirname(require.main.filename) + '/python/MailSender/MailSender.py', options,(err, results) => {
+	  if (err) throw err;
+	  // results is an array consisting of messages collected during execution
+	  console.log('results: %j', results);
+	});
+	res.redirect('/');
+});

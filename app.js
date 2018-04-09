@@ -13,7 +13,7 @@ const passport = require('passport');
 const fs = require('fs');
 const moment = require('moment');
 const favicon = require('serve-favicon');
-
+const {ensureAuthenticated, ensureAdmin, ensureVerified} = require('./helpers/auth')
 
 //Log file directories
 var log = __dirname + '/logs/app.log';
@@ -158,7 +158,7 @@ app.get('/', (req,res) => {
 });
 
 
-app.get('/duckduckgoose', (req,res) => {
+app.get('/duckduckgoose', ensureAuthenticated, (req,res) => {
   res.render('scavenger')
 });
 

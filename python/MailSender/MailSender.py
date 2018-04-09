@@ -1,4 +1,5 @@
-#Author: github.com/morph3
+    #Author: github.com/morph3
+import os
 import smtplib
 import argparse
 from email.mime.text import MIMEText
@@ -58,7 +59,6 @@ if __name__ == "__main__":
     parser.add_argument("message", help="Message")
     parser.add_argument("--title", help="Mail Subject")
     
-
     args = parser.parse_args() 
     uid = args.uid
     pwd = args.pwd
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     if args.recipient:
         session(uid, pwd, fromAddr, args.recipient,0, title, message)
     else:
-        with open("emails.list", "r") as file:
+        with open(os.path.dirname(os.path.realpath(__file__))+"/emails.list", "r") as file:
             for item in file:
                 session(uid, pwd, fromAddr, item,0, title, message)
             file.close()

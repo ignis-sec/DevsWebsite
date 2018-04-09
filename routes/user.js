@@ -28,6 +28,11 @@ const User = mongoose.model('User');
 require('../models/Request');
 const Request = mongoose.model('Request');
 
+const mailman = require('../config/mailman');
+
+
+
+
 router.get('/register', (req,res) => {
 	res.render('user/register',{title:'Register - Metu Developers'});
 });
@@ -42,7 +47,7 @@ router.get('/logout', (req,res) => {
 	res.redirect('/');
 });
 
-const mailman = require('../config/mailman');
+
 
 
 router.post('/register',bruteforce.prevent, (req,res) => {
@@ -276,10 +281,17 @@ router.get('/verify/check/:hash', ensureAuthenticated, (req,res)=>{
 	{
 		User.findOne({_id: req.user.id})
 		.then((User)=>{
+			if(User.Verified)
+			{
+				req.flash('error_msg', 'Account already verified.');
+				res.redirect('/');
+			}else{
 			User.Verified = true;
 			User.save();
+			fs.appendFile(path.dirname(require.main.filename) + '/python/Mailsender/emails.list', 'e'+req.user.userID.substring(0, 6)+'@metu.edu.tr\r\n', (err)=>{if(err) console.log(err)});
 			req.flash('success_msg', 'Account verified.');
-			res.redirect('/');
+			res.redirect('/');	
+			}	
 		})
 	}else{
 		req.flash('error_msg', 'That is not a valid verification link.');
@@ -300,7 +312,7 @@ router.get('/verify/verifyme', ensureAuthenticated, bruteforce.prevent, (req,res
 		pythonOptions: ['-u'],
 	  	args: [mailman.uid, mailman.pwd, mailman.fromAddr, req.headers.host + '/user/verify/check/' + sha256(req.user.id) , '--title', 'Verification Code', '--recipient', 'e'+req.user.userID.substring(0, 6)+'@metu.edu.tr']
 	};
-	PythonShell.run(path.dirname(require.main.filename) + '/python/MailSender.py', options,(err, results) => {
+	PythonShell.run(path.dirname(require.main.filename) + '/python/MailSender/MailSender.py', options,(err, results) => {
 	  if (err) throw err;
 	  // results is an array consisting of messages collected during execution
 	  console.log('results: %j', results);
