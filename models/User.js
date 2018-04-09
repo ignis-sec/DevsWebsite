@@ -48,6 +48,9 @@ const UserSchema = new Schema({
 	},
 	Verified:{
 		type:Boolean
+	},
+	VerifyTime:{
+		type:Date
 	}
 });
 

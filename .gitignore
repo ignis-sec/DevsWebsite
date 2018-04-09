@@ -3,3 +3,4 @@
 /logs
 /config/database.js
 /config/mailman.js
+/python/MailSender/emails.list

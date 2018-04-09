@@ -277,22 +277,29 @@ router.get('/:id',ensureAuthenticated, (req,res) => {
 });
 
 router.get('/verify/check/:hash', ensureAuthenticated, (req,res)=>{
-	if(sha256(req.user.id) == req.params.hash)
+	if(sha256(req.user.id+String(req.user.VerifyTime)) == req.params.hash)
 	{
-		User.findOne({_id: req.user.id})
-		.then((User)=>{
-			if(User.Verified)
-			{
-				req.flash('error_msg', 'Account already verified.');
-				res.redirect('/');
-			}else{
-			User.Verified = true;
-			User.save();
-			fs.appendFile(path.dirname(require.main.filename) + '/python/Mailsender/emails.list', 'e'+req.user.userID.substring(0, 6)+'@metu.edu.tr\r\n', (err)=>{if(err) console.log(err)});
-			req.flash('success_msg', 'Account verified.');
-			res.redirect('/');	
-			}	
-		})
+		if(Date.now() - req.user.VerifyTime >= 5*60*1000)//5 minutes
+		{
+			req.flash('error_msg', 'That verification code timed out.');
+			res.redirect('/'); 
+		}else{
+			User.findOne({_id: req.user.id})
+			.then((User)=>{
+				if(User.Verified)
+				{
+					req.flash('error_msg', 'Account already verified.');
+					res.redirect('/');
+				}else{
+				User.Verified = true;
+				User.save();
+				fs.appendFile(path.dirname(require.main.filename) + '/python/Mailsender/emails.list', 'e'+req.user.userID.substring(0, 6)+'@metu.edu.tr\r\n', (err)=>{if(err) console.log(err)});
+				req.flash('success_msg', 'Account verified.');
+				res.redirect('/');	
+				}	
+			})
+		}
+		
 	}else{
 		req.flash('error_msg', 'That is not a valid verification link.');
 		res.redirect('/'); 
@@ -308,16 +315,22 @@ router.get('/verify/verifyme', ensureAuthenticated, bruteforce.prevent, (req,res
 		req.flash('error_msg', 'Your account is already verified');
 		res.redirect('/'); 
 	}
-	var options = {
-		pythonOptions: ['-u'],
-	  	args: [mailman.uid, mailman.pwd, mailman.fromAddr, req.headers.host + '/user/verify/check/' + sha256(req.user.id) , '--title', 'Verification Code', '--recipient', 'e'+req.user.userID.substring(0, 6)+'@metu.edu.tr']
-	};
-	PythonShell.run(path.dirname(require.main.filename) + '/python/MailSender/MailSender.py', options,(err, results) => {
-	  if (err) throw err;
-	  // results is an array consisting of messages collected during execution
-	  console.log('results: %j', results);
-	});
-	req.flash('success_msg', 'Verification mail sent to your metu mail.');
-		res.redirect('/');
+	User.findOne({_id: req.user.id})
+	.then((User)=>{
+		User.VerifyTime = Date.now();
+		User.save();
+		var options = {
+			pythonOptions: ['-u'],
+	  		args: [mailman.uid, mailman.pwd, mailman.fromAddr, req.headers.host + '/user/verify/check/' + sha256(req.user.id+String(User.VerifyTime)) , '--title', 'Verification Code', '--recipient', 'e'+req.user.userID.substring(0, 6)+'@metu.edu.tr']
+		};
+		PythonShell.run(path.dirname(require.main.filename) + '/python/MailSender/MailSender.py', options,(err, results) => {
+		  if (err) throw err;
+		  // results is an array consisting of messages collected during execution
+		  console.log('results: %j', results);
+		});
+		req.flash('success_msg', 'Verification mail sent to your metu mail.');
+			res.redirect('/');
+	})
+	
 
 })					
