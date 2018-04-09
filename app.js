@@ -130,12 +130,13 @@ const user = require('./routes/user');
 const stock = require('./routes/stock');
 const announcement = require('./routes/announcement');
 const main = require('./routes/main');
+const contact = require('./routes/contact');
 
 app.use('/projects', projects);
 app.use('/user', user);
 app.use('/stock', stock);
 app.use('/announcement', announcement);
-
+app.use('/contact', contact);
 
 
 require('./models/Announcement');

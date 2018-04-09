@@ -1,0 +1,28 @@
+
+
+<div class="card card-body" style="width:80vw">
+	<h3>Edit Contact </h3>
+	<form action="/contact/{{Contact.id}}?_method=PUT" method="post">
+		<div class="form-group">
+			<input type="hidden" name="_method" value="PUT">
+			<label for="title"> Name </label>
+			<input type="text" class="form-control" name="name" value="{{Contact.Name}}">
+
+			<label for="title"> Phone </label>
+			<input type="phone" class="form-control" name="phone" value="{{Contact.Phone}}">
+
+			<label for="title"> Mail </label>
+			<input type="text" class="form-control" name="mail" value="{{Contact.Mail}}">
+
+			<label for="title"> Info </label>
+			<textarea class="form-control" name="info" style="height:50vh">{{Contact.Info}}</textarea>
+
+		</div>
+		<button type="submit" class="btn btn-primary"> Edit </button>
+	</form>
+		<form action="/contact/{{Contact.id}}?_method=DELETE" method="post">
+			<input type="hidden" name="_method" value="DELETE">
+			<input type="submit" class="btn btn-danger"value="DELETE DIS" style="margin-top:15px">
+		</form>
+
+</div>

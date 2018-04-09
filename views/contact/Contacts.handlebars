@@ -1,0 +1,18 @@
+{{#each Contacts}}
+	<a class="card card-body" style="z-index:0; width:70vw; height:50px; padding:3px; " href="/contact/{{id}}"> 
+		<table>
+			<tr>
+				<td style="width:10%; padding-top:7px"><p> {{Name}} </p></td>
+				<td style="width:45%;padding-top:7px"><p> {{Phone}} </p></td>
+				<td style="width:5%;padding-top:7px"><p>{{Mail}} </p></td>
+				<form action="/contact/{{id}}?_method=DELETE" method="post">
+					<input type="hidden" name="_method" value="DELETE">
+					<td><input type="submit" class="btn btn-danger"value="Remove" style="margin-top:0px; float:right;width:10vw"></td>
+				</form>
+			</tr>
+		</table>
+	</a>
+{{else}}
+		<p> Something went wrong.</p>
+{{/each}}
+<a href="/contacts/new" class="btn btn-primary btn-block" style="width:70vw"> Add New Contact</a>
