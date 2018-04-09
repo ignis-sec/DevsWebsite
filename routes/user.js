@@ -55,6 +55,9 @@ router.post('/register',bruteforce.prevent, (req,res) => {
 	let errors = [];
 	//this part is protection against attacker skipping clientside form check and posting custom json file
 
+	if(isNaN(req.body.ID)){
+		errors.push({text:'Your student number can only contain numbers.'});
+	}
 	if(req.body.ID.length!=7){
 		errors.push({text:'Please enter your 7 digit metu student number.'});
 	}
