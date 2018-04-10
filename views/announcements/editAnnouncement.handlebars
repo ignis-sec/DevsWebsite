@@ -1,5 +1,5 @@
 
-
+<script src="/script/allowtab.js"></script>
 <div class="card card-body" style="width:80vw">
 	<h3> Edit Announcement </h3>
 	<form action="/announcement/{{Announcement.id}}?_method=PUT" method="post">
@@ -8,7 +8,7 @@
 			<input type="text" class="form-control" name="title" value="{{Announcement.Title}}" required>
 
 			<label for="title"> Body </label>
-			<textarea class="form-control" name="desc" style="height:50vh">{{Announcement.Body}}</textarea>
+			<textarea id="body" class="form-control" name="desc" style="height:50vh">{{Announcement.Body}}</textarea>
 		</div>
 		<button type="submit" class="btn btn-primary"> Edit </button>
 		

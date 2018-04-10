@@ -1,5 +1,5 @@
 
-
+<script src="/script/allowtab.js"></script>
 <div class="card card-body" style="width:80vw">
 	<h3> Announce </h3>
 	<form action="/announcement/new" method="post">
@@ -9,7 +9,7 @@
 			<input type="text" class="form-control" name="title"  required>
 
 			<label for="title"> Body </label>
-			<textarea class="form-control" name="desc" style="height:50vh"></textarea>
+			<textarea id="body" class="form-control" name="desc" style="height:50vh"></textarea>
 
 		</div>
 		<button type="submit" class="btn btn-primary"> Add </button>
