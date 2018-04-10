@@ -24,9 +24,11 @@ module.exports = {
 			res.redirect('/user/login');
 		}else if(req.user.Verified==true){
 			return next();
+		}else{
+			req.flash('error_msg', 'You have to verify your account first.');
+			res.redirect('/');
 		}
-		req.flash('error_msg', 'You have to verify your account first.');
-		res.redirect('/');
+		
 	}
 
 }
