@@ -13,7 +13,7 @@ const ProjectSchema = new Schema({
 		type:String,
 		required:false
 	},
-	permalink:{
+	pdfLink:{
 		type:String,
 		required:true
 	},

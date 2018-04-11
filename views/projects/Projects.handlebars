@@ -2,7 +2,7 @@
 	<a class="card card-body" style="z-index:0; width:80vw" href="/projects/details/{{_id}}">
 		<h4> {{Title}}</h4>
 		<p>{{Description}} </p>
-		<p> More info: {{permalink}} </p>
+		<p> More info: {{../Host}}{{pdfLink}} </p>
 		<p href="{{gitRepoLink}}"> Github: {{gitRepoLink}} </p>
 		<table>
 			<tr>
@@ -11,7 +11,7 @@
 			</tr>
 		</table>
 		{{#if ../user.admin}}
-			<btn class="btn btn-dark btn-block" href="/projects/edit/{{_id}}"> Edit </btn>
+			<btn class="btn btn-dark btn-block" href="/projects/edit/{{_id}}" style="z-index:3;"> Edit </btn>
 		{{/if}}
 	</a>
 	{{else}}

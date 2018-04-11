@@ -38,6 +38,7 @@ router.get('/',ensureVerified, (req,res) => {
 	    }
 		res.render('projects/Projects',{ 	//pass Projects to the page into tag with the name "Projects"
 			Projects:Projects,
+			Host: req.headers.host,
 			title: 'Ongoing Projects - Metu Developers'
 		})
 	})
@@ -78,7 +79,7 @@ router.put('/:id/', ensureAdmin,  (req,res) =>{
 		Project.Description = req.body.Description;
 		Project.gitRepoLink = req.body.github;
 		Project.date = req.body.date;
-
+		Project.pdfLink = req.body.pdf;
 		//LOG
 		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
 			"PROJECT EDITED:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ Project.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
@@ -118,7 +119,7 @@ router.post('/new', ensureAdmin,  (req,res) => {
 	const newProject = {
 		Title: req.body.title,
 		Description:req.body.desc,
-		permalink:"FILL THIS UP",
+		pdfLink:"FILL THIS UP",
 		gitRepoLink:req.body.github,
 		date: req.body.date,
 		active:true
@@ -146,7 +147,7 @@ router.get('/details/:id/', ensureAdmin,  (req,res) => {
 			res.render('projects/ProjectDetails',{
 			Project:Project, 	//pass Project to the page into tag with the name "Project"
 			title: Project.Title + ' - Metu Developers',
-			PDFDir: '/projects/' + Project.Title 
+			PDFDir: Project.pdfLink 
 		});	
 	})
 });

@@ -15,6 +15,6 @@ router.use(favicon('./public/Images/favicon.ico'));
 
 
 router.get('/:dir', ensureVerified, (req,res) =>{
-	res.sendFile(path.join(path.dirname(require.main.filename) +  decodeURI(decodeURIComponent(req.params.dir)) + '.pdf'))
+	res.sendFile(path.join(path.dirname(require.main.filename) +  decodeURI(decodeURIComponent(req.params.dir))))
 
 })
