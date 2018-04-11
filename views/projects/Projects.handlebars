@@ -1,5 +1,6 @@
 	{{#each Projects}}
-	<a class="card card-body" style="z-index:0; width:80vw" href="/projects/details/{{_id}}">
+	<div class="card card-body" style="z-index:1; width:80vw">
+	<a href="/projects/details/{{id}}">
 		<h4> {{Title}}</h4>
 		<p>{{Description}} </p>
 		<p> More info: {{../Host}}{{pdfLink}} </p>
@@ -10,10 +11,11 @@
 				<td><p style="text-align:right"> {{time}} </p></td>
 			</tr>
 		</table>
-		{{#if ../user.admin}}
-			<btn class="btn btn-dark btn-block" href="/projects/edit/{{_id}}" style="z-index:3;"> Edit </btn>
-		{{/if}}
 	</a>
+		{{#if ../user.admin}}
+			<a class="btn btn-dark btn-block" href="/projects/edit/{{_id}}" style="z-index:3;"> Edit </a>
+		{{/if}}
+	</div>
 	{{else}}
 			<p> Something went wrong.</p>
 	{{/each}}
