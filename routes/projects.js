@@ -13,6 +13,15 @@ module.exports = router;
 
 //icon
 router.use(favicon('./public/Images/favicon.ico'));
+router.get('/details/favicon.ico', (req,res) =>{
+	res.status(204);
+})
+router.get('/edit/favicon.ico', (req,res) =>{
+	res.status(204);
+})
+
+
+
 
 require('../models/Project');
 const Project = mongoose.model('Project');
@@ -34,7 +43,7 @@ router.get('/',ensureVerified, (req,res) => {
 	})
 });
 
-router.get('/edit/:id', ensureAdmin,  (req,res) => { 
+router.get('/edit/:id/', ensureAdmin,  (req,res) => { 
 	Project.findOne({//returns only 1 result
 		_id: req.params.id
 	})
@@ -47,7 +56,20 @@ router.get('/edit/:id', ensureAdmin,  (req,res) => {
 	})
 });
 
-router.put('/:id', ensureAdmin,  (req,res) =>{
+router.get('/edit/:id/', ensureAdmin,  (req,res) => { 
+	Project.findOne({//returns only 1 result
+		_id: req.params.id
+	})
+	.then(Project =>{
+		Project.dateformatted = moment(Project.date).format('YYYY-MM-DD');
+			res.render('projects/editProject',{
+			Project:Project, 	//pass Project to the page into tag with the name "Project"
+			title: 'Edit Project' + Project.Title + ' - Metu Developers'
+		});	
+	})
+});
+
+router.put('/:id/', ensureAdmin,  (req,res) =>{
 	Project.findOne({
 		_id: req.params.id
 	})
@@ -73,7 +95,7 @@ router.put('/:id', ensureAdmin,  (req,res) =>{
 
 
 
-router.delete('/:id',  ensureAdmin,  (req,res) => {	//DELETE request 
+router.delete('/:id/',  ensureAdmin,  (req,res) => {	//DELETE request 
 	//LOG
 	Project.findOne({
 		_id:req.params.id
@@ -116,3 +138,16 @@ router.post('/new', ensureAdmin,  (req,res) => {
 router.get('/new', ensureAdmin,  (req,res) => {
 	res.render('projects/addProject', {title: 'New Project - Metu Developers'})
 });
+
+router.get('/details/:id/', ensureAdmin,  (req,res) => { 
+	Project.findOne({_id: req.params.id})
+	.then(Project =>{
+		Project.dateformatted = moment(Project.date).format('YYYY-MM-DD');
+			res.render('projects/ProjectDetails',{
+			Project:Project, 	//pass Project to the page into tag with the name "Project"
+			title: Project.Title + ' - Metu Developers',
+			PDFDir: '/projects/' + Project.Title 
+		});	
+	})
+});
+

@@ -13,6 +13,25 @@ module.exports = router;
 
 //icon
 router.use(favicon('./public/Images/favicon.ico'));
+router.get('/edit/favicon.ico', (req,res) =>{
+	res.status(204);
+})
+router.get('/requests/favicon.ico', (req,res) =>{
+	res.status(204);
+})
+router.get('/requests/approve/favicon.ico', (req,res) =>{
+	res.status(204);
+})
+router.get('/requests/revoke/favicon.ico', (req,res) =>{
+	res.status(204);
+})
+router.get('/requests/return/favicon.ico', (req,res) =>{
+	res.status(204);
+})
+router.get('/requests/delete/favicon.ico', (req,res) =>{
+	res.status(204);
+})
+
 
 require('../models/Item');
 const Item = mongoose.model('Item');

@@ -1,0 +1,11 @@
+<script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+<div id="pdfContainer" style="width:80vw; padding:0" >
+	<p id="PDFDir" style="font-size:0;">{{PDFDir}}</p>
+  <btn class="btn btn-dark" id="prev">Previous</btn>
+  <btn class="btn btn-dark" id="next">Next</btn>
+  &nbsp; &nbsp;
+  <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
+  <canvas id="the-canvas"></canvas>
+
+</div>
+<script src="/script/embedPDF.js"> </script>

@@ -131,12 +131,14 @@ const stock = require('./routes/stock');
 const announcement = require('./routes/announcement');
 const main = require('./routes/main');
 const contact = require('./routes/contact');
+const pdf = require('./routes/pdf');
 
 app.use('/projects', projects);
 app.use('/user', user);
 app.use('/stock', stock);
 app.use('/announcement', announcement);
 app.use('/contact', contact);
+app.use('/pdf', pdf);
 
 
 require('./models/Announcement');
@@ -160,8 +162,12 @@ app.get('/', (req,res) => {
 });
 
 
+
+
 app.get('/duckduckgoose', ensureAuthenticated, (req,res) => {
   res.render('scavenger')
 });
+
+
 
 

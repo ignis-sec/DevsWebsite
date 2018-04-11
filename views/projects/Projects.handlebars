@@ -1,38 +1,20 @@
-{{#if user.admin}}
 	{{#each Projects}}
-		<tc class="card card-body" style="z-index:0; width:80vw"> 
-			<h4> {{Title}}</h4>
-			<p>{{Description}} </p>
-			<p> More info: {{permalink}} </p>
-			<p>Github: <a href="{{gitRepoLink}}">{{gitRepoLink}} </a></p>
-			<table>
+	<a class="card card-body" style="z-index:0; width:80vw" href="/projects/details/{{_id}}">
+		<h4> {{Title}}</h4>
+		<p>{{Description}} </p>
+		<p> More info: {{permalink}} </p>
+		<p href="{{gitRepoLink}}"> Github: {{gitRepoLink}} </p>
+		<table>
 			<tr>
-				<td><p> Starting: {{timeago}}</p><td>
-				<td><p style="text-align:right"> {{time}} </p><td>
+				<td><p> Starting: {{timeago}}</p></td>
+				<td><p style="text-align:right"> {{time}} </p></td>
 			</tr>
-			</table>
-			<a class="btn btn-dark btn-block" href="/projects/edit/{{_id}}"> Edit </a>
-		</tc>
+		</table>
+		{{#if ../user.admin}}
+			<btn class="btn btn-dark btn-block" href="/projects/edit/{{_id}}"> Edit </btn>
+		{{/if}}
+	</a>
 	{{else}}
 			<p> Something went wrong.</p>
 	{{/each}}
 	<a href="/projects/new" class="btn btn-primary btn-block" style="width:80vw"> Add New Project</a>
-	{{else}}
-
-	{{#each Projects}}
-		<div class="card card-body" style="z-index:0; width:80vw"> 
-			<h4> {{Title}}</h4>
-			<p>{{Description}} </p>
-			<p> More info: {{permalink}} </p>
-			<p>Github: <a href="{{gitRepoLink}}">{{gitRepoLink}} </a></p>
-			<table>
-			<tr>
-				<td><p> Starting: {{timeago}}</p><td>
-				<td><p style="text-align:right"> {{time}} </p><td>
-			</tr>
-			</table>
-		</div>
-	{{else}}
-			<p> Something went wrong.</p>
-	{{/each}}
-{{/if}}

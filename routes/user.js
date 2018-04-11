@@ -21,6 +21,14 @@ module.exports = router;
 
 //icon
 router.use(favicon('./public/Images/favicon.ico'));
+router.get('/register/favicon.ico', (req,res) =>{
+	res.status(204);
+})
+router.get('/login/favicon.ico', (req,res) =>{
+	res.status(204);
+})
+
+
 
 require('../models/User');
 const User = mongoose.model('User');

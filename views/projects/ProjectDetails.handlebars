@@ -1,0 +1,20 @@
+<div class="card card-body" style="padding:0; width:80vw" >
+	<tc class="card card-body" style="z-index:0;" href="/projects/details/{{_id}}"> 
+		<h4> {{Project.Title}}</h4>
+		<p>{{Project.Description}} </p>
+		<p>Github: <a href="{{Project.gitRepoLink}}">{{Project.gitRepoLink}} </a></p>
+		<table>
+		<tr>
+			<td><p> Starting: {{Project.timeago}}</p><td>
+			<td><p style="text-align:right"> {{Project.time}} </p><td>
+		</tr>
+		</table>
+		{{#if user.admin}}
+		<a class="btn btn-dark btn-block" href="/projects/edit/{{Project._id}}"> Edit </a>
+		{{/if}}
+	</tc>
+	<div style="padding:0">
+		<h1>PDF Documentation</h1>
+		{{> _pdfFrame}}
+	</div>
+</div>
