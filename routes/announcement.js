@@ -7,6 +7,9 @@ const moment = require('moment');
 const path = require('path')
 const favicon = require('serve-favicon');
 const PythonShell = require('python-shell');
+var mkdirp = require('mkdirp');
+var fsPath = require('fs-path');
+const fileUpload = require('express-fileupload');
 
 var log = path.dirname(require.main.filename) + '/logs/users.log';
 
@@ -14,12 +17,30 @@ const mailman = require('../config/mailman');
 
 
 module.exports = router;
-
+router.use(fileUpload());
 //icon
 router.use(favicon('./public/Images/favicon.ico'));
 
 var log = path.dirname(require.main.filename) + '/logs/announcements.log';
 
+router.get('/upload',  ensureAdmin,  (req,res) => {
+	res.render('announcements/upload', {title: 'Upload File - Metu Developers'})
+});
+
+router.post('/upload',  ensureAdmin,  (req,res) => {
+	console.log(req.body);
+	console.log(req.body.link);
+	console.log(req.body.filename);
+
+	req.files.file.mv(path.dirname(require.main.filename) + '/public/' + req.body.link, (err)=>{
+		if (err) console.log(err);
+		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+		"FILE UPLOAD:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Filename: "+ req.body.filename +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+		//LOG
+	req.flash('success_msg', 'File uploaded.');
+	res.redirect('/');
+	});
+});
 
 router.get('/new',  ensureAdmin,  (req,res) => {
 	res.render('announcements/addAnnouncement', {title: 'Announce something - Metu Developers'})
@@ -104,3 +125,7 @@ router.post('/mail/new',  ensureAdmin,  (req,res) => {
 	});
 	res.redirect('/');
 });
+
+
+
+

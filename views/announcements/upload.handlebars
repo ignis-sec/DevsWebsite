@@ -1,0 +1,14 @@
+
+<div class="card card-body" style="width:80vw">
+	<h3> Upload </h3>
+		<div class="form-group">
+			<label for="link" > Link </label>
+			<input id="link" type="text" class="form-control formelem" name="link" required>
+			<label for="Date"> File </label>
+			<input id="action" type="hidden" value="/announcement/upload">
+			<input id="sub" type="hidden" value="/announcements/">
+			{{> _dropbox}}
+			</div>
+		</div>	
+	<button class="btn btn-primary" onclick="sendForm()" > Upload </button>
+</div>

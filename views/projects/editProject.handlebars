@@ -2,30 +2,29 @@
 
 <div class="card card-body" style="width:80vw">
 	<h3> Edit Project </h3>
-	<form action="/projects/{{Project.id}}?_method=PUT" method="post">
 		<div class="form-group">
-			<input type="hidden" name="_method" value="PUT">
 			<label for="title"> Title </label>
-			<input type="text" class="form-control" name="title" value="{{Project.Title}}" required>
+			<input type="text" class="form-control formelem" name="title" value="{{Project.Title}}" required>
 
 			<label for="title"> Description </label>
-			<textarea class="form-control" name="Description">{{Project.Description}}</textarea>
+			<textarea class="form-control formelem" name="Description">{{Project.Description}}</textarea>
 
 
 			<label for="Github link"> Github link </label>
-			<input type="text" class="form-control" name="github" value="{{Project.gitRepoLink}}" required>
+			<input type="text" class="form-control formelem" name="github" value="{{Project.gitRepoLink}}" required>
 
-			<label for="Github link"> PDF link </label>
-			<input id="pdf" type="text" class="form-control" name="pdf" value="{{Project.pdfLink}}" required>
+			<label for="pdf link"> PDF link </label>
+			<input id="link" type="text" class="form-control formelem" name="pdf" value="{{#if Project.pdfLink}}{{Project.pdfLink}}{{else}}/projects/{{/if}}" required>
 
 			<label for="Date"> Date </label>
-			<input type="date" class="form-control" name="date" value="{{Project.dateformatted}}" required>
+			<input type="date" class="form-control formelem" name="date" value="{{Project.dateformatted}}" required>
 			<label for="Date"> Documentation </label>
+			<input id="sub" type="hidden" class="form-control" name="subcategory" value="/projects/">
+			<input id="action" type="hidden" value="/projects/{{Project.id}}">
 			{{> _dropbox}}
 			</div>
 		</div>
-		<button type="submit" class="btn btn-primary"> Edit </button>
-	</form>
+		<button onclick="sendForm()" class="btn btn-primary"> Edit </button>
 		<form action="/projects/{{Project.id}}?_method=DELETE" method="post">
 			<input type="hidden" name="_method" value="DELETE">
 			<input type="submit" class="btn btn-danger"value="DELETE DIS" style="margin-top:15px">

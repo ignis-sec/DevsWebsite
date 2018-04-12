@@ -1,54 +1,110 @@
-var dragDrop = require('drag-drop')
- 
+var formData, xhr;
 
+var holder = document.getElementById('holder'),
+    tests = {
+      filereader: typeof FileReader != 'undefined',
+      dnd: 'draggable' in document.createElement('span'),
+      formdata: !!window.FormData,
+      progress: "upload" in new XMLHttpRequest
+    }, 
+    support = {
+      filereader: document.getElementById('filereader'),
+      formdata: document.getElementById('formdata'),
+      progress: document.getElementById('progress')
+    },
+    acceptedTypes = {
+      'image/png': true,
+      'image/jpeg': true,
+      'image/gif': true
+    },
+    progress = document.getElementById('uploadprogress'),
+    fileupload = document.getElementById('upload');
 
-dragDrop('#dropTarget', {
-  onDrop: function (files, pos) {
-  //console.log('Here are the dropped files', files)
-  var input = document.getElementById('file');
-  var filename = document.getElementById('filename');
-  var pdf = document.getElementById('pdf');
-    pdf.value = /projects/+file.name;
-    filename.value = file.name;
-  // `files` is an Array!
-  files.forEach(function (file) {
-    pdf.value = /projects/+file.name;
-    filename.value = file.name;
- 
-    // convert the file to a Buffer that we can use!
-    var reader = new FileReader()
-    reader.addEventListener('load', function (e) {
-      // e.target.result is an ArrayBuffer
-      var arr = new Uint8Array(e.target.result)
-      var buffer = new Buffer(arr)
-      input.value=buffer;
-      // do something with the buffer!
-    })
-    reader.addEventListener('error', function (err) {
-      console.error('FileReader error' + err)
-    })
-    reader.readAsArrayBuffer(file)
-
-
-  })
-  },
-  onDragEnter: function () {
-    var target = document.getElementById('dropTarget');
-    target.style.backgroundColor = '#ff7575';
-    target.style.border = "thick dashed #ff5555"
-    target.innerHTML = '<h2 style="margin-top:60px;text-align:center;color:#565972"> Drop your files to upload </h2>'
-  },
-  onDragOver: function () {
-      var target = document.getElementById('dropTarget');
-      target.style.backgroundColor = '#ff7575';
-      target.style.border = "thick dashed #ff5555"
-      target.innerHTML = '<h2 style="margin-top:60px;text-align:center;color:#565972"> Drop your files to upload </h2>'
-  },
-  onDragLeave: function () {
-      var target = document.getElementById('dropTarget');
-      target.style.backgroundColor = "white"
-      target.style.border = "none"
-      target.innerHTML = ''
+"filereader formdata progress".split(' ').forEach(function (api) {
+  if (tests[api] === false) {
+    support[api].className = 'fail';
+  } else {
+    // FFS. I could have done el.hidden = true, but IE doesn't support
+    // hidden, so I tried to create a polyfill that would extend the
+    // Element.prototype, but then IE10 doesn't even give me access
+    // to the Element object. Brilliant.
+    support[api].className = 'hidden';
   }
-})
+});
 
+function previewfile(file) {
+  if (tests.filereader === true && acceptedTypes[file.type] === true) {
+    var reader = new FileReader();
+    reader.onload = function (event) {
+      var image = new Image();
+      image.src = event.target.result;
+      image.width = 250; // a fake resize
+      holder.appendChild(image);
+    };
+
+    reader.readAsDataURL(file);
+  }  else {
+    holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size/1024|0) + 'K' : '');
+  }
+}
+
+function readfiles(files) {
+    formData = tests.formdata ? new FormData() : null;
+    for (var i = 0; i < files.length; i++) {
+      if (tests.formdata) {
+        var link= document.getElementById('link');              
+        var sub= document.getElementById('sub'); 
+        formData.append('file', files[i]);
+        link.value = sub.value  + files[i].name;
+        formData.append('filename', files[i].name);
+      }
+      previewfile(files[i]);
+    }
+
+    // now post a new XHR request
+    if (tests.formdata) {
+      xhr = new XMLHttpRequest();
+      xhr.open('POST', document.getElementById('action').value);
+      xhr.onload = function() {
+        progress.value = progress.innerHTML = 100;
+      };
+
+      if (tests.progress) {
+        xhr.upload.onprogress = function (event) {
+          if (event.lengthComputable) {
+            var complete = (event.loaded / event.total * 100 | 0);
+            progress.value = progress.innerHTML = complete;
+          }
+        }
+      }
+
+      //xhr.send(formData);
+    }
+}
+
+if (tests.dnd) { 
+  holder.ondragover = function () { this.className = 'hover'; return false; };
+  holder.ondragend = function () { this.className = ''; return false; };
+  holder.ondrop = function (e) {
+    this.className = '';
+    e.preventDefault();
+    readfiles(e.dataTransfer.files);
+  }
+} else {
+  fileupload.className = 'hidden';
+  fileupload.querySelector('input').onchange = function () {
+    readfiles(this.files);
+  };
+}
+
+
+function sendForm()
+{
+  var inputs = document.getElementsByClassName('formelem');
+  for (var i = 0; i < inputs.length; ++i) {
+    var item = inputs[i];  
+    formData.append(item.name, item.value);
+  }
+  xhr.send(formData);
+
+}

@@ -1,4 +1,18 @@
-<input id="filename" type="hidden" name="filename">
-<input id="file" type="hidden" name="file">
-<div id="dropTarget" class="card" style="height:200px">
-<script src="/script/drag-drop.bundle.js"> </script>
+
+<link rel="stylesheet" href="/style/drag-drop.css">
+<article>
+  <div id="holder">
+  </div> 
+  <p id="filereader">File API & FileReader API not supported</p>
+  <p id="formdata">XHR2's FormData is not supported</p>
+  <p id="progress">XHR2's upload progress isn't supported</p>
+  <p>Upload progress: <progress id="uploadprogress" max="100" value="0">0</progress></p>
+  <p>Drag an image from your desktop on to the drop zone above to see the browser both render the preview, but also upload automatically to this server.</p>
+</article>
+<script src="/script/drag-drop.js"> </script>
+
+
+
+
+
+
