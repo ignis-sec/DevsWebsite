@@ -69,8 +69,6 @@ router.post('/:id/', ensureAdmin,  (req,res) =>{
 		Project.gitRepoLink = req.body.github;
 		Project.date = req.body.date;
 		Project.pdfLink = req.body.pdf;
-		console.log(req.body);
-		console.log(req.files);
 		if(req.files.file)
 		{
 			req.files.file.mv(path.dirname(require.main.filename) + '/uploaded/' + req.body.pdf, (err)=>{
