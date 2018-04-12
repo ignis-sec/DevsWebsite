@@ -14,7 +14,12 @@ module.exports = router;
 router.use(favicon('./public/Images/favicon.ico'));
 
 
-router.get('/:dir', ensureVerified, (req,res) =>{
+router.get('/:dir', ensureAdmin, (req,res) =>{
+	res.sendFile(path.join(path.dirname(require.main.filename) +  decodeURI(decodeURIComponent(req.params.dir))))
+
+})
+
+router.post('/upload/:file', ensureAdmin, (req,res) =>{
 	res.sendFile(path.join(path.dirname(require.main.filename) +  decodeURI(decodeURIComponent(req.params.dir))))
 
 })

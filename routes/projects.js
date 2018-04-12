@@ -6,7 +6,6 @@ const fs = require('fs');
 const moment = require('moment');
 const path = require('path');
 const favicon = require('serve-favicon');
-
 var log = path.dirname(require.main.filename) + '/logs/projects.log';
 
 module.exports = router;
@@ -57,19 +56,6 @@ router.get('/edit/:id/', ensureAdmin,  (req,res) => {
 	})
 });
 
-router.get('/edit/:id/', ensureAdmin,  (req,res) => { 
-	Project.findOne({//returns only 1 result
-		_id: req.params.id
-	})
-	.then(Project =>{
-		Project.dateformatted = moment(Project.date).format('YYYY-MM-DD');
-			res.render('projects/editProject',{
-			Project:Project, 	//pass Project to the page into tag with the name "Project"
-			title: 'Edit Project' + Project.Title + ' - Metu Developers'
-		});	
-	})
-});
-
 router.put('/:id/', ensureAdmin,  (req,res) =>{
 	Project.findOne({
 		_id: req.params.id
@@ -80,7 +66,25 @@ router.put('/:id/', ensureAdmin,  (req,res) =>{
 		Project.gitRepoLink = req.body.github;
 		Project.date = req.body.date;
 		Project.pdfLink = req.body.pdf;
-		//LOG
+		console.log(req.body.filename);
+		if(req.body.filename)
+		{
+			fs.writeFile(path.dirname(require.main.filename)+'/projects/'+req.body.filename, req.body.file, (err)=>{
+				fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"FILE UPLOAD:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Filename: "+ req.body.filename +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+				//LOG
+				fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+					"PROJECT EDITED:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ Project.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+				//LOG
+
+				Project.save()	//save index state and redirect
+				.then(() => {
+					req.flash('success_msg', 'Project properties updated.')
+					res.redirect('/projects/');
+				});
+			})
+		}else{
+			//LOG
 		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
 			"PROJECT EDITED:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ Project.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
 		//LOG
@@ -89,8 +93,8 @@ router.put('/:id/', ensureAdmin,  (req,res) =>{
 		.then(() => {
 			req.flash('success_msg', 'Project properties updated.')
 			res.redirect('/projects/');
-
 		})
+		}	
 	})	
 })
 

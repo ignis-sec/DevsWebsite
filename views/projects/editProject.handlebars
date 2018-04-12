@@ -16,13 +16,15 @@
 			<input type="text" class="form-control" name="github" value="{{Project.gitRepoLink}}" required>
 
 			<label for="Github link"> PDF link </label>
-			<input type="text" class="form-control" name="pdf" value="{{Project.pdfLink}}" required>
+			<input id="pdf" type="text" class="form-control" name="pdf" value="{{Project.pdfLink}}" required>
 
 			<label for="Date"> Date </label>
 			<input type="date" class="form-control" name="date" value="{{Project.dateformatted}}" required>
+			<label for="Date"> Documentation </label>
+			{{> _dropbox}}
+			</div>
 		</div>
 		<button type="submit" class="btn btn-primary"> Edit </button>
-		
 	</form>
 		<form action="/projects/{{Project.id}}?_method=DELETE" method="post">
 			<input type="hidden" name="_method" value="DELETE">
