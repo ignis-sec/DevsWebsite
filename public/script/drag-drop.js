@@ -1,4 +1,9 @@
 var formData, xhr;
+var onDrag;
+
+
+
+
 
 var holder = document.getElementById('holder'),
     tests = {
@@ -82,13 +87,19 @@ function readfiles(files) {
     }
 }
 
+
+var dragCount = 51;
+var droppedBefore = false
 if (tests.dnd) { 
-  holder.ondragover = function () { this.className = 'hover'; return false; };
+  holder.ondragover = function () { this.className = 'hover'; droppedBefore=true; return false; };
   holder.ondragend = function () { this.className = ''; return false; };
+  holder.ondragexit = function () {this.className = ''; return false;}
+  holder.ondragleave = function () {if(droppedBefore){this.className = 'leave'; dragCount=0; refreshBox();} return false;}
   holder.ondrop = function (e) {
-    this.className = '';
+    this.className = 'drop';
     e.preventDefault();
     readfiles(e.dataTransfer.files);
+    onDrag=false;
   }
 } else {
   fileupload.className = 'hidden';
@@ -108,3 +119,19 @@ function sendForm()
   xhr.send(formData);
 
 }
+
+function refreshBox(){
+  var ref=setInterval(()=> {
+    if(dragCount>1)
+    {
+      if(holder.className='leave')holder.className = '';
+      clearTimeout(ref);
+    }
+    console.log(dragCount);
+    dragCount++;
+  }, 1000)
+}
+
+
+
+
