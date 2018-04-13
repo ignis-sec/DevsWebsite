@@ -9,6 +9,7 @@
   "author": "Ata Hakçıl, Sedat Ali Zevit",
   "license": "ISC",
   "dependencies": {
+    "all": "0.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "bootstrap-tagsinput": "^0.7.1",
