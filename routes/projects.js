@@ -59,6 +59,51 @@ router.get('/edit/:id/', ensureAdmin,  (req,res) => {
 	})
 });
 
+router.post('/new', ensureAdmin,  (req,res) => {
+	const newProject = {
+		Title: req.body.title,
+		Description:req.body.desc,
+		pdfLink: req.body.pdf,
+		gitRepoLink:req.body.github,
+		date: req.body.date,
+		active:true
+	};
+	new Project(newProject)
+	.save()
+	.then(() => {
+		if(req.body.filename)
+		{
+			req.files.file.mv(path.dirname(require.main.filename) + '/uploaded' + req.body.pdf, req.body.file, (err)=>{
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+			"FILE UPLOAD:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Filename: "+ req.body.filename +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+			//LOG
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"PROJECT EDITED:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ Project.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+			//LOG
+			//LOG
+			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+				"PROJECT ADDED:   by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ req.body.title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+			//LOG
+			req.flash('success_msg', 'New project added.')
+			res.redirect('/projects')
+			})
+		}else{
+			//LOG
+		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+			"PROJECT ADDED:   by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ req.body.title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+		//LOG
+		req.flash('success_msg', 'New project added.')
+		res.redirect('/projects')
+		}
+	})
+		
+});
+
+
+
+
+
+
 router.post('/:id/', ensureAdmin,  (req,res) =>{
 	Project.findOne({
 		_id: req.params.id
@@ -117,46 +162,6 @@ router.delete('/:id/',  ensureAdmin,  (req,res) => {	//DELETE request
 		req.flash('success_msg', 'Project deleted.')
 		res.redirect('/projects/')
 			})
-});
-
-router.post('/new', ensureAdmin,  (req,res) => {
-	const newProject = {
-		Title: req.body.title,
-		Description:req.body.desc,
-		pdfLink: req.body.pdf,
-		gitRepoLink:req.body.github,
-		date: req.body.date,
-		active:true
-	};
-	new Project(newProject)
-	.save()
-	.then(() => {
-		if(req.body.filename)
-		{
-			req.files.file.mv(path.dirname(require.main.filename) + '/uploaded' + req.body.pdf, req.body.file, (err)=>{
-			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-			"FILE UPLOAD:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Filename: "+ req.body.filename +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
-			//LOG
-			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-				"PROJECT EDITED:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ Project.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
-			//LOG
-			//LOG
-			fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-				"PROJECT ADDED:   by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ req.body.title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
-			//LOG
-			req.flash('success_msg', 'New project added.')
-			res.redirect('/projects')
-			})
-		}else{
-			//LOG
-		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
-			"PROJECT ADDED:   by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Project: "+ req.body.title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
-		//LOG
-		req.flash('success_msg', 'New project added.')
-		res.redirect('/projects')
-		}
-	})
-		
 });
 
 router.get('/new', ensureAdmin,  (req,res) => {
