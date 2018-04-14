@@ -24,10 +24,10 @@
 			{{> _dropbox}}
 			</div>
 		</div>
-		<button onclick="sendForm()" class="btn btn-primary"> Edit </button>
+		<button onclick="sendForm();" class="btn btn-success" style="margin-top:15px; width:8vw"> Save </button>
 		<form action="/projects/{{Project.id}}?_method=DELETE" method="post">
 			<input type="hidden" name="_method" value="DELETE">
-			<input type="submit" class="btn btn-danger"value="DELETE DIS" style="margin-top:15px">
+			<input type="submit" class="btn btn-danger"value="DELETE DIS" style="margin-top:15px; width:8vw">
 		</form>
 
 </div>

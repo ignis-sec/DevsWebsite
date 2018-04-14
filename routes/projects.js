@@ -100,10 +100,6 @@ router.post('/new', ensureAdmin,  (req,res) => {
 });
 
 
-
-
-
-
 router.post('/:id/', ensureAdmin,  (req,res) =>{
 	Project.findOne({
 		_id: req.params.id
@@ -114,7 +110,7 @@ router.post('/:id/', ensureAdmin,  (req,res) =>{
 		Project.gitRepoLink = req.body.github;
 		Project.date = req.body.date;
 		Project.pdfLink = req.body.pdf;
-		if(req.files.file)
+		if(req.files)
 		{
 			req.files.file.mv(path.dirname(require.main.filename) + '/uploaded/' + req.body.pdf, (err)=>{
 				if (err) console.log(err);

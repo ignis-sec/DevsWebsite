@@ -55,6 +55,7 @@ function previewfile(file) {
 
 function readfiles(files) {
     formData = tests.formdata ? new FormData() : null;
+    if(files.length==0) return false;
     for (var i = 0; i < files.length; i++) {
       if (tests.formdata) {
         var link= document.getElementById('link');              
@@ -111,7 +112,10 @@ if (tests.dnd) {
 
 function sendForm()
 {
+  if(!formData) formData = tests.formdata ? new FormData() : null;
   var inputs = document.getElementsByClassName('formelem');
+  xhr = new XMLHttpRequest();
+  xhr.open('POST', document.getElementById('action').value);
   for (var i = 0; i < inputs.length; ++i) {
     var item = inputs[i];  
     formData.append(item.name, item.value);
@@ -127,7 +131,6 @@ function refreshBox(){
       if(holder.className='leave')holder.className = '';
       clearTimeout(ref);
     }
-    console.log(dragCount);
     dragCount++;
   }, 1000)
 }

@@ -15,7 +15,6 @@ const ProjectSchema = new Schema({
 	},
 	pdfLink:{
 		type:String,
-		required:true
 	},
 	gitRepoLink:{
 		type:String,
