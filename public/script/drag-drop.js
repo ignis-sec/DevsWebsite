@@ -112,10 +112,13 @@ if (tests.dnd) {
 
 function sendForm()
 {
-  if(!formData) formData = tests.formdata ? new FormData() : null;
+  if(!formData)
+  {   
+    formData = tests.formdata ? new FormData() : null;
+    xhr = new XMLHttpRequest();
+    xhr.open('POST', document.getElementById('action').value);
+  }
   var inputs = document.getElementsByClassName('formelem');
-  xhr = new XMLHttpRequest();
-  xhr.open('POST', document.getElementById('action').value);
   for (var i = 0; i < inputs.length; ++i) {
     var item = inputs[i];  
     formData.append(item.name, item.value);

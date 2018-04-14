@@ -11,19 +11,19 @@
 			<textarea class="form-control formelem" name="desc"></textarea>
 
 			<label for="pdf link"> PDF link </label>
-			<input id="link" type="text formelem" class="form-control" name="pdf" value="{{Project.pdfLink}}" required>
+			<input id="link" type="text formelem" class="form-control" name="pdf" required>
 
 			<label for="Github link"> Github link </label>
 			<input type="text" class="form-control formelem" name="github" required>
 
 			<label for="Date"> Date </label>
-			<input type="datetime" class="form-control formelem" name="date"  required>
+			<input type="date" class="form-control formelem" name="date"  required>
 			<label for="Date"> Documentation </label>
 			<input id="sub" type="hidden" class="form-control" name="sub" value="/projects/">
 			<input id="action" type="hidden" value="/projects/new">
 			{{> _dropbox}}
 		</div>
-		<button onclick="sendForm()" class="btn btn-primary"> Add </button>
+		<button onclick="sendForm();window.location = '/projects/';" class="btn btn-primary"> Add </button>
 
 
 </div>

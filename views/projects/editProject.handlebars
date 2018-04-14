@@ -17,7 +17,7 @@
 			<input id="link" type="text" class="form-control formelem" name="pdf" value="{{#if Project.pdfLink}}{{Project.pdfLink}}{{else}}{{/if}}" required>
 
 			<label for="Date"> Date </label>
-			<input type="datetime" class="form-control formelem" name="date" value="{{Project.dateformatted}}" required>
+			<input type="date" class="form-control formelem" name="date" value="{{Project.dateformatted}}" required>
 			<label for="Date"> Documentation </label>
 			<input id="sub" type="hidden" class="form-control" name="subcategory" value="/projects/">
 			<input id="action" type="hidden" value="/projects/{{Project.id}}">
