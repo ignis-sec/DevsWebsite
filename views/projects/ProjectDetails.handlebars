@@ -14,7 +14,13 @@
 		{{/if}}
 	</tc>
 	<div style="padding:0">
-		<h1>PDF Documentation</h1>
+		{{#if Project.pdfLink}}
+			<h1>PDF Documentation</h1>
 		{{> _pdfFrame}}
+		{{else}}
+		<h4> No documentation available for this project.</h4>
+		{{/if}}
 	</div>
+	
+	
 </div>

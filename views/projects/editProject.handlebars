@@ -14,7 +14,7 @@
 			<input type="text" class="form-control formelem" name="github" value="{{Project.gitRepoLink}}" required>
 
 			<label for="pdf link"> PDF link </label>
-			<input id="link" type="text" class="form-control formelem" name="pdf" value="{{#if Project.pdfLink}}{{Project.pdfLink}}{{else}}/projects/{{/if}}" required>
+			<input id="link" type="text" class="form-control formelem" name="pdf" value="{{#if Project.pdfLink}}{{Project.pdfLink}}{{else}}{{/if}}" required>
 
 			<label for="Date"> Date </label>
 			<input type="datetime" class="form-control formelem" name="date" value="{{Project.dateformatted}}" required>
@@ -24,10 +24,10 @@
 			{{> _dropbox}}
 			</div>
 		</div>
-		<button onclick="sendForm();" class="btn btn-success" style="margin-top:15px; width:8vw"> Save </button>
+		<button onclick="sendForm();window.location = '/projects/';" class="btn btn-success" style="margin-top:15px; width:12vw"> Save </button>
 		<form action="/projects/{{Project.id}}?_method=DELETE" method="post">
 			<input type="hidden" name="_method" value="DELETE">
-			<input type="submit" class="btn btn-danger"value="DELETE DIS" style="margin-top:15px; width:8vw">
+			<input type="submit" class="btn btn-danger"value="DELETE DIS" style="margin-top:15px; width:12vw">
 		</form>
 
 </div>

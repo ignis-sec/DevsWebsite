@@ -3,7 +3,7 @@
 	<a href="/projects/details/{{id}}">
 		<h4> {{Title}}</h4>
 		<p>{{Description}} </p>
-		<p> More info: {{../Host}}{{pdfLink}} </p>
+		<p>{{#if pdfLink}}More info: {{../Host}}{{pdfLink}} {{else}} No Documentation. {{/if}} </p>
 		<p href="{{gitRepoLink}}"> Github: {{gitRepoLink}} </p>
 		<table>
 			<tr>
