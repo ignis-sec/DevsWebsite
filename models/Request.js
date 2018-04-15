@@ -7,7 +7,6 @@ const Schema = mongoose.Schema;
 const RequestSchema = new Schema({
 	Item:{
 		type:String,
-		required:true
 	},
 	ItemName:{
 		type:String,
@@ -54,6 +53,9 @@ const RequestSchema = new Schema({
 		type:Boolean
 	},
 	Permanent:{
+		type:Boolean
+	},
+	ToStock:{
 		type:Boolean
 	}
 });

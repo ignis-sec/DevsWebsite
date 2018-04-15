@@ -1,0 +1,69 @@
+{{#each Requests}}
+				<button class="card card-body" id="{{@index}}" style="{{#if Permanent}}background:#ddd;{{else}}{{#if Approved}}{{#if overdue}}{{#if Returned}}{{else}} background:#ff4f4f; {{/if}}{{/if}}{{/if}}{{/if}}  z-index:0; margin-left:0;width:80vw" data-toggle="collapse" data-target="#info{{@index}}"> 
+					<table>
+						<tr>
+							<td> <a class="btn btn-danger" style="color:white;" href="/stock/requests/delete/{{id}}"> X </a> </td>
+							{{#if Approved}} 
+								{{#if Returned}} 
+									<td><a class="btn btn-primary" style="color:white;width:10vw"> Returned </a> </td>
+								{{else}}
+								<td> <a class="btn btn-primary" style="background:#5b5; color:white;width:10vw"> APPROVED </a> </td>
+									{{#if overdue}}{{#if Permanent}}{{else}}  
+										<td> <a class="btn btn-danger" style="color:white;"> OVERDUE BY {{overdueAmount	}} </a> </td>
+									{{/if}}{{/if}}
+								{{/if}}
+							{{/if}}
+							{{#if Declined}} 
+								<td> <a class="btn btn-danger" style="color:white;width:10vw"> DECLINED </a> </td>
+							{{/if}}
+							{{#if Pending}} 
+								<td> <a class="btn" style="color:white; background:#aaa;width:10vw"> PENDING </a> </td>
+							{{/if}}
+							<td style="width:5%;"><p style="margin-bottom:3px"> x{{Quantity}} </h5></td>
+							<td style="width:45%"><p style="margin-bottom:3px"> {{ItemName}} </h4></td>
+								{{#if Permanent}}
+									<td style="width:45%"><p style="margin-bottom:3px"> Permanent request by {{User}}</p></td>
+								{{else}}
+									<td style="width:45%"><p style="margin-bottom:3px"> requested by {{User}} for {{Time}} days </p></td>
+								{{/if}}
+							{{#if ../user.admin}}
+								{{#if Approved}} 
+									{{#if Returned}}{{else}}{{#if Permanent}}{{else}} 
+									<td><a class="btn btn-block" style="float:right; color:white; background:#106d3c" href="/stock/requests/return/{{id}}"> CONFIRM RETURN </a>{{/if}}{{/if}}{{/if}}
+								{{#if Pending}}
+									<td><a class="btn btn-dark btn-block" href="/stock/requests/approve/{{_id}}" style="float:right;"> Approve </a></td>
+									<td><a class="btn btn-danger btn-block" style="float:right; color:white" data-toggle="collapse" data-target="#decline{{@index}}"> Decline </a></td>
+								{{else}}
+									<td><a class="btn btn-danger btn-block" style="float:right; color:white" href="/stock/requests/revoke/{{id}}"> REVOKE </a></td>
+								{{/if}}
+							{{/if}}
+						</tr>
+					</table>
+				</button>
+				<div id="info{{@index}}" class="collapse border" style="border-color:black; border-style:grove; border-radius:10px; width:80vw;">
+				<p style="margin:10px"> {{Info}}</p>
+				{{#if Approved}} 
+					<p style="margin:10px"> Approved by {{DAUser}} {{timeago}}
+				{{/if}}
+				{{#if Declined}} 
+					<p style="margin:10px"> Declined by {{DAUser}} {{timeago}} because of "{{DeclineReason}}"
+				{{/if}}
+				{{#if Pending}} 
+					<p style="margin:10px"> Pending for {{timeago}}</p>
+				{{/if}}
+				</div>
+				{{#if ../user.admin}}
+				<div id="decline{{@index}}" class="collapse border" style="border-color:black; border-style:grove; border-radius:10px; width:80vw;">
+					<label for="title"> Reason: </label> 
+					<form action="/stock/requests/decline/{{id}}" method="post">
+						<div class="form-group">
+							<input type="text" class="form-control" name="reason" required>
+						</div>
+						<button class="btn btn-danger" style="color:white" type="submit"> DECLINE </button>
+					</form>
+				</div>
+				{{/if}}
+			{{else}}
+			<p> You have no requests.</p>
+			{{/each}}
+

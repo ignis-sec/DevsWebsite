@@ -50,6 +50,46 @@ router.get('/', ensureAuthenticated, (req,res) => {
 	})
 });
 
+router.get('/requestToStock', ensureVerified, (req,res) => {
+	res.render('stock/requestToStock', {title: 'Request Form for Stock Addition'})
+});
+
+router.post('/requestToStock', ensureVerified, (req,res) => {
+	const newRequest = {
+		ItemName: req.body.name,
+		Quantity:req.body.quantity,
+		Info:req.body.info,
+		Date: Date.now(),
+		ToStock:true,
+		Pending:true,
+		User:req.user.userID,
+		Time:0,
+		Permanent:true
+
+	};
+	new Request(newRequest)
+	.save()
+	.then(() => {
+		//LOG
+		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+			"ITEM REQUESTED TO STOCK:   by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+
+			", Item: "+ req.body.name +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+		//LOG
+		req.flash('success_msg', 'Request Form Sent.');
+		res.redirect('/stock');
+	})
+	res.redirect('/stock/');
+});
+
+router.get('/stockRequests', ensureAdmin, (req,res) => {
+	Request.find({ToStock:true})
+	.then(Requests =>{
+			res.render('stock/requests', {Requests:Requests,title: 'Stock Requests - Metu Developers'});
+	})
+	
+});
+
+
 router.get('/new', ensureAdmin,  (req,res) => {
 	res.render('stock/addItem',{title: 'New Item - Metu Developers'})
 });
@@ -189,7 +229,7 @@ router.post('/request/:id',ensureVerified, (req,res) =>{
 })
 
 router.get('/requests', ensureAdmin, (req,res) => {
-	Request.find({})
+	Request.find({ ToStock: {$ne: true} })
 	.sort({Pending: -1, Returned: 1, Date: -1})
 	.then(Requests =>{
 		var i, pending=0,other=0;

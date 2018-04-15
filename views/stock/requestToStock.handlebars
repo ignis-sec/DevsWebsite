@@ -1,0 +1,21 @@
+
+
+<div class="card card-body" style="width:80vw">
+	<h3> Request New Item to Stock </h3>
+	<form action="/stock/requestToStock" method="post">
+		<div class="form-group">
+			
+			<label for="name"> Item Name </label>
+			<input type="text" class="form-control" name="name"  required>
+
+			<label for="Quantity"> Quantity </label>
+			<input type="text" class="form-control" name="quantity" required>
+
+			<label for="Category"> Additional Info </label>
+			<textarea class="form-control" name="info"></textarea>
+		</div>
+		<button type="submit" class="btn btn-success"> Send Request Form </button>
+	</form>
+
+
+</div>
