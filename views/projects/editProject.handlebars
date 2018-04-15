@@ -18,7 +18,13 @@
 
 			<label for="Date"> Date </label>
 			<input type="date" class="form-control formelem" name="date" value="{{Project.dateformatted}}" required>
-			<label for="Date"> Documentation </label>
+
+			<tr>
+				<td> Visible? </td>
+				<td><input type="checkbox" name="active" style="margin-left:5px; margin-top:5px;" value=true {{#if Project.active}}checked {{/if}}></td>
+			</tr>
+			<br>
+			<h4> Documentation </h4>
 			<input id="sub" type="hidden" class="form-control" name="subcategory" value="/projects/">
 			<input id="action" type="hidden" value="/projects/{{Project.id}}">
 			{{> _dropbox}}

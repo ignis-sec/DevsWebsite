@@ -9,6 +9,11 @@
 
 			<label for="title"> Body </label>
 			<textarea id="body" class="form-control" name="desc" style="height:50vh">{{Announcement.Body}}</textarea>
+
+			<tr>
+				<td> Always on top?</td>
+				<td><input type="checkbox" name="sticky" style="margin-left:5px; margin-top:5px;" value=true {{#if Announcement.Sticky}}checked {{/if}}></td>
+			</tr>
 		</div>
 		<button type="submit" class="btn btn-primary"> Edit </button>
 		

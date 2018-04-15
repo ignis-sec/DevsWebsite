@@ -17,6 +17,7 @@ const {ensureAuthenticated, ensureAdmin, ensureVerified} = require('./helpers/au
 
 //Log file directories
 var log = __dirname + '/logs/app.log';
+var conlog = __dirname + '/logs/connections.log';
  
 
 //custom module to hide scavenger hunt links from participants
@@ -146,8 +147,12 @@ const Announcement = mongoose.model('Announcement');
 
 //index route 
 app.get('/', (req,res) => {
+  //LOG
+      fs.appendFile(conlog, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+        "Connection: >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});
+      //LOG
   Announcement.find({})
-  .sort({Date:'desc'})
+  .sort({ Sticky: -1, Date:'desc' })
   .then(Announcements =>{
     for(i=0;i<Announcements.length;i++)//add timeago and time tag to all of the announcements
     {

@@ -1,7 +1,8 @@
 	{{#each Projects}}
-	<div class="card card-body" style="z-index:1; width:80vw">
+	<div class="card card-body" style="z-index:1; width:80vw;{{#if active}}{{else}} background:#ddd {{/if}}  ">
 	<a href="/projects/details/{{id}}">
 		<h4> {{Title}}</h4>
+		{{#if active}}{{else}} <btn class="btn-danger" style="color:white"> This project is hidden to users </btn> {{/if}}
 		<p>{{Description}} </p>
 		<p>{{#if pdfLink}}More info: {{../Host}}{{pdfLink}} {{else}} No Documentation. {{/if}} </p>
 		<p href="{{gitRepoLink}}"> Github: {{gitRepoLink}} </p>

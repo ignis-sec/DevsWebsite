@@ -30,20 +30,38 @@ const Project = mongoose.model('Project');
 
 
 router.get('/',ensureVerified, (req,res) => {
-	Project.find({})
-	.sort({date:'desc'})
-	.then(Projects =>{
-		for(i=0;i<Projects.length;i++)//add timeago and time tag to all of the Projects
-	    {
-	        Projects[i].timeago = moment(Projects[i].date).fromNow();
-	        Projects[i].time = moment(Projects[i].date).format('MMMM Do YYYY');
-	    }
-		res.render('projects/Projects',{ 	//pass Projects to the page into tag with the name "Projects"
-			Projects:Projects,
-			Host: req.headers.host,
-			title: 'Ongoing Projects - Metu Developers'
+	if(req.user.admin)
+	{
+		Project.find()
+		.sort({date:'desc'})
+		.then(Projects =>{
+			for(i=0;i<Projects.length;i++)//add timeago and time tag to all of the Projects
+		    {
+		        Projects[i].timeago = moment(Projects[i].date).fromNow();
+		        Projects[i].time = moment(Projects[i].date).format('MMMM Do YYYY');
+		    }
+			res.render('projects/Projects',{ 	//pass Projects to the page into tag with the name "Projects"
+				Projects:Projects,
+				Host: req.headers.host,
+				title: 'Ongoing Projects - Metu Developers'
+			})
 		})
-	})
+	}else{
+		Project.find({active:true})
+		.sort({date:'desc'})
+		.then(Projects =>{
+			for(i=0;i<Projects.length;i++)//add timeago and time tag to all of the Projects
+		    {
+		        Projects[i].timeago = moment(Projects[i].date).fromNow();
+		        Projects[i].time = moment(Projects[i].date).format('MMMM Do YYYY');
+		    }
+			res.render('projects/Projects',{ 	//pass Projects to the page into tag with the name "Projects"
+				Projects:Projects,
+				Host: req.headers.host,
+				title: 'Ongoing Projects - Metu Developers'
+			})
+		})
+	}
 });
 
 router.get('/edit/:id/', ensureAdmin,  (req,res) => { 
@@ -66,7 +84,7 @@ router.post('/new', ensureAdmin,  (req,res) => {
 		pdfLink: req.body.pdf,
 		gitRepoLink:req.body.github,
 		date: req.body.date,
-		active:true
+		active:req.body.active
 	};
 	new Project(newProject)
 	.save()
@@ -101,6 +119,7 @@ router.post('/new', ensureAdmin,  (req,res) => {
 
 
 router.post('/:id/', ensureAdmin,  (req,res) =>{
+	console.log(req.body)
 	Project.findOne({
 		_id: req.params.id
 	})
@@ -110,6 +129,8 @@ router.post('/:id/', ensureAdmin,  (req,res) =>{
 		Project.gitRepoLink = req.body.github;
 		Project.date = req.body.date;
 		Project.pdfLink = req.body.pdf;
+		if(req.body.active) Project.active = req.body.active;
+		else Project.active = false;
 		if(req.files)
 		{
 			req.files.file.mv(path.dirname(require.main.filename) + '/uploaded/' + req.body.pdf, (err)=>{
@@ -164,7 +185,7 @@ router.get('/new', ensureAdmin,  (req,res) => {
 	res.render('projects/addProject', {title: 'New Project - Metu Developers'})
 });
 
-router.get('/details/:id/', ensureAdmin,  (req,res) => { 
+router.get('/details/:id/', ensureVerified,  (req,res) => { 
 	Project.findOne({_id: req.params.id})
 	.then(Project =>{
 		Project.dateformatted = moment(Project.date).format('YYYY-MM-DD');

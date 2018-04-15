@@ -53,7 +53,8 @@ router.post('/new',  ensureAdmin,  (req,res) => {
 	const newAnnouncement = {
 		Title: req.body.title,
 		Body:req.body.desc,
-		Date: Date.now()
+		Date: Date.now(),
+		Sticky: req.body.sticky
 	};
 	new Announcement(newAnnouncement)
 	.save()
@@ -94,6 +95,7 @@ router.put('/:id',  ensureAdmin,  (req,res) => {
 	.then(Announcement =>{ //set new values to the db index
 		Announcement.Title=req.body.title;
 		Announcement.Body = req.body.desc;
+		Announcement.Sticky= req.body.sticky;
 		//LOG
 		fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
 			"Announcement EDITED:  by "+ req.user.userID +" "+req.user.name +" "+req.user.surname+", Announcement: "+ Announcement.Title +" >>>IP: "+ req.connection.remoteAddress +"\r\n",(err)=>{if(err) console.log(err);});

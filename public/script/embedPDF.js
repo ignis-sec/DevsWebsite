@@ -101,3 +101,7 @@ pdfjsLib.getDocument(url).then(function(pdfDoc_) {
   // Initial/first page rendering
   renderPage(pageNum);
 });
+
+function gotoDocument(){
+  window.location = '/pdf/' + encodeURIComponent(name);
+}

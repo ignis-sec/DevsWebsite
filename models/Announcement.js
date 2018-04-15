@@ -19,6 +19,9 @@ const AnnouncementSchema = new Schema({
 	Date:{
 		type:Date
 
+	},
+	Sticky:{
+		type:Boolean
 	}
 });
 
