@@ -1,5 +1,5 @@
 {{#each Requests}}
-				<button class="card card-body" id="{{@index}}" style="{{#if Approved}}{{#if overdue}}{{#if Returned}}{{else}} background:#ff4f4f; {{/if}}{{/if}}{{/if}}  z-index:0; margin-left:0;width:80vw" data-toggle="collapse" data-target="#info{{@index}}"> 
+				<button class="card card-body" id="{{@index}}" style="{{#if Permanent}}background:#ddd;{{else}}{{#if Approved}}{{#if overdue}}{{#if Returned}}{{else}} background:#ff4f4f; {{/if}}{{/if}}{{/if}}{{/if}}  z-index:0; margin-left:0;width:80vw" data-toggle="collapse" data-target="#info{{@index}}"> 
 					<table>
 						<tr>
 							<td> <a class="btn btn-danger" style="color:white;" href="/stock/requests/delete/{{id}}"> X </a> </td>
@@ -8,9 +8,9 @@
 									<td><a class="btn btn-primary" style="color:white;width:10vw"> Returned </a> </td>
 								{{else}}
 								<td> <a class="btn btn-primary" style="background:#5b5; color:white;width:10vw"> APPROVED </a> </td>
-									{{#if overdue}} 
+									{{#if overdue}}{{#if Permanent}}{{else}}  
 										<td> <a class="btn btn-danger" style="color:white;"> OVERDUE BY {{overdueAmount	}} </a> </td>
-									{{/if}}
+									{{/if}}{{/if}}
 								{{/if}}
 							{{/if}}
 							{{#if Declined}} 
@@ -21,11 +21,15 @@
 							{{/if}}
 							<td style="width:5%;"><p style="margin-bottom:3px"> x{{Quantity}} </h5></td>
 							<td style="width:45%"><p style="margin-bottom:3px"> {{ItemName}} </h4></td>
-							<td style="width:45%"><p style="margin-bottom:3px"> requested by {{User}} for {{Time}} days </p></td>
+								{{#if Permanent}}
+									<td style="width:45%"><p style="margin-bottom:3px"> Permanent request by {{User}}</p></td>
+								{{else}}
+									<td style="width:45%"><p style="margin-bottom:3px"> requested by {{User}} for {{Time}} days </p></td>
+								{{/if}}
 							{{#if ../user.admin}}
 								{{#if Approved}} 
-									{{#if Returned}}{{else}} 
-									<td><a class="btn btn-block" style="float:right; color:white; background:#106d3c" href="/stock/requests/return/{{id}}"> CONFIRM RETURN </a>{{/if}}{{/if}}
+									{{#if Returned}}{{else}}{{#if Permanent}}{{else}} 
+									<td><a class="btn btn-block" style="float:right; color:white; background:#106d3c" href="/stock/requests/return/{{id}}"> CONFIRM RETURN </a>{{/if}}{{/if}}{{/if}}
 								{{#if Pending}}
 									<td><a class="btn btn-dark btn-block" href="/stock/requests/approve/{{_id}}" style="float:right;"> Approve </a></td>
 									<td><a class="btn btn-danger btn-block" style="float:right; color:white" data-toggle="collapse" data-target="#decline{{@index}}"> Decline </a></td>

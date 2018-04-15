@@ -10,10 +10,9 @@
 		
 		{{#each announcements}}
 
-		<a class="card card-body" style="padding-bottom:0; margin-bottom:20px; width:70vw" {{#if ../user.admin}} href="announcement/{{id}}"{{/if}}>
-			<h4>{{Title}}</h4>
+		<a class="card card-body" style="padding:0; margin-bottom:20px; width:70vw; overflow:hidden" {{#if ../user.admin}} href="announcement/{{id}}"{{/if}}>
+			<h4 style="margin-left:15px; margin-top:15px">{{Title}}</h4>
 			<h5 style='white-space: pre-line;'>{{{Body}}}</h5>
-			<br><br>
 			<table>
 			<tr>
 				<td><p> {{timeago}}</p><td>

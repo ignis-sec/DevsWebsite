@@ -52,6 +52,9 @@ const RequestSchema = new Schema({
 	},
 	Approved:{
 		type:Boolean
+	},
+	Permanent:{
+		type:Boolean
 	}
 });
 

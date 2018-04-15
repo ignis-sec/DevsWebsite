@@ -10,9 +10,13 @@
 			<label for="id"> Quantity needed</label>
 			<input type="text" class="form-control" name="quantity" required>
 
-			<label for="Quantity"> Request time in days (Permanent if its not going to be returned)</label>
+			<label for="Quantity"> Request time in days (Check permanent if item will not be returned.)</label>
 			<input type="text" class="form-control" name="return" required>
-
+			<tr>
+				<td> Permanent </td>
+				<td><input type="checkbox" name="perma" style="margin-left:5px; margin-top:5px;" value=true ></td>
+			</tr>
+			<br>
 			<label for="Category"> Extra info </label>
 			<textarea class="form-control" name="info"></textarea>
 		</div>

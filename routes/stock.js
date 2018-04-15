@@ -162,6 +162,7 @@ router.post('/request/:id',ensureVerified, (req,res) =>{
 		_id: req.params.id
 	})
 	.then(Item =>{
+		if(!req.body.perma) req.body.perma=false;
 		const newRequest = {
 			Item: req.params.id,
 			ItemName: (Item.itemID)? Item.name + " (" +Item.itemID+")" : Item.name,
@@ -170,7 +171,8 @@ router.post('/request/:id',ensureVerified, (req,res) =>{
 			Info: (req.body.project)? req.body.info + "\r\nProject Name: " + req.body.project : req.body.info,
 			User: req.user.userID,
 			Pending: true,
-			Date: Date.now()	
+			Date: Date.now(),
+			Permanent: req.body.perma	
 		};
 		new Request(newRequest)
 		.save()
@@ -229,6 +231,7 @@ router.get('/requests/approve/:id', ensureAdmin,  (req,res) =>{
 	})
 	.then(Request =>{ //set new values to the db index
 		Item.findOne({_id:Request.Item}).then((Item)=>{
+			if(Request.Permanent) Item.quantity = Item.quantity - Request.Quantity;
 			Item.inStock=Item.inStock-Request.Quantity;
 			Item.save();
 		})
@@ -259,6 +262,7 @@ router.get('/requests/revoke/:id', ensureAdmin,  (req,res) =>{
 	.then(Request =>{ //set new values to the db index
 		Item.findOne({_id:Request.Item}).then((Item)=>{
 			if(Request.Approved && !Request.Returned){
+				if(Request.Permanent) Item.quantity=Number(Item.quantity)+Number(Request.Quantity);
 				Item.inStock=Number(Item.inStock)+Number(Request.Quantity);
 				Item.save();
 			}
