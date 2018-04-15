@@ -45,6 +45,10 @@ router.get('/register', (req,res) => {
 	res.render('user/register',{title:'Register - Metu Developers'});
 });
 
+router.get('/forgotpwd', (req,res) => {
+	res.render('user/forgot',{title:'Reset Password - Metu Developers'});
+});
+
 router.get('/login', (req,res) => {
 	req.flash('fromAddr', res.locals.fromAddr[0])
 	res.render('user/login',{title:'Login - Metu Developers'});
@@ -209,6 +213,153 @@ router.get('/userlist', ensureAdmin, (req,res) => {
 });
 
 
+router.post('/forgotpwd', (req,res) => {
+	User.findOne({userID: req.body.ID})
+	.then((User)=>{
+		User.ResetTime = Date.now();
+		User.save();
+		var options = {
+			pythonOptions: ['-u'],
+	  		args: [mailman.uid, mailman.pwd, mailman.fromAddr, 'Your reset link: '+req.headers.host + '/user/forgotpwd/change/' + sha256(req.body.ID+String(User.ResetTime)) , '--title', 'Password Reset Link', '--recipient', 'e'+req.body.ID.substring(0, 6)+'@metu.edu.tr']
+		};
+		PythonShell.run(path.dirname(require.main.filename) + '/python/MailSender/MailSender.py', options,(err, results) => {
+		  if (err) throw err;
+		  // results is an array consisting of messages collected during execution
+		  console.log('results: %j', results);
+		});
+		req.flash('success_msg', 'Reset mail sent to your metu mail.');
+			res.redirect('/');
+	})
+});
+
+router.get('/forgotpwd/change/:hash', (req,res) => {
+	res.render('user/forgotChange', {hash:req.params.hash});
+});
+
+router.post('/forgotpwd/change/:hash', (req,res) => {
+	User.findOne({userID: req.body.ID})
+	.then((user)=>{
+		if(!user || sha256(user.userID+String(user.ResetTime))!=req.params.hash){
+			req.flash('error_msg', 'invalid request.');
+			res.redirect('/user/forgotpwd/change/'+req.params.hash);
+			return;
+		}
+		if(Date.now() - user.ResetTime >= 5*60*1000)//5 minutes
+		{
+			req.flash('error_msg', 'That reset code timed out.');
+			res.redirect('/'); 
+		}else{	
+			if(req.body.new != req.body.confirm){
+				req.flash('error_msg', 'Passwords didnt match.');
+				res.redirect('/user/forgotpwd/change/'+req.params.hash);
+				return;
+			}
+			if(req.body.new.length<=8){
+				req.flash('error_msg', 'Password too short.');
+				res.redirect('/user/forgotpwd/change/'+req.params.hash);
+				return;
+			}
+			bcrypt.genSalt(10, (err,salt) =>{
+				bcrypt.hash(req.body.new, salt, (err,hash)=>{
+					if(err) throw err;
+					user.password=hash;
+					user.save()
+					.then(user =>{
+						req.flash('success_msg,', 'Registeration successfull');
+							//LOG
+							fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+								"FORGOTTEN PASSWORD RESET: "+ user.userID +", "+ user.name +" "+ user.surname +" >>>IP: "+ req.connection.remoteAddress+"\r\n",(err)=>{if(err) console.log(err);});
+							//LOG
+						res.redirect('/user/login');
+						return;
+					})
+					.catch(err =>{
+						//LOG
+						fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+							"ERROR accured at bcrypt.hash"+ err +"\r\n",(err)=>{
+						if(err) console.log(err);
+						});
+						//LOG
+					})
+				});
+			});
+		}
+	});
+});
+
+
+
+router.get('/changepassword/',ensureAuthenticated ,bruteforce.prevent, (req,res) => {
+	
+	User.findOne({
+		userID:req.user.userID
+	}).then(user =>{
+		if(!user){			//Getting unhandled promise warning even though no promises were unhandled. Must investigate.
+			res.redirect('/');
+			return;
+		}
+		res.render('user/changePassword')
+	});
+});
+
+
+router.post('/changepassword/:id',ensureAuthenticated , (req,res) => {
+
+	User.findOne({
+	userID: req.user.userID //Must be revised.
+	})
+	.then(user =>{ //set new values to the db index
+		bcrypt.compare(req.body.old,req.user.password, (err, isMatch) =>{
+			if(err) throw err;
+			if(isMatch){
+
+				if(req.body.new != req.body.confirm){
+					req.flash('error_msg', 'Passwords didnt match.');
+					res.redirect('/user/changepassword/');
+					return;
+				}
+				if(req.body.new.length<=8){
+					req.flash('error_msg', 'Password too short.');
+					res.redirect('/user/changepassword/');
+					return;
+				}
+				bcrypt.genSalt(10, (err,salt) =>{
+					bcrypt.hash(req.body.new, salt, (err,hash)=>{
+						if(err) throw err;
+						user.password=hash;
+						user.save()
+						.then(user =>{
+							req.flash('success_msg,', 'Registeration successfull');
+								//LOG
+								fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+									"PASSWORD CHANGED: Username:"+ user.userID +", "+ user.name +" "+ user.surname +" >>>IP: "+ req.connection.remoteAddress+"\r\n",(err)=>{if(err) console.log(err);});
+								//LOG
+							res.redirect('/user/login');
+							return;
+						})
+						.catch(err =>{
+							//LOG
+							fs.appendFile(log, "[" + moment().format('YYYY-MM-DD: HH:mm:ss') + "] " + 
+								"ERROR accured at bcrypt.hash"+ err +"\r\n",(err)=>{
+							if(err) console.log(err);
+							});
+							//LOG
+						})
+					});
+				});
+			}else{
+				req.flash('error_msg', 'Incorrect password.');
+				res.redirect('/user/changepassword/');
+			}
+		})
+	});
+	
+});
+
+
+
+
+
 router.delete('/:id', ensureAdmin,  (req,res) => {	//DELETE request 
 	User.findOne({
 		_id:req.params.id
@@ -245,7 +396,8 @@ router.get('/:id',ensureAuthenticated, (req,res) => {
 	User.findOne({
 		userID:req.params.id
 	}).then(User =>{
-		Request.find({User: User.userID}).sort({Pending:-1}).then((Requests)=>{
+		Request.find({User: User.userID})
+		.then((Requests)=>{
 			for(i=0;i<Requests.length;i++)
 		{
 			if(Requests[i].Pending)
@@ -288,6 +440,48 @@ router.get('/:id',ensureAuthenticated, (req,res) => {
 
 	})
 });
+
+router.get('/edit/:id',ensureAuthenticated, (req,res) => {
+	User.findOne({
+		userID:req.params.id
+	}).then(user =>{
+		if(!user){			//Getting unhandled promise warning even though no promises were unhandled. Must investigate.
+			res.redirect('/');
+			return;
+		}
+		if(req.user.userID == user.userID)
+		{
+			console.log(req.user)
+			res.render('user/editProfile')
+
+		}else{
+			req.flash('error_msg', 'You cannot edit that users profile.');
+			res.redirect('/');
+		}
+	});
+});
+
+
+router.post('/edit/:id',ensureAuthenticated ,bruteforce.prevent, (req,res) => {
+
+	if(req.user.userID != req.params.id)
+	{
+		redirect('/');
+	}else{
+		User.findOne({
+		userID: req.user.userID //Must be revised.
+		})
+		.then(User =>{ //set new values to the db index
+			User.Skills = req.body.Skills;
+			User.Interests = req.body.Interests;
+			User.Bio = req.body.Bio;
+			User.save();
+			res.redirect('/user/' + req.user.userID);
+		});
+	}	
+});
+
+
 
 router.get('/verify/check/:hash', ensureAuthenticated, (req,res)=>{
 	if(sha256(req.user.id+String(req.user.VerifyTime)) == req.params.hash)

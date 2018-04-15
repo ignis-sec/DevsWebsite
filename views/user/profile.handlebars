@@ -3,6 +3,8 @@
 	<tr>
 		<td><h1> Profile </h1> </td>
 		<td> {{#if My}}{{#if user.Verified}}{{else}} <a class="btn btn-primary" style="color:white; float:right" href='/user/verify/verifyme'> Verify your email </a> {{/if}}{{/if}} </td>
+		{{#if My}}<td><a class="btn btn-primary" style="color:white; float:right" href='/user/edit/{{user.userID}}'> Edit Profile </a></td>{{/if}}
+		{{#if My}}<td><a class="btn btn-primary" style="color:white; float:right" href='/user/changepassword'> Change Password </a></td>{{/if}}
 	</tr>
 </table>
 <a class="card card-body" style="z-index:1; margin:0;width:82vw; padding:1vw;">

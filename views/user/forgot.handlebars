@@ -1,25 +1,19 @@
 
 <link rel="stylesheet" href="/style/register.css">
-<h2 class="page-header">Login</h2>
+<h2 class="page-header">Send password reset email</h2>
 {{#each errors}}
   <div class ="alert alert-danger"> {{text}} </div>
 {{else}}
 
 {{/each}}
 <div class="card card-body" style="width:80vw">
-  <form method="post" action="/user/login">
+  <form method="post" action="/user/forgotpwd">
     <div class="form-group">
       <label>Metu ID</label>
       <input type="text" class="form-control" name="ID" placeholder="ID" required>
     </div>
-    
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" class="form-control" name="password" placeholder="Password" required>
-    </div>
     <button type="submit" class="btn">Submit</button>
   </form>
 </div>
-<a href="/user/forgotpwd/" style="color:white;"> Forgot your password? </a>
 
 

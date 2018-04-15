@@ -119,7 +119,6 @@ router.post('/new', ensureAdmin,  (req,res) => {
 
 
 router.post('/:id/', ensureAdmin,  (req,res) =>{
-	console.log(req.body)
 	Project.findOne({
 		_id: req.params.id
 	})

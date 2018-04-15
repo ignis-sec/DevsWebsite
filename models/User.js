@@ -38,6 +38,9 @@ const UserSchema = new Schema({
 		type:String,
 		required:false
 	},
+	Bio:{
+		type:String
+	},
 	Removed:{
 		type:Boolean,
 		required:false
@@ -50,6 +53,9 @@ const UserSchema = new Schema({
 		type:Boolean
 	},
 	VerifyTime:{
+		type:Date
+	},
+	ResetTime:{
 		type:Date
 	}
 });
