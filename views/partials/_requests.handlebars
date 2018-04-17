@@ -21,6 +21,9 @@
 							{{/if}}
 							<td style="width:5%;"><p style="margin-bottom:3px"> x{{Quantity}} </h5></td>
 							<td style="width:45%"><p style="margin-bottom:3px"> {{ItemName}} </h4></td>
+								{{#if ToStock}}
+
+								{{else}}
 								{{#if Permanent}}
 									<td style="width:45%"><p style="margin-bottom:3px"> Permanent request by {{User}}</p></td>
 								{{else}}
@@ -36,6 +39,7 @@
 								{{else}}
 									<td><a class="btn btn-danger btn-block" style="float:right; color:white" href="/stock/requests/revoke/{{id}}"> REVOKE </a></td>
 								{{/if}}
+							{{/if}}
 							{{/if}}
 						</tr>
 					</table>
