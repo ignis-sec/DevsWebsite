@@ -1,5 +1,5 @@
 {{#each Requests}}
-				<button class="card card-body" id="{{@index}}" style="{{#if Permanent}}background:#ddd;{{else}}{{#if Approved}}{{#if overdue}}{{#if Returned}}{{else}} background:#ff4f4f; {{/if}}{{/if}}{{/if}}{{/if}}  z-index:0; margin-left:0;width:80vw" data-toggle="collapse" data-target="#info{{@index}}"> 
+				<button class="card card-body card-main center" id="{{@index}}" style="{{#if Permanent}}background:#ddd;{{else}}{{#if Approved}}{{#if overdue}}{{#if Returned}}{{else}} background:#ff4f4f; {{/if}}{{/if}}{{/if}}{{/if}}  z-index:0;" data-toggle="collapse" data-target="#info{{@index}}"> 
 					<table>
 						<tr>
 							<td> <a class="btn btn-danger" style="color:white;" href="/stock/requests/delete/{{id}}"> X </a> </td>
@@ -7,7 +7,7 @@
 								{{#if Returned}} 
 									<td><a class="btn btn-primary" style="color:white;width:10vw"> Returned </a> </td>
 								{{else}}
-								<td> <a class="btn btn-primary" style="background:#5b5; color:white;width:10vw"> APPROVED </a> </td>
+								<td> <a class="btn btn-success" style="background:#5b5; color:white;width:10vw"> APPROVED </a> </td>
 									{{#if overdue}}{{#if Permanent}}{{else}}  
 										<td> <a class="btn btn-danger" style="color:white;"> OVERDUE BY {{overdueAmount	}} </a> </td>
 									{{/if}}{{/if}}

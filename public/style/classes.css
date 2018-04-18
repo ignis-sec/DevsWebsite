@@ -38,3 +38,8 @@
 .no-padding{
 	padding:0;
 }
+
+
+.no-mobile-font{
+    font-size:100%;
+}

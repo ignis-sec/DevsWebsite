@@ -2,7 +2,7 @@
 
 {{#if user.admin}}
 	{{#each Users}}
-		<a class="card card-body card-main center" style="height:50px; padding:3px; {{#if Verified}} background: #daffd8{{/if}}{{#if Removed}}background:#ffa496;{{/if}} " href="/user/{{userID}}"> 
+		<a class="card card-body card-main center" style="padding:3px; {{#if Verified}} background: #daffd8{{/if}}{{#if Removed}}background:#ffa496;{{/if}} " href="/user/{{userID}}"> 
 			<table>
 				<tr>
 					<td style="width:10%; padding-top:7px"><p> {{userID}} </p></td>

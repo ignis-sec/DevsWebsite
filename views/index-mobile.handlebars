@@ -1,0 +1,26 @@
+
+{{#if user.userID}}
+	<div class="card card-body card-main center"> 
+		<h2>Welcome, {{user.name}}.</h4>
+	</div>
+{{/if}}
+<body class="no-margin no-padding" style="background:#333">
+
+	<div class="card card-body card-main center">	
+		
+		{{#each announcements}}
+
+		<a class="card card-body no-padding" style=" margin-bottom:20px; overflow:hidden" {{#if ../user.admin}} href="announcement/{{id}}"{{/if}}>
+			<h4 style="margin-left:15px; margin-top:15px">{{Title}}</h4>
+			<h5 style='white-space: pre-line;'>{{{Body}}}</h5>
+			<table>
+			<tr>
+				<td><p> {{timeago}}</p><td>
+				<td><p style="text-align:right"> {{time}} </p><td>
+			</tr>
+			</table>
+		</a>
+		{{/each}}
+		</p>
+	</div>
+</body>

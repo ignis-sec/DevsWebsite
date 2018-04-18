@@ -42,16 +42,21 @@ const mailman = require('../config/mailman');
 
 
 router.get('/register', (req,res) => {
-	res.render('user/register',{title:'Register - Metu Developers'});
+	res.render('user/register',{title:'Register - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'});
 });
 
 router.get('/forgotpwd', (req,res) => {
-	res.render('user/forgot',{title:'Reset Password - Metu Developers'});
+	res.render('user/forgot',{title:'Reset Password - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'});
 });
 
 router.get('/login', (req,res) => {
 	req.flash('fromAddr', res.locals.fromAddr[0])
-	res.render('user/login',{title:'Login - Metu Developers'});
+	res.render('user/login',{
+		title:'Login - Metu Developers',
+      	layout: res.locals.bMobile ? 'mobile' : 'main'
+      });
 });
 
 router.get('/logout', (req,res) => {
@@ -104,7 +109,8 @@ router.post('/register',bruteforce.prevent, (req,res) => {
 			name: req.body.name,
 			surname: req.body.surname,
 			interests: req.body.interests,
-			skills: req.body.skills
+			skills: req.body.skills,
+      layout: res.locals.bMobile ? 'mobile' : 'main'
 		})
 	}else{//if there are no errors
 		const newUser = new User({
@@ -207,7 +213,8 @@ router.get('/userlist', ensureAdmin, (req,res) => {
 	.then(Users =>{
 		res.render('user/userlist',{ 	//pass Projects to the page into tag with the name "Projects"
 			Users: Users,
-			title: 'User List - Metu Developers'
+			title: 'User List - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'
 		})
 	})
 });
@@ -233,7 +240,8 @@ router.post('/forgotpwd', (req,res) => {
 });
 
 router.get('/forgotpwd/change/:hash', (req,res) => {
-	res.render('user/forgotChange', {hash:req.params.hash});
+	res.render('user/forgotChange', {hash:req.params.hash,
+      layout: res.locals.bMobile ? 'mobile' : 'main'});
 });
 
 router.post('/forgotpwd/change/:hash', (req,res) => {
@@ -298,7 +306,8 @@ router.get('/changepassword/',ensureAuthenticated ,bruteforce.prevent, (req,res)
 			res.redirect('/');
 			return;
 		}
-		res.render('user/changePassword')
+		res.render('user/changePassword', {title: 'Change Password',
+      layout: res.locals.bMobile ? 'mobile' : 'main'})
 	});
 });
 
@@ -414,7 +423,8 @@ router.get('/:id',ensureAuthenticated, (req,res) => {
 				Requests:Requests,
 				RequestPermission:1,
 				My:1,
-				title:User.name + ' - Metu Developers'
+				title:User.name + ' - Metu Developers',
+      			layout: res.locals.bMobile ? 'mobile' : 'main'
 			})
 			}else if(req.user.admin){
 
@@ -423,7 +433,8 @@ router.get('/:id',ensureAuthenticated, (req,res) => {
 				Requests:Requests,
 				RequestPermission:1,
 				My:0,
-				title:User.name + ' - Metu Developers'
+				title:User.name + ' - Metu Developers',
+      			layout: res.locals.bMobile ? 'mobile' : 'main'
 			})
 			}
 
@@ -433,7 +444,8 @@ router.get('/:id',ensureAuthenticated, (req,res) => {
 				Requests:Requests,
 				RequestPermission:0,
 				title:User.name + ' - Metu Developers',
-				My:1
+				My:1,
+      			layout: res.locals.bMobile ? 'mobile' : 'main'
 			})	
 			}
 		})
@@ -452,7 +464,8 @@ router.get('/edit/:id',ensureAuthenticated, (req,res) => {
 		if(req.user.userID == user.userID)
 		{
 			console.log(req.user)
-			res.render('user/editProfile')
+			res.render('user/editProfile', {title: 'Edit Profile',
+      layout: res.locals.bMobile ? 'mobile' : 'main'})
 
 		}else{
 			req.flash('error_msg', 'You cannot edit that users profile.');

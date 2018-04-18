@@ -1,0 +1,22 @@
+﻿.form-control{
+    height:10vh;
+    font-size:300%;
+    margin-bottom:5vh;
+}
+
+button[type=submit] {
+    height:10vh;
+    width:100%;
+    font-size:300%;
+}
+
+p{
+    font-size:150%;
+}
+a{
+    font-size:150%;
+}
+
+.card-main{
+	width:95vw;
+}

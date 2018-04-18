@@ -14,6 +14,7 @@ const fs = require('fs');
 const moment = require('moment');
 const favicon = require('serve-favicon');
 const {ensureAuthenticated, ensureAdmin, ensureVerified} = require('./helpers/auth')
+var MobileDetect = require('mobile-detect');
 
 //Log file directories
 var log = __dirname + '/logs/app.log';
@@ -97,6 +98,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 //icon
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
+app.use((req,res,next)=>{
+  req.md = new MobileDetect(req.headers['user-agent']);
+  next();
+})
+
 
 //listener
 app.listen(port, () =>{
@@ -118,6 +124,7 @@ app.use(function(req,res,next){
 	res.locals.error = req.flash('error');
 	res.locals.user = req.user || null; //if there is no user passed, set null
   res.locals.fromAddr = req.flash('fromAddr');
+  res.locals.bMobile = req.md.mobile();
 	next();
 });
 
@@ -159,9 +166,11 @@ app.get('/', (req,res) => {
         Announcements[i].timeago = moment(Announcements[i].Date).fromNow();
         Announcements[i].time = moment(Announcements[i].Date).format('MMMM Do YYYY, HH:mm');
     }
+    md = new MobileDetect(req.headers['user-agent']);
     res.render('index',{  //pass Projects to the page into tag with the name "Projects"
       announcements:Announcements,
-      title: 'Metu Developers'
+      title: 'Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'
     })
   })
 });

@@ -24,7 +24,8 @@ router.use(favicon('./public/Images/favicon.ico'));
 var log = path.dirname(require.main.filename) + '/logs/announcements.log';
 
 router.get('/upload',  ensureAdmin,  (req,res) => {
-	res.render('announcements/upload', {title: 'Upload File - Metu Developers'})
+	res.render('announcements/upload', {title: 'Upload File - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'})
 });
 
 router.post('/upload',  ensureAdmin,  (req,res) => {
@@ -43,7 +44,8 @@ router.post('/upload',  ensureAdmin,  (req,res) => {
 });
 
 router.get('/new',  ensureAdmin,  (req,res) => {
-	res.render('announcements/addAnnouncement', {title: 'Announce something - Metu Developers'})
+	res.render('announcements/addAnnouncement', {title: 'Announce something - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'})
 });
 
 require('../models/Announcement');
@@ -70,7 +72,8 @@ router.post('/new',  ensureAdmin,  (req,res) => {
 
 router.get('/:id',  ensureAdmin,  (req,res) => {
 	Announcement.findOne({_id:req.params.id}).then((Announcement)=>{
-		res.render('announcements/editAnnouncement', {Announcement:Announcement,title: 'Edit Announcement - Metu Developers'})
+		res.render('announcements/editAnnouncement', {Announcement:Announcement,title: 'Edit Announcement - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'})
 	})
 	
 });
@@ -112,7 +115,8 @@ router.put('/:id',  ensureAdmin,  (req,res) => {
 });
 					
 router.get('/mail/new',  ensureAdmin,  (req,res) => {
-	res.render('announcements/newMassMail', {title: 'Mass Email - Metu Developers'})
+	res.render('announcements/newMassMail', {title: 'Mass Email - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'})
 });
 
 router.post('/mail/new',  ensureAdmin,  (req,res) => {

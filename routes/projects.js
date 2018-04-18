@@ -43,7 +43,8 @@ router.get('/',ensureVerified, (req,res) => {
 			res.render('projects/Projects',{ 	//pass Projects to the page into tag with the name "Projects"
 				Projects:Projects,
 				Host: req.headers.host,
-				title: 'Ongoing Projects - Metu Developers'
+				title: 'Ongoing Projects - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'
 			})
 		})
 	}else{
@@ -58,7 +59,8 @@ router.get('/',ensureVerified, (req,res) => {
 			res.render('projects/Projects',{ 	//pass Projects to the page into tag with the name "Projects"
 				Projects:Projects,
 				Host: req.headers.host,
-				title: 'Ongoing Projects - Metu Developers'
+				title: 'Ongoing Projects - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'
 			})
 		})
 	}
@@ -72,7 +74,8 @@ router.get('/edit/:id/', ensureAdmin,  (req,res) => {
 		Project.dateformatted = moment(Project.date).format('YYYY-MM-DD');
 			res.render('projects/editProject',{
 			Project:Project, 	//pass Project to the page into tag with the name "Project"
-			title: 'Edit Project' + Project.Title + ' - Metu Developers'
+			title: 'Edit Project' + Project.Title + ' - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'
 		});	
 	})
 });
@@ -181,7 +184,8 @@ router.delete('/:id/',  ensureAdmin,  (req,res) => {	//DELETE request
 });
 
 router.get('/new', ensureAdmin,  (req,res) => {
-	res.render('projects/addProject', {title: 'New Project - Metu Developers'})
+	res.render('projects/addProject', {title: 'New Project - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'})
 });
 
 router.get('/details/:id/', ensureVerified,  (req,res) => { 
@@ -191,7 +195,8 @@ router.get('/details/:id/', ensureVerified,  (req,res) => {
 			res.render('projects/ProjectDetails',{
 			Project:Project, 	//pass Project to the page into tag with the name "Project"
 			title: Project.Title + ' - Metu Developers',
-			PDFDir: Project.pdfLink 
+			PDFDir: Project.pdfLink ,
+      layout: res.locals.bMobile ? 'mobile' : 'main'
 		});	
 	})
 });

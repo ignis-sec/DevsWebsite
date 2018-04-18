@@ -23,7 +23,8 @@ const Contact = mongoose.model('Contact');
 
 
 router.get('/new',  ensureAdmin,  (req,res) => {
-	res.render('contact/addContact', {title: 'Add Contact - Metu Developers'})
+	res.render('contact/addContact', {title: 'Add Contact - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'})
 });
 
 
@@ -33,7 +34,8 @@ router.get('/list', ensureAdmin, (req,res) => {
 	.then(Contacts =>{
 		res.render('contact/contacts',{ 	//pass Projects to the page into tag with the name "Projects"
 			Contacts:Contacts,
-			title: 'Contact List - Metu Developers'
+			title: 'Contact List - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'
 		})
 	})
 });
@@ -59,7 +61,8 @@ router.post('/new',  ensureAdmin,  (req,res) => {
 
 router.get('/:id',  ensureAdmin,  (req,res) => {
 	Contact.findOne({_id:req.params.id}).then((Contact)=>{
-		res.render('contact/editContact', {Contact:Contact,title: 'Edit Contact - Metu Developers'})
+		res.render('contact/editContact', {Contact:Contact,title: 'Edit Contact - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'})
 	})
 	
 });

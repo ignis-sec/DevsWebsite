@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="../style/index.css">
 
 {{#each Items}}
-		<a class="card card-body" style="z-index:0; width:80vw" href="/stock/edit/{{_id}}"> 
+		<a class="card card-body card-main center no-mobile-font" style="z-index:0;" href="/stock/edit/{{_id}}"> 
 			<table>
 				<tr>
 					<td style="width:45%"><h4> {{name}} {{#if itemID}} ({{itemID}}) {{/if}} </h4></td>
@@ -19,6 +19,6 @@
 			<p> Something went wrong or no items are in the stock.</p>
 	{{/each}}
 	{{#if user.admin}}
-	<a href="/stock/new" class="btn btn-primary btn-block" style="width:80vw"> Add New Item</a>
+	<a href="/stock/new" class="btn btn-primary btn-block card-main center"> Add New Item</a>
 	{{/if}}
-	<a href="/stock/requestToStock" class="btn btn-success btn-block" style="width:80vw"> New item Request Form</a>
+	<a href="/stock/requestToStock" class="btn btn-success btn-block card-main center"> New item Request Form</a>

@@ -45,13 +45,15 @@ router.get('/', ensureAuthenticated, (req,res) => {
 	.then(Items =>{
 		res.render('stock/Items',{ 	//pass Projects to the page into tag with the name "Projects"
 			Items: Items,
-			title: 'Community Stash - Metu Developers'
+			title: 'Community Stash - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'
 		})
 	})
 });
 
 router.get('/requestToStock', ensureVerified, (req,res) => {
-	res.render('stock/requestToStock', {title: 'Request Form for Stock Addition'})
+	res.render('stock/requestToStock', {title: 'Request Form for Stock Addition',
+      layout: res.locals.bMobile ? 'mobile' : 'main'})
 });
 
 router.post('/requestToStock', ensureVerified, (req,res) => {
@@ -84,14 +86,16 @@ router.post('/requestToStock', ensureVerified, (req,res) => {
 router.get('/stockRequests', ensureAdmin, (req,res) => {
 	Request.find({ToStock:true})
 	.then(Requests =>{
-			res.render('stock/requests', {Requests:Requests,title: 'Stock Requests - Metu Developers'});
+			res.render('stock/requests', {Requests:Requests,title: 'Stock Requests - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'});
 	})
 	
 });
 
 
 router.get('/new', ensureAdmin,  (req,res) => {
-	res.render('stock/addItem',{title: 'New Item - Metu Developers'})
+	res.render('stock/addItem',{title: 'New Item - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'})
 });
 
 router.post('/new', ensureAdmin,  (req,res) => {
@@ -123,7 +127,8 @@ router.get('/edit/:id', ensureAdmin,  (req,res) => {
 	.then(Item =>{
 			res.render('stock/editItem',{
 			Item:Item,
-			title: 'Edit '+ Item.name + ' (' + Item.itemID + ') - Metu Developers' 	
+			title: 'Edit '+ Item.name + ' (' + Item.itemID + ') - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main' 	
 		});	
 	})
 });
@@ -191,7 +196,8 @@ router.get('/request/:id',ensureVerified,  (req,res) => {
 		_id: req.params.id
 	})
 	.then(Item =>{
-			res.render('stock/requestItem',{Item:Item, title: 'Item Request Form - Metu Developers'});	
+			res.render('stock/requestItem',{Item:Item, title: 'Item Request Form - Metu Developers',
+      layout: res.locals.bMobile ? 'mobile' : 'main'});	
 	})
 });
 
@@ -260,7 +266,8 @@ router.get('/requests', ensureAdmin, (req,res) => {
 			title: 'Request List - Metu Developers',
 			Bar_Percent: complete,
 			Bar_Text: 'Pending',
-			Bar_Style: ' progress-bar-striped progress-bar-animated bg-success'
+			Bar_Style: ' progress-bar-striped progress-bar-animated bg-success',
+      layout: res.locals.bMobile ? 'mobile' : 'main'
 		})
 	})
 });

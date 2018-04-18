@@ -1,0 +1,81 @@
+<nav class="navbar navbar-expand-sm navbar-dark "style="position:fixed; width:100vw; background:#225424; z-index:5; height:5vh; opacity:0.98;">
+	<div class="container-fluid" style="margin-right:0px; margin-left:10vw;">
+	  	<a class="navbar-brand" href="/" style="font-size:175%">Anasayfa</a>
+
+	  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    	<span class="navbar-toggler-icon"></span>
+	  	</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    <ul class="navbar-nav mr-auto">
+		    		<li class="nav-item dropdown active">
+			        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			          	Navigate
+			        	</a>
+			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			          	<a class="dropdown-item" href="/stock/">Stok</a>
+			          	<a class="dropdown-item" href="/projects/">Proje Çizelgesi</a>
+			          	<a class="dropdown-item" href="/duckduckgoose">Challenge <span class="sr-only">(current)</span></a>
+			        </div>
+		    	{{#if user.admin}}
+			      	<li class="nav-item dropdown active">
+			        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			          	Admin
+			        	</a>
+			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			          	<a class="dropdown-item" href="/stock/">Stok</a>
+			          	<a class="dropdown-item" href="/stock/requests">Requests</a>
+			          	<a class="dropdown-item" href="/stock/stockRequests">Stock Requests</a>
+			          	<div class="dropdown-divider"></div>
+			          	<a class="dropdown-item" href="/announcement/mail/new">Mass Email</a>
+			           	<a class="dropdown-item" href="/announcement/new">Make an Announcement</a>
+			           	<a class="dropdown-item" href="/announcement/upload">Upload file</a>
+			          	<div class="dropdown-divider"></div>
+			          	<a class="dropdown-item" href="/user/userlist">Members List</a>
+			          	<div class="dropdown-divider"></div>
+			          	<a class="dropdown-item" href="/contact/list">Contacts</a>
+			        </div>
+			      	</li>
+			    {{else}}
+		      		<li class="nav-item active">
+	        		<a class="nav-link" href="/stock/">Stok</a>
+	      			</li>
+
+		      	{{/if}}
+		      	<li class="nav-item dropdown">
+		        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		          	İletişim
+		        	</a>
+		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+		          <a class="dropdown-item" href="#">İletişim Adresleri</a>
+		          <a class="dropdown-item" href="#">Sıkça Sorulan Sorular</a>
+		          <a class="dropdown-item" href="#">Topluluk odamız</a>
+		          <div class="dropdown-divider"></div>
+		          <a class="dropdown-item" href="#">Geri Bildirim Formu</a>
+		        </div>
+		      	</li>
+		      	
+		    </ul>
+	    </div>
+	    {{#if user}}{{#if user.Verified}}{{else}} <a class="btn btn-primary" style="color:white; float:right" href='/user/verify/verifyme'> Verify your email </a> {{/if}}{{/if}}
+    	<div style="color:white;font-family: sans-serif; margin-right: 5vw;">
+	      	<ul class="navbar-nav mr-auto">
+	      		{{#if user}}
+		      		<li class="nav-item">
+		        		<a class="nav-link" href="/user/logout">Çıkış</a>
+		      		</li>
+					<li class="nav-item active">
+		        		<a class="nav-link" href="/user/{{user.userID}}">{{user.name}} &nbsp;&nbsp;</a>
+		      		</li>
+	   			{{else}}
+		   			<li class="nav-item">
+		        		<a class="nav-link" href="/user/login">Giriş</a>
+		      		</li>
+			      	<li class="nav-item active">
+			        	<a class="nav-link" href="/user/register">Kayıt <span class="sr-only">(current)</span></a>
+			      	</li>
+	   			{{/if}}
+		    </ul>
+	  	</div>
+	</div>
+</nav>
