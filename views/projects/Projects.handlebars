@@ -1,5 +1,5 @@
 	{{#each Projects}}
-	<div class="card card-body" style="z-index:1; width:80vw;{{#if active}}{{else}} background:#ddd {{/if}}  ">
+	<div class="card card-body card-main center" style="z-index:1;{{#if active}}{{else}} background:#ddd {{/if}}  ">
 	<a href="/projects/details/{{id}}">
 		<h4> {{Title}}</h4>
 		{{#if active}}{{else}} <btn class="btn-danger" style="color:white"> This project is hidden to users </btn> {{/if}}
@@ -20,4 +20,4 @@
 	{{else}}
 			<p> Something went wrong.</p>
 	{{/each}}
-	<a href="/projects/new" class="btn btn-primary btn-block" style="width:80vw"> Add New Project</a>
+	<a href="/projects/new" class="btn btn-primary btn-block card-main center" > Add New Project</a>

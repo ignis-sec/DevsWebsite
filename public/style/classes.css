@@ -1,4 +1,16 @@
-﻿
+﻿html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
 
 .wordwrap{
 	white-space: pre-wrap;      /* CSS3 */   
@@ -6,4 +18,23 @@
     white-space: -pre-wrap;     /* Opera <7 */   
     white-space: -o-pre-wrap;   /* Opera 7 */    
     word-wrap: break-word;      /* IE */
+}
+
+
+.center{
+	margin-left:auto;
+	margin-right:auto;
+
+}
+
+.card-main{
+	width:70vw;
+}
+
+.no-margin{
+	margin:0;
+}
+
+.no-padding{
+	padding:0;
 }

@@ -1,10 +1,8 @@
 <link rel="stylesheet" href="../style/index.css">
 
 {{#if user.admin}}
-<div style="display:table-row" style="width:50 px">
 	{{#each Users}}
-
-		<a class="card card-body" style="z-index:0; width:70vw; height:50px; padding:3px; {{#if Verified}} background: #daffd8{{/if}}{{#if Removed}}background:#ffa496;{{/if}} " href="/user/{{userID}}"> 
+		<a class="card card-body card-main center" style="height:50px; padding:3px; {{#if Verified}} background: #daffd8{{/if}}{{#if Removed}}background:#ffa496;{{/if}} " href="/user/{{userID}}"> 
 			<table>
 				<tr>
 					<td style="width:10%; padding-top:7px"><p> {{userID}} </p></td>
@@ -28,11 +26,7 @@
 			<p> Something went wrong or no users registered.</p>
 	{{/each}}
 
-	{{else}}
+{{else}}
 
 
-	{{/if}}
-</div>
-
-<div style="height:100px">
-	</div>
+{{/if}}

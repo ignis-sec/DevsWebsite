@@ -25,7 +25,7 @@ const hunt = require("./scavenger-private/hunt");
 require('./config/passport')(passport); // i dont entirely understand what is happening here but: https://jsfiddle.net/64j360yp/
 
 //Port number for server
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8081;
 
 //js arrow function////// You wont understand whats below if you dont know what this is.
 // (params) =>{
